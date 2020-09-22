@@ -1,12 +1,7 @@
   {
-    "name": "Getting Started Example",
+    "name": "Axel Extension",
     "version": "1.0",
-    "description": "Build an Extension!",
-    "permissions": ["activeTab", "declarativeContent", "storage"],
-    "background": {
-	    "scripts": ["background.js"],
-	    "persistent": false
-    },
+    "description": "An extension for censorship",
     "options_page": "options.html",
     "browser_action": {
 	    "default_title": "Your friendly neighborhood censorship extension",
