@@ -8,7 +8,7 @@
 	    "persistent": false
     },
     "options_page": "options.html",
-    "page_action": {
+    "browser_action": {
 	    "default_title": "Your friendly neighborhood censorship extension",
 	    "default_popup": "popup.html",
 	      "default_icon": {
