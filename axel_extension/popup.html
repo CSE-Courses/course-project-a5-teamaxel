@@ -1,6 +1,42 @@
 <!DOCTYPE html>
 <html>
+  <style>
+	.mode {
+		border: 10px;
+		background-color: #A4A4A4;
+	}
+	
+	.mode button{
+		background-color:lightgrey;
+		vertical-align: top;
+	}
+	.mode button.active{
+		background-color:white;
+	}
+	
+  </style>
   <body>
-	  <h1> TODO: let's put some buttons in here </h1>
+	<!-- Info Relatated to Tabs -->
+	<div id="modes">
+		<button class="mode" id="default">Child Mode</button>
+		<button class="mode" id="Admin">Admin Mode</button>
+	</div>
+	
+	<!-- Info Related to buttons in Child Mode Tab -->
+	<div id="Child Mode">
+		<button id="EduGame">Educational Game</button>
+		<button id="veiw">Veiw</button>
+		<button  id="context">Context Clue Game</button>
+	
+	</div>
+	
+	<!-- Info Related to Admin Mode Tab -->
+	<div id="Admin Mode">
+		<button id ="Admin Options">Admin Options</button>
+	
+	</div>
+	<!-- Below Script statment allows for the use of popup.js -->
+	<script src="popup.js">
+	</script>
   </body>
 </html>
