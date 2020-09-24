@@ -1,0 +1,2 @@
+1.  On submitting password, we are taken back to "child mode" screen
+    -   it should take us to "admin mode" screen where we see only admin options

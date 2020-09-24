@@ -1,18 +1,61 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <style>
-      button {
-        height: 30px;
-        width: 60px;
-        outline: none;
-      }
-    </style>
-  </head>
+  <style>
+	.mode {
+		border: 10px;
+		background-color: #A4A4A4;
+	}
+	
+	.mode button{
+		background-color:lightgrey;
+		vertical-align: top;
+	}
+	.mode button.active{
+		background-color:white;
+	}
+	
+  </style>
   <body>
-    <h1> TODO: let's put some buttons in here </h1>
-    <button id="changeColor"></button>
-    <button id="options">Options</button>
-    <script src="popup.js"></script>
+	<!-- Info Relatated to Tabs(Modes) -->
+	<div id="modes">
+		<button class="mode" id="default">Child Mode</button>
+		<button class="mode" id="Admin">Admin Mode</button>
+	</div>
+	
+	<!-- Info Related to buttons in Child Mode Tab -->
+	<div id="Child Mode">
+		<button id="EduGame">Educational Game</button>
+		<button id="view">View</button>
+		<button  id="context">Context Clue Game</button>
+	
+	</div>
+	
+	<!-- Info Related to Admin Mode Tab -->
+	<div id="Admin Mode">
+		<button id ="Admin Options">Admin Options</button>
+	
+  </div>
+  
+  <!-- Info Related to Enter Password Tab -->
+  <div id ="sign_in">
+    <h1> Enter your password </h1>
+    <form action = "popup.html">
+        <input type="text" id="pass" name="pass"><br><br>
+        <input type="submit" value="Submit">
+    </form>
+  </div>
+
+  <!-- Info related to Create Password Tab -->
+  <div id="create_pass">
+    <h1> Create your password </h1>
+    <form action = "popup.html">
+        <input type="text" id="pass" name="pass"><br><br>
+        <input type="submit" value="Submit">
+    </form>
+  </div>
+
+	<!-- Below Script statment allows for the use of popup.js -->
+	<script src="popup.js">
+	</script>
   </body>
 </html>

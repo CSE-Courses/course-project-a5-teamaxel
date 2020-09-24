@@ -3,6 +3,11 @@
     "version": "1.0",
     "description": "An extension for censorship",
     "options_page": "options.html",
+    "permissions": ["storage"],
+    "background":{
+      "scripts": ["background.js"],
+      "permissions": false
+    },
     "browser_action": {
 	    "default_title": "Your friendly neighborhood censorship extension",
 	    "default_popup": "popup.html",
