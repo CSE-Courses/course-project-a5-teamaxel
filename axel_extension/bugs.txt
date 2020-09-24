@@ -1,2 +1,7 @@
-1.  On submitting password, we are taken back to "child mode" screen
-    -   it should take us to "admin mode" screen where we see only admin options
+1.  What is happening
+        -   On submitting password, we are taken back to "child mode" screen
+    What is supposed to happen
+        -   it should take us to "admin mode" screen where we see only admin options
+    Ideas/possible reasons why this is happening
+    -   probably happening because html form action = "popup.html" which takes us
+        to default settings
