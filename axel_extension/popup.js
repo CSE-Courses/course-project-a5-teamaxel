@@ -90,13 +90,15 @@ document.addEventListener('DOMContentLoaded', function(){
       chrome.storage.sync.set({first_time: 'false'}, function(){
         console.log('Value is set to ' + false);
       });
+      firstTime = 'false';
+      admin.setAttribute('value', 'false');
 
       const form = document.getElementById('new_pass');
       form.addEventListener("submit", function(event){
       
-        chrome.sync.set({password: "meowmeow"}, function(){
-          console.log('Password entered to storage');
-        });
+        // chrome.storage.sync.set({password: 'meowmeow'}, function(){
+        //   console.log('Password entered to storage');
+        // });
       
         childB.style.display = "none";
         adminB.style.display = "block";
@@ -112,15 +114,18 @@ document.addEventListener('DOMContentLoaded', function(){
       sign_in.style.display = "block";
       const form = document.getElementById('entered_pass');
       const log = document.getElementById('log');
+      let stored_pass = document.getElementById('sign_in');
       form.addEventListener("submit", function(event){
-      
-          var checkPass = document.getElementById('unique').value;
-        // chrome.sync.get('password', function(result){
+        
+        //  grabs password input in text field
+        var checkPass = document.getElementById('unique').value;
+
+        // chrome.storage.sync.get('password', function(result){
         //   console.log('Password grabbed from storage');
-        //   form.setAttribute('value', result.password);
+        //   stored_pass.setAttribute('value', result.password);
         // });
 
-        if( checkPass != "meowmeow"){
+        if(checkPass != "meowmeow"){
           log.textContent = "incorrect password, please try again";
           event.preventDefault();
         }
