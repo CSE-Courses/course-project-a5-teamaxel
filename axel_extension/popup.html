@@ -1,19 +1,21 @@
 <!DOCTYPE html>
-<html>
+<html id="mainWindow">
   <style>
-  .mode {
-		border: 10px;
+	#mainWindow{
+		width: 220px;
+	}
+
+	.mode {
+		border: 1px solid black;
 		background-color: #A4A4A4;
+		float: left;
 	}
 	
 	.mode button{
-		background-color:lightgrey;
+		background-color: white;
 		vertical-align: top;
 	}
-	.mode button.active{
-		background-color:white;
-	}
-	
+
   </style>
   <body>
 	<!-- Info Relatated to Tabs(Modes) -->
@@ -25,7 +27,7 @@
 	<!-- Info Related to buttons in Child Mode Tab -->
 	<div id="Child Mode">
 		<button id="EduGame">Educational Game</button>
-		<button id="veiw">Veiw</button>
+		<button id="veiw">View</button>
 		<button  id="context">Context Clue Game</button>
 	
 	</div>

@@ -6,19 +6,23 @@
 
 //Implements an event listener to the pop up itself
 document.addEventListener('DOMContentLoaded', function(){
-	
-	
-//		The next two lines make it so Admin Options does not appear 
+
+// Declaration of variables for the admin and child tab object directly
+	var admin = document.getElementById("Admin");
+	var child = document.getElementById("default");
+
+//		The next three lines make it so Admin Options does not appear 
 //		Upon the intial load of the extension
 	var childB = document.getElementById("Admin Mode");
 	childB.style.display = "none";
 	var pass = document.getElementById("Pre-Admin Mode");
 	pass.style.display = "none";
+	hightlightCurrentTab(child, admin);
 
 //		The below section Allows for Switching to the Child Mode Tab.
 //		It Controls the buttons appearing when clicked along
 //		with the removal of unwanted buttons	
-var child = document.getElementById("default");
+
 child.addEventListener("click",function(){
 	var adminB = document.getElementById("Admin Mode");
 	adminB.style.display = "none";
@@ -26,12 +30,13 @@ child.addEventListener("click",function(){
 	pass.style.display = "none";
 	var childB = document.getElementById("Child Mode");
 	childB.style.display = "block";
+	hightlightCurrentTab(child, admin);
 });
 
 //		The below section Allows for Switching to the Admin Mode Tab.
 //		It Controls the buttons appearing when clicked along
 //		with the removal of unwanted buttons
-var admin = document.getElementById("Admin");
+
 admin.addEventListener("click", function(){
 	//blanks out child mode
 	var childB = document.getElementById("Child Mode");
@@ -62,3 +67,14 @@ adminOptions.addEventListener("click", function(){
 
 
 });
+	var adminB = document .getElementById("Admin Mode");
+	adminB.style.display = "block";
+	hightlightCurrentTab(admin, child);
+
+	
+//		The following seciton below is a function delcaration that hightlights 
+//		The first parameter (x) in pink and the second (y) in dark gray
+	function hightlightCurrentTab(x ,y){
+		x.style.backgroundColor = "pink";
+		y.style.backgroundColor = "#A4A4A4";
+	}
