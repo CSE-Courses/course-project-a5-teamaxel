@@ -1,7 +1,22 @@
-1.  What is happening
-        -   On submitting password, we are taken back to "child mode" screen
-    What is supposed to happen
-        -   it should take us to "admin mode" screen where we see only admin options
-    Ideas/possible reasons why this is happening
-    -   probably happening because html form action = "popup.html" which takes us
-        to default settings
+Major bugs      //affect functionality on large scale
+
+
+Minor bugs      //small front end issues that don't affect interaction
+
+1.  What is happening   
+        -   if you click the admin mode button within admin mode, you're asked to create password
+        -   this is probably because that is the default for clicking on admin mode
+            how to make admin mode not clickable when in admin mode. occurred once event.preventDefault added
+
+2.  What is happening
+        -   if you're within the password phase, click outside of the text area box, and
+            hit enter, the submit button doesn't register the enter hit
+
+3.  What is happening
+        -   create a password, go to child mode, enter password, go to child mode, click admin mode, 
+            automatically told that password is incorrect
+
+
+
+ Potential User stories
+ When in admin mode, want to stay in admin mode when exiting GUI (potential user story)

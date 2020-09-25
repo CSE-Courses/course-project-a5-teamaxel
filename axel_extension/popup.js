@@ -99,10 +99,10 @@ document.addEventListener('DOMContentLoaded', function(){
         // chrome.storage.sync.set({password: 'meowmeow'}, function(){
         //   console.log('Password entered to storage');
         // });
-      
         childB.style.display = "none";
         adminB.style.display = "block";
         create_pass.style.display = "none";
+        form.reset();
         event.preventDefault();
 
       } );
@@ -120,16 +120,23 @@ document.addEventListener('DOMContentLoaded', function(){
         //  grabs password input in text field
         var checkPass = document.getElementById('unique').value;
 
-        // chrome.storage.sync.get('password', function(result){
+        //  grabs created password from storage and stores passwork as a value in "stored_pass"
+        /* chrome.storage.sync.get('password', function(result){
         //   console.log('Password grabbed from storage');
         //   stored_pass.setAttribute('value', result.password);
-        // });
-
+         });*/
+        
+        //  currently password check is hardcoded to check if entered password != "meowmeow"
         if(checkPass != "meowmeow"){
           log.textContent = "incorrect password, please try again";
           event.preventDefault();
         }
+        //  entered password == "meowmeow", we move into Admin Mode
         else{
+          //clears password input
+          form.reset();
+
+          //enters admin mode
           childB.style.display = "none";
           adminB.style.display = "block";
           sign_in.style.display = "none";
