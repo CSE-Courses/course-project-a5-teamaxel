@@ -39,8 +39,9 @@
   <!-- Info Related to Enter Password Tab -->
   <div id ="sign_in">
     <h1> Enter your password </h1>
-    <form action = "popup.html">
-        <input type="text" id="pass" name="pass"><br><br>
+    <form id = "entered_pass">
+		<input type="text" id="pass" name="returning_pass" required size = "15"
+		minlength = "8" maxlength = "15"><br><br>
        <input type="submit" value="Submit">
     </form>
   </div>
@@ -48,10 +49,13 @@
   <!-- Info related to Create Password Tab -->
   <div id="create_pass">
     <h1> Create your password </h1>
-    <form action = "popup.html">
-        <input type="text" id="pass" name="pass"><br><br>
-        <input type="submit" value="Submit">
-    </form>
+    <form id = "new_pass">
+		<input type="text" id="pass" name="fresh_pass" required size = "15"
+		minlength = "8" maxlength = "15"><br><br>
+		<input type="submit" value="Submit">
+		<p>Passwords must be 8-15 characters in length</p>
+	</form>
+	<p id="log"></p>
   </div>
 
 	<!-- Below Script statment allows for the use of popup.js -->
