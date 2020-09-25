@@ -20,8 +20,8 @@ document.addEventListener('DOMContentLoaded', function(){
   /************************************************************************/
   //		The below section Allows for Switching to the Child Mode Tab.
   //		It Controls the buttons appearing when clicked along
-  //		with the removal of unwanted buttons	
-  //    passB and passC are added within this event listener in the event that
+  //		with the removal of unwanted buttons.	
+  //    sign_in and create_pass are added within this event listener in the event that
   //    a child/admin clicks the "Child Mode" button while within 
   //    the create/enter password phase
   /************************************************************************/
@@ -55,26 +55,24 @@ document.addEventListener('DOMContentLoaded', function(){
     admin.setAttribute('value', result.first_time);
   });
 
-  /********************************************************************** */
 
-      /*    admin.addEventListener()
-       *    "element.target. value" grabs the value we stored in admin  
-       *    and store the value in the variable "firstTime".
-       *    From here, we check if our admin is a first time admin. 
-       *    If value == 'true', we ask them to create a password, hide all
-       *    <div> elements except "create_pass" in "popup.html", and change the value
-       *    of the key 'first_time' to 'false' in storage. 
-       *    Else, we ask them to enter the established password and hide all <div>
-       *    elements except "sign_in" in "popup.html". 
-       * 
-       *    In the near future, the if statement will be updated with a 
-       *    method to store the created password. The else statement will be
-       *    updated with a method to check if the entered password matches 
-       *    the password stored in our database.
-      */
-
-  /********************************************************************** */
-
+  /*    admin.addEventListener()
+    *    "element.target. value" grabs the value we stored in admin  
+    *    and store the value in the variable "firstTime".
+    *    From here, we check if our admin is a first time admin. 
+    *    If firstTime == 'true', we ask them to create a password, hide all
+    *    <div> elements except "create_pass" in "popup.html", and change the value
+    *    of the key 'first_time' to 'false' in storage. Once the new password is entered into
+    *    the text field and submitted, we are routed to Admin Mode.
+    *    Else, we ask them to enter the established password and hide all <div>
+    *    elements except "sign_in" in "popup.html". Once the password is entered into the
+    *    text field and submitted, we enter Admin Mode.
+    * 
+    *    In the near future, the if statement will be updated with a 
+    *    method to store the created password. The else statement will be
+    *    updated with a method to check if the entered password matches 
+    *    the password stored in our database.
+  */
 
   admin.addEventListener("click", function(element){
     let firstTime = element.target.value;
@@ -88,35 +86,52 @@ document.addEventListener('DOMContentLoaded', function(){
       adminB.style.display = "none";
       create_pass.style.display = "block";
       sign_in.style.display = "none";
+
       chrome.storage.sync.set({first_time: 'false'}, function(){
         console.log('Value is set to ' + false);
       });
-      // element.target.value = 'false';
+
+      const form = document.getElementById('new_pass');
+      form.addEventListener("submit", function(event){
+      
+        chrome.sync.set({password: "meowmeow"}, function(){
+          console.log('Password entered to storage');
+        });
+      
+        childB.style.display = "none";
+        adminB.style.display = "block";
+        create_pass.style.display = "none";
+        event.preventDefault();
+
+      } );
     }
     else{
       childB.style.display = "none";
       adminB.style.display = "none";
       create_pass.style.display = "none";
       sign_in.style.display = "block";
+      const form = document.getElementById('entered_pass');
+      const log = document.getElementById('log');
+      form.addEventListener("submit", function(event){
+      
+          var checkPass = document.getElementById('unique').value;
+        // chrome.sync.get('password', function(result){
+        //   console.log('Password grabbed from storage');
+        //   form.setAttribute('value', result.password);
+        // });
+
+        if( checkPass != "meowmeow"){
+          log.textContent = "incorrect password, please try again";
+          event.preventDefault();
+        }
+        else{
+          childB.style.display = "none";
+          adminB.style.display = "block";
+          sign_in.style.display = "none";
+          event.preventDefault();
+        }
+      } );
     }
   })
-
-  /********************************************************************** */
-  /*    If the submit button within the password phase is clicked,
-   *    take admin to admin page.
-   *    ***********(CURRENTLY NOT FUNCTIONAL)**************
-  */
- /********************************************************************** */
-  var submit = document.getElementById("submit");
-  submit.addEventListener("click", function(){
-    var childB = document.getElementById("Child Mode");
-    var adminB = document .getElementById("Admin Mode");
-    var passB = document.getElementById("sign_in");
-
-    childB.style.display = "none";
-    adminB.style.display = "block";
-    passB.style.display = "none";
-  } )
-
-    });
+});
   
