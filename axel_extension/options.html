@@ -1,10 +1,97 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<title> Axel Extension Options </title>
-	</head>
+<head>
+	<title>More Options</title>
+	<script src="jquery-3.1.0.min.js"></script>
+	<style type = "text/css">
+		table.websiteTable {border-collapse:collapse;width: 100%}
+		table.wordTable {border-collapse:collapse;width: 100%}
 
-	<body>
-		<h1> TODO: Make this page sparkle! </h1>
-	</body>
+
+		tr{
+			border : none;
+			padding:10px;
+		}
+
+		body{
+			font: normal 20px Verdana, Arial, sans-serif;
+			max-width: 90%;
+			margin: auto;
+		}
+
+
+
+		.container-restrictionLevel{
+			padding: 10px;
+		}
+
+		.container-BannedWebsites{
+			padding: 10px;
+		}
+
+		.container-BannedWords{
+			padding: 10px;
+		}
+
+	</style>
+
+
+
+
+</head>
+<body>
+<h1>More Options</h1>
+
+<div class = "container-restrictionLevel">
+	<label for="restrictionLevel">Restriction Level:</label>
+
+	<select name="restrictionLevel" id="restrictionLevel">
+		<option value="G">G</option>
+		<option value="PG">PG</option>
+		<option value="PG-13">PG-13</option>
+		<option value="R">R</option>
+		<option value="X">Adult</option>
+	</select>
+</div>
+
+<div class="container-BannedWebsites">
+	<div class = "container-websiteTable">
+		<table class="websiteTable" id="websiteTable" border="1">
+			<thead>
+				<th>Website &nbsp&nbsp&nbsp</th>
+				</thead>
+
+			<tbody>
+				</tbody>
+
+		</table>
+	</div>
+
+	<div class="newWebsite input">
+			Enter Website URL : &nbsp<input type="text" name="websiteURL" placeholder="https://www.example.com" id="websiteURL">
+			<button id = "addWebsite">Add</button>
+			<br> Click on a website to delete
+		</div>
+</div>
+
+<div class="container-BannedWords">
+	<div class = "container-wordTable">
+		<table class ="wordTable" id="wordTable" border="1">
+			<thead>
+				<th>Banned Words &nbsp&nbsp&nbsp</th>
+				</thead>
+			<tbody>
+				</tbody>
+		</table>
+	</div>
+	<div class="new word input">
+		Enter Word : &nbsp<input type="text" name="bannedWord" placeholder="Enter Word" id="bannedWord">
+		<button id = "addWord">Add</button>
+		<br> Click on a word to delete
+	</div>
+</div>
+
+
+<script src="options.js"></script>
+</body>
 </html>

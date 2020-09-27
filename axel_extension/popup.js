@@ -36,5 +36,12 @@ admin.addEventListener("click", function(){
 	
 })
 
-	});
-	
+	// Action Listener for when the admin button is clicked
+	//opens the admin options page
+var adminOptions = document.getElementById("Admin Options");
+adminOptions.addEventListener("click", function(){
+	chrome.runtime.openOptionsPage();
+})
+
+
+});
