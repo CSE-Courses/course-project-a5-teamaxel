@@ -16,6 +16,7 @@ function displayAdminMode(adminDisplay, childDisplay, signInDisplay, signUpDispl
   childDisplay.style.display = "none";
   signInDisplay.style.display = "none";
   signUpDisplay.style.display = "none";
+  hightlightCurrentTab(document.getElementById("Admin"),document.getElementById("default"));
   return;
 }
 
@@ -25,6 +26,7 @@ function displayChildMode(adminDisplay, childDisplay, signInDisplay, signUpDispl
   childDisplay.style.display = "block";
   signInDisplay.style.display = "none";
   signUpDisplay.style.display = "none";
+  hightlightCurrentTab(document.getElementById("default"),document.getElementById("Admin"));
   return;
 }
 
@@ -34,6 +36,7 @@ function displaySignUpMode(adminDisplay, childDisplay, signInDisplay, signUpDisp
   childDisplay.style.display = "none";
   signInDisplay.style.display = "none";
   signUpDisplay.style.display = "block";
+  hightlightCurrentTab(document.getElementById("Admin"),document.getElementById("default"));
   return;
 }
 
@@ -81,7 +84,6 @@ document.addEventListener('DOMContentLoaded', function(){
     var adminB = document.getElementById("Admin Mode");
     adminB.style.display = "none";
     var childB = document.getElementById("Child Mode");
-    hightlightCurrentTab(document.getElementById("default"),document.getElementById("Admin"));
     displayChildMode(adminB, childB, sign_in, create_pass);
     log.textContent = "";
     sign_up_form.reset();
@@ -132,7 +134,7 @@ document.addEventListener('DOMContentLoaded', function(){
     var adminB = document .getElementById("Admin Mode");
     var sign_in = document.getElementById("sign_in");
     var create_pass = document.getElementById("create_pass");
-   
+    hightlightCurrentTab(document.getElementById("Admin"),document.getElementById("default"));
 
     //  is this a first time admin
     if(firstTime == 'true'){                //  first time admin
@@ -157,7 +159,6 @@ document.addEventListener('DOMContentLoaded', function(){
       //   // chrome.storage.sync.set({password:'aew;kjf;adf' }, function(){
       //     console.log('Password entered to storage');
       //   });
-      hightlightCurrentTab(document.getElementById("Admin"),document.getElementById("default"));
       } );  //end event listener
       
     } //end if
@@ -201,7 +202,6 @@ document.addEventListener('DOMContentLoaded', function(){
           log.textContent = "";
           // //enters admin mode
           displayAdminMode(adminB, childB,sign_in, create_pass);
-          hightlightCurrentTab(document.getElementById("Admin"),document.getElementById("default"));
           event.preventDefault();
         }
       } );
@@ -220,4 +220,3 @@ document.addEventListener('DOMContentLoaded', function(){
   
 });
   
-hightlightCurrentTab(document.getElementById("Admin"), document.getElementById("default"));
