@@ -134,7 +134,7 @@ document.addEventListener('DOMContentLoaded', function(){
     var adminB = document .getElementById("Admin Mode");
     var sign_in = document.getElementById("sign_in");
     var create_pass = document.getElementById("create_pass");
-   
+    hightlightCurrentTab(document.getElementById("Admin"),document.getElementById("default"));
 
     //  is this a first time admin
     if(firstTime == 'true'){                //  first time admin
