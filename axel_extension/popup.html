@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<<<<<<< HEAD
 <html id="mainWindow">
   <style>
 	#mainWindow{
@@ -13,6 +14,23 @@
 		font-size: 20px;
 	}
 
+=======
+<html>
+  <style>
+	.mode {
+		border: 10px;
+		background-color: #A4A4A4;
+	}
+	
+	.mode button{
+		background-color:lightgrey;
+		vertical-align: top;
+	}
+	.mode button.active{
+		background-color:white;
+	}
+	
+>>>>>>> user-story-10
   </style>
   <body>
 	<!-- Info Relatated to Tabs(Modes) -->
@@ -24,6 +42,7 @@
 	<!-- Info Related to buttons in Child Mode Tab -->
 	<div id="Child Mode">
 		<button id="EduGame">Educational Game</button>
+<<<<<<< HEAD
 		<button id="veiw">View</button>
 		<button  id="context">Context Clue Game</button>
 	
@@ -34,12 +53,45 @@
 		Enter Password : &nbsp<input type="password" name="pass_Word" placeholder="password" id="passWord">
 		<button id = "enterPassword">Enter</button>
 	</div>
+=======
+		<button id="view">View</button>
+		<button  id="context">Context Clue Game</button>
+	
+	</div>
+>>>>>>> user-story-10
 	
 	<!-- Info Related to Admin Mode Tab -->
 	<div id="Admin Mode">
 		<button id ="Admin Options">Admin Options</button>
 	
+<<<<<<< HEAD
 	</div>
+=======
+  </div>
+  
+  <!-- Info Related to Enter Password Tab -->
+  <div id ="sign_in">
+    <h1> Enter your password </h1>
+    <form id = "entered_pass">
+		<input type="password" id="unique" name="returning_pass" required size = "15"
+		minlength = "8" maxlength = "15"><br><br>
+	   <input type="submit" value="Submit">
+	</form>
+	<p id="log"></p>
+  </div>
+
+  <!-- Info related to Create Password Tab -->
+  <div id="create_pass">
+    <h1> Create your password </h1>
+    <form id = "new_pass">
+		<input type="password" id="creatingPass" name="fresh_pass" required size = "15"
+		minlength = "8" maxlength = "15"><br><br>
+		<input type="submit" value="Submit">
+		<p>Passwords must be 8-15 characters in length</p>
+	</form>
+  </div>
+
+>>>>>>> user-story-10
 	<!-- Below Script statment allows for the use of popup.js -->
 	<script src="popup.js">
 	</script>

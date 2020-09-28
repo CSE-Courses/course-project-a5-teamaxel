@@ -1,0 +1,44 @@
+Current State:
+First Time Admin
+-   able to sync and modify storage data within submit listener for first time admin,
+    however when calling "document.getElementById("creatingPass").value", it does not
+    grab text and store into variable "desired_pass".
+    -   if you uncomment lines 151, 154,156, & 157 you'll see the initialized password
+        value changes to the string "starter", however if you uncomment line 152
+        and comment 151, you'll see through testing on returning admin that 
+        the grabbed value is nonexistent in storage (returns empty strings)
+        -   to perform this test, uncommment lines 175,178,184.
+    -   grabbing the password value within the returning admin works with the
+        function "document.getElementById("unique").value"
+
+tldr;
+-   able to modify password info in desired logic flow, but currently only a hardcoded password
+-   so far able to grab pass from storage with correctly stored value
+
+
+
+
+Major bugs      //affect functionality on large scale
+
+
+Minor bugs      //small front end issues that don't affect interaction
+
+1.  What is happening   
+        -   if you click the admin mode button within admin mode, you're asked to create password
+        -   this is probably because that is the default for clicking on admin mode
+            how to make admin mode not clickable when in admin mode. occurred once event.preventDefault added
+
+2.  What is happening
+        -   if you're within the password phase, click outside of the text area box, and
+            hit enter, the submit button doesn't register the enter hit
+
+3.  What is happening
+        -   create a password, go to child mode, enter password, go to child mode, click admin mode, 
+            automatically told that password is incorrect
+
+
+
+ Potential User stories
+ When in admin mode, want to stay in admin mode when exiting GUI (potential user story)
+    -   either make the extension run in the background OR make two cases of admin and child mode stories
+        child mode isnt default
