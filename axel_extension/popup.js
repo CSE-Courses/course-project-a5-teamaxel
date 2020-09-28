@@ -69,7 +69,7 @@ adminOptions.addEventListener("click", function(){
 });
 	var adminB = document .getElementById("Admin Mode");
 	adminB.style.display = "block";
-	hightlightCurrentTab(admin, child);
+	hightlightCurrentTab(document.getElementById("Admin"), document.getElementById("default"));
 
 	
 //		The following seciton below is a function delcaration that hightlights 
