@@ -9,7 +9,6 @@ function hightlightCurrentTab(x ,y){
   x.style.backgroundColor = "pink";
   y.style.backgroundColor = "#A4A4A4";
 }
-hightlightCurrentTab(document.getElementById("Admin"), document.getElementById("default"));
 
 //    Call to switch display to Admin Mode
 function displayAdminMode(adminDisplay, childDisplay, signInDisplay, signUpDisplay){
@@ -51,7 +50,6 @@ function displaySignUpMode(adminDisplay, childDisplay, signInDisplay, signUpDisp
 //Implements an event listener to the pop up itself
 document.addEventListener('DOMContentLoaded', function(){
 	
-	
   //		The next six lines make it so "Admin Options", "sign_in", and
   //    "create_pass" do not appear upon the intial load of the extension
     var childB = document.getElementById("Admin Mode");
@@ -60,14 +58,14 @@ document.addEventListener('DOMContentLoaded', function(){
     var sign_up_form = document.getElementById("new_pass");
     var sign_in_form = document.getElementById("entered_pass");
     var adminOptions = document.getElementById("Admin Options");
+    hightlightCurrentTab(document.getElementById("default"),document.getElementById("Admin"));
     const log = document.getElementById('log');
     childB.style.display = "none";
     sign_in.style.display = "none";
     create_pass.style.display = "none";
-    hightlightCurrentTab(child, admin);
+    // hightlightCurrentTab(childB, admin);
     sign_up_form.reset();
-    sign_in_form.reset();
-  
+    sign_in_form.reset();  
   /************************************************************************/
   //		The below section Allows for Switching to the Child Mode Tab.
   //		It Controls the buttons appearing when clicked along
@@ -83,10 +81,7 @@ document.addEventListener('DOMContentLoaded', function(){
     var adminB = document.getElementById("Admin Mode");
     adminB.style.display = "none";
     var childB = document.getElementById("Child Mode");
-    hightlightCurrentTab(child, admin);
-    // childB.style.display = "block";
-    // sign_in.style.display = "none";
-    // create_pass.style.display = "none";
+    hightlightCurrentTab(document.getElementById("default"),document.getElementById("Admin"));
     displayChildMode(adminB, childB, sign_in, create_pass);
     log.textContent = "";
     sign_up_form.reset();
@@ -162,7 +157,7 @@ document.addEventListener('DOMContentLoaded', function(){
       //   // chrome.storage.sync.set({password:'aew;kjf;adf' }, function(){
       //     console.log('Password entered to storage');
       //   });
-        
+      hightlightCurrentTab(document.getElementById("Admin"),document.getElementById("default"));
       } );  //end event listener
       
     } //end if
@@ -206,6 +201,7 @@ document.addEventListener('DOMContentLoaded', function(){
           log.textContent = "";
           // //enters admin mode
           displayAdminMode(adminB, childB,sign_in, create_pass);
+          hightlightCurrentTab(document.getElementById("Admin"),document.getElementById("default"));
           event.preventDefault();
         }
       } );
@@ -224,3 +220,4 @@ document.addEventListener('DOMContentLoaded', function(){
   
 });
   
+hightlightCurrentTab(document.getElementById("Admin"), document.getElementById("default"));
