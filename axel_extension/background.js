@@ -14,3 +14,14 @@ chrome.runtime.onInstalled.addListener(function(){
         console.log('Password intialized to: initialpass');
     })
 });
+
+const background_color = 'orange'
+chrome.runtime.onMessage.addListener(
+	function (request, sender, sendResponse) {
+		console.log('received message with service: ' + request.service)
+		if (request.service == 'get_background_color') {
+			sendResponse({color: background_color })
+		}
+
+	}
+)
