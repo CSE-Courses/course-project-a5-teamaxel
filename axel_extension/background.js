@@ -15,13 +15,33 @@ chrome.runtime.onInstalled.addListener(function(){
     })
 });
 
-const background_color = 'orange'
 chrome.runtime.onMessage.addListener(
 	function (request, sender, sendResponse) {
 		console.log('received message with service: ' + request.service)
-		if (request.service == 'get_background_color') {
-			sendResponse({color: background_color })
+		if (request.service == 'get_bad_words') {
+			bad_words = get_bad_words()
+			sendResponse({
+				service: request.service,
+				words: bad_words
+			})
 		}
-
+		if (request.service == 'get_background_color') {
+			background_color = get_background_color()
+			sendResponse({
+				service: request.service,
+				color: background_color 
+			})
+		}
 	}
 )
+
+// TODO: Get the bad words from the options page
+function get_bad_words() {
+	words = ['cat', 'the']
+	return words
+}
+
+function get_background_color() {
+	color = 'orange'
+	return color
+}
