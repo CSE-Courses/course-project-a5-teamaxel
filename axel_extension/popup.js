@@ -17,6 +17,11 @@ function displayAdminMode(adminDisplay, childDisplay, signInDisplay, signUpDispl
   signInDisplay.style.display = "none";
   signUpDisplay.style.display = "none";
   hightlightCurrentTab(document.getElementById("Admin"),document.getElementById("default"));
+
+
+  // (Alex) see function definition
+  sync_mode('admin');
+
   return;
 }
 
@@ -27,6 +32,10 @@ function displayChildMode(adminDisplay, childDisplay, signInDisplay, signUpDispl
   signInDisplay.style.display = "none";
   signUpDisplay.style.display = "none";
   hightlightCurrentTab(document.getElementById("default"),document.getElementById("Admin"));
+
+  // (Alex) see function definition
+  sync_mode('child_view');
+
   return;
 }
 
@@ -203,6 +212,7 @@ document.addEventListener('DOMContentLoaded', function(){
           // //enters admin mode
           displayAdminMode(adminB, childB,sign_in, create_pass);
           event.preventDefault();
+	  
         }
       } );
     }
@@ -219,4 +229,18 @@ document.addEventListener('DOMContentLoaded', function(){
   });
   
 });
-  
+
+
+// (Alex) Set mode to "mode".
+// Call with 'admin' after successful login.
+// Call with 'child_view' after enterring child view.
+// TODO: Call with 'child_context_clue_game' and 'child_educational_game'
+// when those are implemented.
+function sync_mode(mode) {  
+  chrome.storage.sync.set(
+    {'mode': mode},
+    function() {
+	    console.log('mode set to ' + mode)
+    }
+  )
+}
