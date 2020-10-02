@@ -1,8 +1,8 @@
-start_up()
+init()
 
 
 // (Alex) Everything the tab must do upon loading.
-function start_up() {
+function init() {
 	chrome.storage.sync.get('mode', function(result) {
 		mode = result['mode']
 		if (mode == 'admin') {
@@ -26,22 +26,23 @@ function start_up() {
 	})
 }
 
-
 // (Alex) Replaces given 'abcd' with '====',
 // for each word in words.
+// Code inspired from: https://www.peterdebelak.com/blog/search-and-replace-text-with-javascript/
+// TODO: don't block words within words
 function block_words(words) {
 	console.log('blocking ' + words)
 	html = document.querySelector('html')
 	walker = document.createTreeWalker(html, NodeFilter.SHOW_TEXT)
-	while (node = walker.nextNode()) {
+	while (trav_node = walker.nextNode()) {
 		for (i=0; i < words.length; i++) {
 			word = words[i]
-			exp = new RegExp(word, 'i')
+			exp = new RegExp(word, 'gim')
 			rep = ''
 			for (j = 0; j < word.length; j++) {
 				rep += '='
 			}
-			node.nodeValue = node.nodeValue.replace(exp, rep)
+			trav_node.nodeValue = trav_node.nodeValue.replace(exp, rep)
 		}
 	}
 }
@@ -60,11 +61,6 @@ function educational_game() {
 	// block paragraph by paragraph
 
 }
-
-
-
-
-
 
 // ---------------------------------------------------------------------
 // (Alex) BELOW IS NOT USED
