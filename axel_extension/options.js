@@ -7,6 +7,8 @@
 
 let val;
 
+window.onload =  reloadPage;
+
 function checkValidURL() {
 
     let goodURL = new RegExp('^(https?:\\/\\/)?' + // protocol
@@ -34,33 +36,31 @@ function addWebsite(){
 };
 
 function addWord(){
-    val = document.getElementById("bannedWord").value;
-    $("#wordTable tbody").append(
-        "<tr>" +
-        "<td>" + val  +"</td>>"+
-        "</tr>"
-    );
 
+    val = document.getElementById("bannedWord").value;
     // (Alex) add banned word to storage
     sync_add_word(val);
+
 };
 
 //adds website when button is clicked
 
-$('#addWebsite').on('click',function(){ addWebsite();})
+//changed to test
+
+$('#addWebsite').on('click',function(){ addWebsite()});
 
 //adds word when button clicked
 
-$('#addWord').on('click',function(){ addWord(); })
+$('#addWord').on('click',function(){ addWord() });
 
 
 
 //Removes a website when clicked on
 $('#websiteTable').on('click' , function() {
 
-    var tab = document.getElementById('websiteTable').getElementsByTagName('tbody')[0]
+    var tab = document.getElementById('websiteTable').getElementsByTagName('tbody')[0];
     var rows = tab.getElementsByTagName('tr');
-    for (i = 0; i < rows.length; i++) {
+    for ( i = 0; i < rows.length; i++) {
         rows[i].onclick = function() {
             var ans = confirm("Would you like to Delete this Website?");
             if(ans) {
@@ -78,22 +78,20 @@ $('#websiteTable').on('click' , function() {
 //Removes a word when clicked on
 $('#wordTable').on('click' , function() {
 
-    var tab = document.getElementById('wordTable').getElementsByTagName('tbody')[0]
+    var tab = document.getElementById('wordTable').getElementsByTagName('tbody')[0];
     var rows = tab.getElementsByTagName('tr');
     for (i = 0; i < rows.length; i++) {
         rows[i].onclick = function() {
             var ans = confirm("Would you like to Delete this Word?");
             if(ans) {
-                tab.deleteRow(this.rowIndex-1);
+                sync_remove_word(this.innerText);
+
             }else{
                 alert("not removed");
             }
         }
     }
 
-    // (Alex) TODO: Call below function with the word removed.
-    // Remove banned word from storage.
-    // sync_remove_word(word)
 });
 
 
@@ -110,6 +108,7 @@ function sync_add_word(word) {
 		words.push(word)
 		chrome.storage.sync.set({'bad_words': words}, function(){})
 		console.log('new words are ' + words)
+        reloadPage();
 	})
 }
 
@@ -126,8 +125,34 @@ function sync_remove_word(word) {
 		}
 		chrome.storage.sync.set({'bad_words': words}, function(){})
 		console.log('new words are ' + words)
+        reloadPage();
 	})
 }
+
+function reloadPage(){
+    $("#wordTable tbody").empty();
+    chrome.storage.sync.get('bad_words', function(result) {
+        let words = result['bad_words'];
+
+
+        words.forEach(function(word){
+            $("#wordTable tbody").append(
+                "<tr>" +
+               "<td>" + word  +"</td>>"+
+               "</tr>"
+            )
+
+        })
+    });
+}
+
+
+//function to load pages with correct tab
+
+
+
+
+
 
 
 
