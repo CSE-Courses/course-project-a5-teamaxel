@@ -26,11 +26,13 @@ function init() {
 }
 
 function block_words(words) {
-	console.log('blocking ' + words);
-	$("*").highlight(words, {className: "bad_word_box"});
-	$("*").highlight(words, {className: "bad_word_text"});
-	$(".bad_word_text").css({opacity: 0});
-	$(".bad_word_box").css({backgroundColor: "black"});
+	console.log('blocking ' + words)
+	$("*").highlight(words, {className: "bad_word_box"})
+	$("*").highlight(words, {className: "bad_word_text"})
+	$(".bad_word_text").css({opacity: 0})
+	$(".bad_word_box").css({backgroundColor: "black"})
+
+	$(".bad_word_box").click(function() {alert("this is a banned word.")})
 
 }
 
