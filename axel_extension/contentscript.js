@@ -25,13 +25,40 @@ function init() {
 	})
 }
 
+// (Alex) Blocks all occurences of "word" in "words.
+// Specifically, it uses the "highlight" function (see util.js)
+// to wrap "word" with two spans of classes
+// "bad_word_text" (inner) and "bad_word_box" (outer).
+// Why do we do it this way?
+// 	1. We want to retain the text that we're blocking over,
+// 	   so that if we decide we want to un-block it,
+// 	   we can immediately display the text.
+// 	2. We want to maintain the visual effect of a black
+// 	   highlight over the word. This highlight should retain
+// 	   the length of the blocked word.
+// 	3. It's really tempting to just wrap *one* span around
+// 	   the blocked word, and set the text color and background
+// 	   color to black. However, this is a no-go since you can
+// 	   just double click on the blocked text and your text
+// 	   will still show up.
+// 	4. It's also tempting to wrap *one* span and use 
+// 	   edit css to something like {visibility: hidden}.
+// 	   This won't work since it also removes other styles,
+// 	   such as the background color.
 function block_words(words) {
-	console.log('blocking ' + words)
-	$("*").highlight(words, {className: "bad_word_box"})
-	$("*").highlight(words, {className: "bad_word_text"})
-	$(".bad_word_text").css({opacity: 0})
-	$(".bad_word_box").css({backgroundColor: "black"})
+	console.log('blocking words: ' + '[' + words + ']')
 
+	// wrap occurences of "words" with outer span
+	$("*").highlight(words, {className: "bad_word_box"})
+	// wrap occurences of "words" with inner span
+	$("*").highlight(words, {className: "bad_word_text"})
+
+	// higlight the outer span with black
+	$(".bad_word_box").css({backgroundColor: "black"})
+	// remove the inner span's text
+	$(".bad_word_text").css({opacity: 0})
+
+	// let the blocked word be clickable
 	$(".bad_word_box").click(function() {alert("this is a banned word.")})
 
 }

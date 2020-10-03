@@ -114,8 +114,7 @@ function sync_add_word(word) {
 	})
 }
 
-// (Alex) TODO: This method is untested, not sure if removing from an array like this works. 
-// Removes a word from the bad_words list in storage.
+// (Alex) Removes a word from the bad_words list in storage.
 // Should be called every time admin removes a banned word.
 function sync_remove_word(word) {
 	chrome.storage.sync.get('bad_words', function(result) {

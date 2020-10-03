@@ -1,5 +1,8 @@
 
-
+// (Alex) BELOW IS NOT MY CODE
+// Copied from: http://bartaz.github.io/sandbox.js/jquery.highlight.html
+// under MIT licence. 
+// See above link for usage instructions.
 jQuery.extend({
     highlight: function (node, re, nodeName, className) {
         if (node.nodeType === 3) {
