@@ -1,6 +1,5 @@
 init()
 
-
 // (Alex) Everything the tab must do upon loading.
 function init() {
 	chrome.storage.sync.get('mode', function(result) {
@@ -26,25 +25,13 @@ function init() {
 	})
 }
 
-// (Alex) Replaces given 'abcd' with '====',
-// for each word in words.
-// Code inspired from: https://www.peterdebelak.com/blog/search-and-replace-text-with-javascript/
-// TODO: don't block words within words
 function block_words(words) {
-	console.log('blocking ' + words)
-	html = document.querySelector('html')
-	walker = document.createTreeWalker(html, NodeFilter.SHOW_TEXT)
-	while (trav_node = walker.nextNode()) {
-		for (i=0; i < words.length; i++) {
-			word = words[i]
-			exp = new RegExp(word, 'gim')
-			rep = ''
-			for (j = 0; j < word.length; j++) {
-				rep += '='
-			}
-			trav_node.nodeValue = trav_node.nodeValue.replace(exp, rep)
-		}
-	}
+	console.log('blocking ' + words);
+	$("*").highlight(words, {className: "bad_word_box"});
+	$("*").highlight(words, {className: "bad_word_text"});
+	$(".bad_word_text").css({opacity: 0});
+	$(".bad_word_box").css({backgroundColor: "black"});
+
 }
 
 // (Alex) TODO: implement this
@@ -83,4 +70,7 @@ function message_test() {
 		}
 	)
 }
+
+
+
 
