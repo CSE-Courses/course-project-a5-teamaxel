@@ -82,18 +82,20 @@ $('#wordTable').on('click' , function() {
     var rows = tab.getElementsByTagName('tr');
     for (i = 0; i < rows.length; i++) {
         rows[i].onclick = function() {
-            var ans = confirm("Would you like to Delete this Word?");
+            var ans = confirm("Would you like to Delete this Word?")
             if(ans) {
                 tab.deleteRow(this.rowIndex-1);
+
+    		// (Alex) Remove banned word from storage.
+		removed_word = this.innerText;
+    		sync_remove_word(removed_word)
+
             }else{
                 alert("not removed");
             }
         }
     }
 
-    // (Alex) TODO: Call below function with the word removed.
-    // Remove banned word from storage.
-    // sync_remove_word(word)
 });
 
 
@@ -106,26 +108,23 @@ $('#wordTable').on('click' , function() {
 function sync_add_word(word) {
 	chrome.storage.sync.get('bad_words', function(result) {
 		let words = result['bad_words']
-		console.log('current words are ' + words)
 		words.push(word)
 		chrome.storage.sync.set({'bad_words': words}, function(){})
-		console.log('new words are ' + words)
+		console.log('added "' + word + '", updated words are [' + words + ']')
 	})
 }
 
-// (Alex) TODO: This method is untested, not sure if removing from an array like this works. 
-// Removes a word from the bad_words list in storage.
+// (Alex) Removes a word from the bad_words list in storage.
 // Should be called every time admin removes a banned word.
 function sync_remove_word(word) {
 	chrome.storage.sync.get('bad_words', function(result) {
 		let words = result['bad_words']
-		console.log('current words are ' + words)
 		let pos = words.indexOf(word)
 		if (pos != -1) {
 			words.splice(pos, 1)
 		}
 		chrome.storage.sync.set({'bad_words': words}, function(){})
-		console.log('new words are ' + words)
+		console.log('removed "' + word + '", updated words are [' + words + ']')
 	})
 }
 
