@@ -186,9 +186,6 @@ function reloadPage() {
         })
     });
 
-
-
-
 }
 
 
