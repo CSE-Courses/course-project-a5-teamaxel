@@ -1,10 +1,36 @@
 init()
 
+// TODO: put this in another file
+var custom_questions = 
+[
+	{
+		q: "What color is the sky?",
+		a: "blue"
+	},
+	{
+		q: "What is the capital of France?",
+		a: "Paris"
+	},
+	{
+		q: "What is the name of the team that Lebron James plays for?",
+		a: "Lakers"
+	},
+	{
+		q: "What is the most abundant gas in Earth's atmosphere?",
+		a: "nitrogen"
+	},
+	{
+		q: "Aaron's mom has 5 children: Matthew, Javiaire, Amanda, and Alex. What is the name of the fifth child?",
+		a: "Aaron"
+	}
+]
+
 // (Alex) Everything the tab must do upon loading.
 function init() {
 
 	chrome.storage.sync.get('mode', function(result) {
 		mode = result['mode']
+
 		console.log('mode is ' + mode)
 		if (mode == 'admin') {
 			// no need to block content, so do nothing
@@ -103,28 +129,63 @@ function context_clue_game() {
 }
 
 
+
 function educational_game() {
 
 	// block paragraph by paragraph
 	block_paragraphs()
 
 	$(".paragraph_box").click(function() {
-		let answer = prompt("What is 8 * 8?")
-		if (answer == "64") {
+		let question_type = "addition"
+		let q_and_a = get_question(question_type)
+		let question = q_and_a[0]
+		let answer = q_and_a[1]
+		let attempt = prompt(question)
+		console.log("question: " + question)
+		console.log("correct answer: " + answer)
+		console.log("attempted answer: " + attempt)
+		if (attempt == answer) {
 			let box_id = $(this).attr("id")
 			let text_id = "paragraph_text_"+box_id.slice(-1)
 			console.log("box_id = " + box_id)
 			console.log("text_id = " + text_id)
 			$("#"+text_id).css({opacity: 1})
 			$("#"+box_id).css({backgroundColor: ""})
-			alert("Correct.")
+			alert("Correct. Unblocking paragraph.")
+			console.log("correct answer")
 		}
 		else {
-			alert("Incorrect.")
+			alert("Incorrect. Paragraph will remain blocked.")
+			console.log("incorrect answer")
 		}
 	})
 
 }
+
+
+function get_question(type) {
+	let question 
+	let answer
+	if (type == "addition") {
+		let first = Math.floor(Math.random() * 100)
+		let second = Math.floor(Math.random() * 100)
+		question = first + " + " + second + " = ?"
+		answer = first + second
+	}
+	else if (type == "custom") {
+		len = custom_questions.length
+		index = Math.floor(Math.random() * len)
+		q_and_a = custom_questions[index]
+		question = q_and_a.q
+		answer = q_and_a.a
+	}
+	else {
+		console.log("unrecognized question type: " + type)
+	}
+	return [question, answer]
+}
+
+
 
 // ---------------------------------------------------------------------
 // (Alex) BELOW IS NOT USED
