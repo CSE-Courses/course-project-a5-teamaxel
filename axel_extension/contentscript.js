@@ -2,30 +2,35 @@ init()
 
 // (Alex) Everything the tab must do upon loading.
 function init() {
+
 	chrome.storage.sync.get('mode', function(result) {
 		mode = result['mode']
+		console.log('mode is ' + mode)
 		if (mode == 'admin') {
 			// no need to block content, so do nothing
 		}
 		else {
 			chrome.storage.sync.get('bad_words', function(result) {
-				words = result['bad_words']
-				block_words(words)
+				let bad_words = result['bad_words']
+				view(bad_words)
+				if (mode == 'child_view') {
+					// do nothing
+				}
+				else if (mode == 'child_context_clue_game') {
+					context_glue_game()
+				}
+				else if (mode == 'child_educational_game') {
+					educational_game()
+				}
+				else {
+					console.log('unrecognized mode: ' + mode)
+				}
 			})
-			if (mode == 'child_view') {
-				// do nothing
-			}
-			else if (mode == 'child_context_clue_game') {
-				context_glue_game()
-			}
-			else if (mode == 'child_educational_game') {
-				educational_game()
-			}
 		}
 	})
 }
 
-// (Alex) Blocks all occurences of "word" in "words.
+// (Alex) Blocks all occurences of "word" in "words".
 // Specifically, it uses the "highlight" function (see util.js)
 // to wrap "word" with two spans of classes
 // "bad_word_text" (inner) and "bad_word_box" (outer).
@@ -58,9 +63,36 @@ function block_words(words) {
 	// remove the inner span's text
 	$(".bad_word_text").css({opacity: 0})
 
+}
+
+function block_paragraphs() {
+	console.log('blocking all paragraphs')
+	let box_id = 0
+	let text_id = 0
+	$("p").wrap(
+		function() {
+			let box_str = "<div class='paragraph_box' id='paragraph_box_" + box_id + "'></div>"
+			box_id++
+			return box_str
+		}
+	)
+	$("p").wrap(
+		function() {
+			let text_str = "<div class='paragraph_text' id='paragraph_text_" + text_id + "'></div>"
+			text_id++
+			return text_str
+		}
+	)
+	// higlight the outer span with black
+	$(".paragraph_box").css({backgroundColor: "black"})
+	// remove the inner span's text
+	$(".paragraph_text").css({opacity: 0})
+}
+
+function view(bad_words) {
+	block_words(bad_words)
 	// let the blocked word be clickable
 	$(".bad_word_box").click(function() {alert("this is a banned word.")})
-
 }
 
 // (Alex) TODO: implement this
@@ -71,11 +103,10 @@ function context_clue_game() {
 }
 
 
-// (Alex) TODO: implement this
 function educational_game() {
 
 	// block paragraph by paragraph
-
+	block_paragraphs()
 }
 
 // ---------------------------------------------------------------------
