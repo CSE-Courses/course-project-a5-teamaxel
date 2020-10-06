@@ -1,6 +1,7 @@
 init()
 
 // TODO: put this in another file
+// (Alex) Custom questions that we randomly select from for educational game.
 var custom_questions = 
 [
 	{
@@ -24,6 +25,9 @@ var custom_questions =
 		a: "Aaron"
 	}
 ]
+
+
+
 
 // (Alex) Everything the tab must do upon loading.
 function init() {
@@ -91,6 +95,11 @@ function block_words(words) {
 
 }
 
+// (Alex) Blocks all paragraphs.
+// Same format for blocking as for block_words, except
+// we add an "id" in order to refer to specific paragraphs.
+// This allows us to unblock specific paragraphs for the 
+// educational game mode.
 function block_paragraphs() {
 	console.log('blocking all paragraphs')
 	let box_id = 0
@@ -136,21 +145,34 @@ function educational_game() {
 	block_paragraphs()
 
 	$(".paragraph_box").click(function() {
+
+		// TODO: get this from Chrome storage,
+		//  this should be set by admin
 		let question_type = "addition"
+
+		// get question and answer
 		let q_and_a = get_question(question_type)
 		let question = q_and_a[0]
 		let answer = q_and_a[1]
+
+		// get attempt from user
 		let attempt = prompt(question)
+
 		console.log("question: " + question)
 		console.log("correct answer: " + answer)
 		console.log("attempted answer: " + attempt)
+
 		if (attempt == answer) {
+			// get id's of corresponding box/text id
 			let box_id = $(this).attr("id")
 			let text_id = "paragraph_text_"+box_id.slice(-1)
 			console.log("box_id = " + box_id)
 			console.log("text_id = " + text_id)
+
+			// reset settings of clicked paragraph
 			$("#"+text_id).css({opacity: 1})
 			$("#"+box_id).css({backgroundColor: ""})
+
 			alert("Correct. Unblocking paragraph.")
 			console.log("correct answer")
 		}
@@ -163,15 +185,19 @@ function educational_game() {
 }
 
 
+// (Alex) Get a question to ask the user. 
+// Called when in educational game mode.
 function get_question(type) {
 	let question 
 	let answer
+	// generate random addition question
 	if (type == "addition") {
 		let first = Math.floor(Math.random() * 100)
 		let second = Math.floor(Math.random() * 100)
 		question = first + " + " + second + " = ?"
 		answer = first + second
 	}
+	// pick a random custom question from custom_questions
 	else if (type == "custom") {
 		len = custom_questions.length
 		index = Math.floor(Math.random() * len)
