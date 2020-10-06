@@ -111,14 +111,12 @@ function educational_game() {
 	$(".paragraph_box").click(function() {
 		let answer = prompt("What is 8 * 8?")
 		if (answer == "64") {
-			/*
 			let box_id = $(this).attr("id")
 			let text_id = "paragraph_text_"+box_id.slice(-1)
 			console.log("box_id = " + box_id)
 			console.log("text_id = " + text_id)
 			$("#"+text_id).css({opacity: 1})
 			$("#"+box_id).css({backgroundColor: ""})
-			*/
 			alert("Correct.")
 		}
 		else {
