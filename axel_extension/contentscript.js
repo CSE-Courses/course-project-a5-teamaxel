@@ -114,6 +114,42 @@ function block_words(words) {
 
 }
 
+// Function to block random words
+// Iterate thru every p element, get and split text at every ' ', iterate thru every word 
+// while reconstructing current p element's text like a buffer such that
+
+function block_random_words(){
+	console.log('blocking random words')
+	let word_id = 0
+
+	//iterate thru every p element 
+	$("p").each(function()
+	{
+		//textArray is an array holding the each word of the current p elem's text
+		var textArray = $(this).text().split(' ')
+
+		//iterate thru every word within the current p element
+		for(var i = 0; i < textArray.length(); i++){
+			//random element to block a word
+			if(Math.random() >= 0.5){
+				//wrap the current word within a nested span, such as in other blocking functions
+				// not sure if this'll work as intended
+				var first = "<span class='random_box' id='random_box_" + word_id + "'>" + textArray[i] + "</span>"
+				textArray[i] = "<span class='random_text' id='random_text_" + word_id + "'>" + first + "</span>"	
+				word_id++
+			}
+		}
+
+		//set the current p element's text with spans around random words
+		//$(this).text(textArray.join(' '))
+		$(this).html(textArray.join(' '))
+	});
+
+	//black and block out the words
+	$(".random_box").css({backgroundColor: "black"})
+	$(".random_text").css({opacity: 0})
+}
+
 // (Alex) Blocks all paragraphs.
 // Same format for blocking as for block_words, except
 // we add an "id" in order to refer to specific paragraphs.
@@ -165,6 +201,7 @@ function view2(website){
 // (Alex) TODO: implement this
 function context_clue_game() {
 
+	block_random_words()
 	// block words, but randomly
 
 }
