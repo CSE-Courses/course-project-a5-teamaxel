@@ -47,7 +47,7 @@ function init() {
 					// do nothing
 				}
 				else if (mode == 'child_context_clue_game') {
-					context_glue_game()
+					context_clue_game()
 				}
 				else if (mode == 'child_educational_game') {
 					educational_game()
@@ -114,13 +114,19 @@ function block_words(words) {
 
 }
 
-// Function to block random words
-// Iterate thru every p element, get and split text at every ' ', iterate thru every word 
-// while reconstructing current p element's text like a buffer such that
+// (Javi) Function to block random words. I iterate throguh every word within a 
+// <p> tag, and highlight every occurence of a word at random (using Math.Random() 
+// as the random feature) ONLY if it hasn't been highlighted already.
+//
+// NOTES: I wasn't sure how NOT to highlight EVERY occurence of the word throughout the document 
+// using the highlight function. I'm hoping to figure out a way to highlight every occurence of 
+// a word ONLY WITHIN the current <p> tag during iteration
 
 function block_random_words(){
 	console.log('blocking random words')
 	let word_id = 0
+
+	var blockWords = [ ]
 
 	//iterate thru every p element 
 	$("p").each(function()
@@ -129,25 +135,22 @@ function block_random_words(){
 		var textArray = $(this).text().split(' ')
 
 		//iterate thru every word within the current p element
-		for(var i = 0; i < textArray.length(); i++){
-			//random element to block a word
-			if(Math.random() >= 0.5){
-				//wrap the current word within a nested span, such as in other blocking functions
-				// not sure if this'll work as intended
-				var first = "<span class='random_box' id='random_box_" + word_id + "'>" + textArray[i] + "</span>"
-				textArray[i] = "<span class='random_text' id='random_text_" + word_id + "'>" + first + "</span>"	
+		for(var i = 0; i < textArray.length; i++){
+			if(Math.random() >= 0.9 && !blockWords.includes(textArray[i])){
+				$("*").highlight(textArray[i], {className: "random_box" + word_id, wordsOnly: true})
+		 		$("*").highlight(textArray[i], {className: "random_text" + word_id, wordsOnly: true})
+
+		 		$(".random_box" + word_id).css({backgroundColor: "black"})
+				$(".random_text" + word_id).css({opacity: 0})
+				
 				word_id++
+				blockWords.push(textArray[i])
 			}
 		}
 
-		//set the current p element's text with spans around random words
-		//$(this).text(textArray.join(' '))
-		$(this).html(textArray.join(' '))
 	});
 
-	//black and block out the words
-	$(".random_box").css({backgroundColor: "black"})
-	$(".random_text").css({opacity: 0})
+	console.log("done blocking random words")
 }
 
 // (Alex) Blocks all paragraphs.
