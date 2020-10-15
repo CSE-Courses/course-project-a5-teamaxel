@@ -116,9 +116,9 @@ function block_words(words) {
 
 // (Javi) Function to block random words. I iterate throguh every word within a 
 // <p> tag, and highlight every occurence of a word at random (using Math.Random() 
-// as the random feature) ONLY if it hasn't been highlighted already. 
+// as the random feature). 
 // Since I can only assign classnames via the highlight function, I utilized
-// the class attribute like the block_paragraphs() function
+// the class attribute like the block_paragraphs() function utilized the id attribute
 
 function block_random_words(){
 	console.log('blocking random words')
