@@ -109,12 +109,18 @@ function block_random_words(){
 	//iterate thru every p element 
 	$("p").each(function()
 	{
-		//textArray is an array holding the each word of the current p elem's text
+		//keep track of all words blocked for the current <p> tag to ensure that
+		//every blocked word is only highlighted once
+		var blockedWords = []
+
+		//textArray is an array holding each word of the current <p> tag's text
 		var textArray = $(this).text().split(' ')
 
-		//iterate thru every word within the current p element
+		//iterate thru every word within textArray
 		for(var i = 0; i < textArray.length; i++){
-			if(Math.random() >= 0.9){
+			//Math.random() returns a value between 0 & 1. We can always adjust this to increase/decrease
+			//the frequency
+			if(Math.random() >= 0.9 && !blockedWords.includes(textArray[i])){
 				//highlight the word (textArray[i]) only within the current <p>'s text
 				$(this).highlight(textArray[i], {className: "random_box_" + word_id, wordsOnly: true})
 				$(this).highlight(textArray[i], {className: "random_text_" + word_id, wordsOnly: true})
@@ -122,6 +128,7 @@ function block_random_words(){
 		 		$(".random_box_" + word_id).css({backgroundColor: "black"})
 				$(".random_text_" + word_id).css({opacity: 0})
 				word_id++
+				blockedWords.push(textArray[i])
 			}
 		}
 	});
