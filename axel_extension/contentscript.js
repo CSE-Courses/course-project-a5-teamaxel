@@ -116,17 +116,14 @@ function block_words(words) {
 
 // (Javi) Function to block random words. I iterate throguh every word within a 
 // <p> tag, and highlight every occurence of a word at random (using Math.Random() 
-// as the random feature) ONLY if it hasn't been highlighted already.
-//
-// NOTES: I wasn't sure how NOT to highlight EVERY occurence of the word throughout the document 
-// using the highlight function. I'm hoping to figure out a way to highlight every occurence of 
-// a word ONLY WITHIN the current <p> tag during iteration
+// as the random feature) ONLY if it hasn't been highlighted already. 
+// Since I can only assign classnames via the highlight function, I utilized
+// the class attribute like the block_paragraphs() function
 
 function block_random_words(){
 	console.log('blocking random words')
-	let word_id = 0
 
-	var blockWords = [ ]
+	let word_id = 0
 
 	//iterate thru every p element 
 	$("p").each(function()
@@ -136,18 +133,16 @@ function block_random_words(){
 
 		//iterate thru every word within the current p element
 		for(var i = 0; i < textArray.length; i++){
-			if(Math.random() >= 0.9 && !blockWords.includes(textArray[i])){
-				$("*").highlight(textArray[i], {className: "random_box" + word_id, wordsOnly: true})
-		 		$("*").highlight(textArray[i], {className: "random_text" + word_id, wordsOnly: true})
+			if(Math.random() >= 0.9){
+				//highlight the word (textArray[i]) only within the current <p>'s text
+				$(this).highlight(textArray[i], {className: "random_box_" + word_id, wordsOnly: true})
+				$(this).highlight(textArray[i], {className: "random_text_" + word_id, wordsOnly: true})
 
-		 		$(".random_box" + word_id).css({backgroundColor: "black"})
-				$(".random_text" + word_id).css({opacity: 0})
-				
+		 		$(".random_box_" + word_id).css({backgroundColor: "black"})
+				$(".random_text_" + word_id).css({opacity: 0})
 				word_id++
-				blockWords.push(textArray[i])
 			}
 		}
-
 	});
 
 	console.log("done blocking random words")
