@@ -102,6 +102,8 @@ function sync_add_word(word) {
     chrome.storage.sync.get('bad_words', function(result) {
         let words = result['bad_words'];
         console.log('current words are ' + words);
+
+
         words.push(word);
         chrome.storage.sync.set({'bad_words': words}, function(){});
         console.log('new words are ' + words);
@@ -115,7 +117,13 @@ function sync_add_website(website) {
     chrome.storage.sync.get('bad_websites', function(result) {
         let webs = result['bad_websites'];
         console.log('current words are ' + webs);
+        if(website.charAt(0)!= 'h' ){
+            website = "https://" + website;
+        }
+
         webs.push(website);
+
+
         chrome.storage.sync.set({'bad_websites': webs}, function(){});
         console.log('new words are ' + webs);
         alert("message");

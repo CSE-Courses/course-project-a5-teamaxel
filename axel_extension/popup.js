@@ -235,7 +235,7 @@ document.addEventListener('DOMContentLoaded', function(){
   /********************************************************************** */
 	
   adminOptions.addEventListener("click", function(){
-    chrome.runtime.openOptionsPage();
+    chrome.tabs.create({ url: "options.html" });
   });
   
 	addPointsButton.addEventListener("click",function(){

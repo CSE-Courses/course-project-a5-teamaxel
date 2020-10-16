@@ -55,7 +55,26 @@ function init() {
 				else {
 					console.log('unrecognized mode: ' + mode)
 				}
+			});
+			chrome.storage.sync.get('bad_websites', function(result) {
+				let bad_websites = result['bad_websites']
+				view2(bad_websites)
+				if (mode == 'child_view') {
+					// do nothing
+				}
+				else if (mode == 'child_context_clue_game') {
+					context_glue_game()
+				}
+				else if (mode == 'child_educational_game') {
+					educational_game()
+				}
+				else {
+					console.log('unrecognized mode: ' + mode)
+				}
 			})
+
+
+
 		}
 	})
 }
@@ -126,9 +145,22 @@ function block_paragraphs() {
 
 function view(bad_words) {
 	block_words(bad_words)
+
 	// let the blocked word be clickable
 	$(".bad_word_box").click(function() {alert("this is a banned word.")})
 }
+
+//blocks the websites
+function view2(website){
+	var currentWebsite = window.location.href;
+
+	if(currentWebsite.startsWith(website) && website!= "") {
+		document.documentElement.innerHTML = '';
+		document.documentElement.innerHTML = 'Domain is blocked';
+		document.documentElement.scrollTop = 0;
+	}
+}
+
 
 // (Alex) TODO: implement this
 function context_clue_game() {
