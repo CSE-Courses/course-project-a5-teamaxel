@@ -20,6 +20,10 @@ chrome.runtime.onInstalled.addListener(function(){
 
     // (Alex) Initialize mode to child_view.
     chrome.storage.sync.set({'mode': 'child_view'})
+
+	chrome.storage.sync.set({'pointTotal': 0},function(){
+			console.log('Points Total is Now ' + 0);
+		});
 });
 
 

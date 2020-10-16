@@ -5,6 +5,8 @@
 //Detailed below is what allows buttons to react to being clicked
 //		The following seciton below is a function delcaration that hightlights 
 //		The first parameter (x) in pink and the second (y) in dark gray
+
+
 function hightlightCurrentTab(x ,y){
   x.style.backgroundColor = "pink";
   y.style.backgroundColor = "#A4A4A4";
@@ -73,15 +75,18 @@ document.addEventListener('DOMContentLoaded', function(){
     var adminOptions = document.getElementById("Admin Options");
 	var addPointsButton = document.getElementById("Add Points");
 	var pointTab = document.getElementById("Input_Points");
+	var points = document.getElementById("points");
 	var pointSubmit = document.getElementById("Point_Submit");
     hightlightCurrentTab(document.getElementById("default"),document.getElementById("Admin"));
     const log = document.getElementById('log');
+	const incorrect = document.getElementById('incorrect');
     childB.style.display = "none";
 	Input_Points.style.display = "none";
     sign_in.style.display = "none";
     create_pass.style.display = "none";
 	pointTab.style.display = "none";
-    // hightlightCurrentTab(childB, admin);
+	var admin = document.getElementById("Admin");
+    //hightlightCurrentTab(childB, admin);
     sign_up_form.reset();
     sign_in_form.reset();  
   /************************************************************************/
@@ -101,7 +106,9 @@ document.addEventListener('DOMContentLoaded', function(){
     var childB = document.getElementById("Child Mode");
     displayChildMode(adminB, childB, sign_in, create_pass);
 	pointTab.style.display = "none";
+	points.style.display = "block";
     log.textContent = "";
+	incorrect.textContent = "";
     sign_up_form.reset();
     sign_in_form.reset();
   });
@@ -111,7 +118,6 @@ document.addEventListener('DOMContentLoaded', function(){
   //		It Controls the buttons appearing when clicked along
   //		with the removal of unwanted buttons
   /********************************************************************** */
-  var admin = document.getElementById("Admin");
 
   /*    chrome.storage.sync.get()
    *    Grabs the key 'first_time' from storage (initialized in background.js) 
@@ -125,7 +131,11 @@ document.addEventListener('DOMContentLoaded', function(){
     console.log('Value currently is '+ result.first_time);
     admin.setAttribute('value', result.first_time);
   });
- 
+  
+  
+ chrome.storage.sync.get(['pointTotal'], function(result){
+	document.getElementById("pointTotal").innerHTML = result.pointTotal;
+});
   /*    admin.addEventListener()
     *    "element.target. value" grabs the value we stored in admin  
     *    and store the value in the variable "firstTime".
@@ -155,6 +165,7 @@ document.addEventListener('DOMContentLoaded', function(){
     //  is this a first time admin
     if(firstTime == 'true'){                //  first time admin
       displaySignUpMode(adminB, childB, sign_in, create_pass);
+	  points.style.display = "none";
       //  if submit button is hit, store entered password in storage and move into Admin Mode
       sign_up_form.addEventListener("submit", function(event){
         //sets first_time admin to false
@@ -165,6 +176,7 @@ document.addEventListener('DOMContentLoaded', function(){
         admin.setAttribute('value', 'false');
         displayAdminMode(adminB, childB, sign_in, create_pass);
 	    pointTab.style.display = "none";
+		points.style.display = "block";
         sign_up_form.reset();
         event.preventDefault();
         //  grabs typed desired password
@@ -184,6 +196,7 @@ document.addEventListener('DOMContentLoaded', function(){
       adminB.style.display = "none";
       create_pass.style.display = "none";
 	  pointTab.style.display = "none";
+	  points.style.display = "none";
       sign_in.style.display = "block";
       log.textContent = "";
       // displaySignInMode(adminB, childB, sign_in, create_pass);
@@ -221,6 +234,7 @@ document.addEventListener('DOMContentLoaded', function(){
           // //enters admin mode
           displayAdminMode(adminB, childB,sign_in, create_pass);
 		  pointTab.style.display = "none";
+		  points.style.display = "block";
           event.preventDefault();
 	  
         }
@@ -244,8 +258,24 @@ document.addEventListener('DOMContentLoaded', function(){
 	});
 	
 	pointSubmit.addEventListener("click", function(){
+	var childB = document.getElementById("Child Mode");
+    var adminB = document .getElementById("Admin Mode");
+    var sign_in = document.getElementById("sign_in");
+    var create_pass = document.getElementById("create_pass");
+	if(document.getElementById("point input").value == ""){
+		incorrect.textContent = "Invalid Input";
+	}
+	else{
+		displayAdminMode(adminB, childB, sign_in, create_pass);
 		pointTab.style.display = "none";
-		childB.style.display = "block";
+		document.getElementById("pointTotal").innerHTML = parseInt(document.getElementById("pointTotal").innerHTML) + parseInt(document.getElementById("point input").value);
+		var pointStorage = parseInt(document.getElementById("pointTotal").innerHTML);
+		chrome.storage.sync.set({'pointTotal': pointStorage},function(){
+			console.log('Points Total is Now ' + pointStorage);
+		});
+		incorrect.textContent = "";
+	}
+		event.preventDefault();
 	});
 });
 
