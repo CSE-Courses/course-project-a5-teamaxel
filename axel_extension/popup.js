@@ -84,8 +84,17 @@ document.addEventListener('DOMContentLoaded', function(){
 	Input_Points.style.display = "none";
     sign_in.style.display = "none";
     create_pass.style.display = "none";
-	pointTab.style.display = "none";
-	var admin = document.getElementById("Admin");
+  pointTab.style.display = "none";
+  var admin = document.getElementById("Admin");
+  var child = document.getElementById("Child Mode");
+  // chrome.storage.get(['mode'], function(result){
+  //   if(result.mode == 'admin'){
+  //     displayAdminMode(childB, child, sign_in, create_pass);
+  //   }
+  //   else{
+  //     displayChildMode(childB, child, sign_in, create_pass);
+  //   }
+  // });
     //hightlightCurrentTab(childB, admin);
     sign_up_form.reset();
     sign_in_form.reset();  
