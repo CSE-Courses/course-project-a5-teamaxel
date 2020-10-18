@@ -87,14 +87,14 @@ document.addEventListener('DOMContentLoaded', function(){
   pointTab.style.display = "none";
   var admin = document.getElementById("Admin");
   var child = document.getElementById("Child Mode");
-  // chrome.storage.get(['mode'], function(result){
-  //   if(result.mode == 'admin'){
-  //     displayAdminMode(childB, child, sign_in, create_pass);
-  //   }
-  //   else{
-  //     displayChildMode(childB, child, sign_in, create_pass);
-  //   }
-  // });
+  chrome.storage.get(['mode'], function(result){
+    // if(result.mode == 'admin'){
+    //   displayAdminMode(childB, child, sign_in, create_pass);
+    // }
+    // else{
+    //   displayChildMode(childB, child, sign_in, create_pass);
+    // }
+  });
     //hightlightCurrentTab(childB, admin);
     sign_up_form.reset();
     sign_in_form.reset();  
