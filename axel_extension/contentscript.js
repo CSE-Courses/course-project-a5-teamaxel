@@ -40,41 +40,33 @@ function init() {
 			// no need to block content, so do nothing
 		}
 		else {
-			chrome.storage.sync.get('bad_words', function(result) {
-				let bad_words = result['bad_words']
-				view(bad_words)
-				if (mode == 'child_view') {
-					// do nothing
-				}
-				else if (mode == 'child_context_clue_game') {
-					context_clue_game()
-				}
-				else if (mode == 'child_educational_game') {
-					educational_game()
-				}
-				else {
-					console.log('unrecognized mode: ' + mode)
-				}
-			});
 			chrome.storage.sync.get('bad_websites', function(result) {
 				let bad_websites = result['bad_websites']
 				let size = bad_websites.length;
 				for(i = 0; i<size; i++){
-					view2(bad_websites[i]);
+					website = bad_websites[i]
+					var currentWebsite = window.location.href;
+					if(currentWebsite.startsWith(website) && website!= "") {
+						view_blocked();
+						return;
+					}
 				}
-
-				if (mode == 'child_view') {
-					// do nothing
-				}
-				else if (mode == 'child_context_clue_game') {
-					context_glue_game()
-				}
-				else if (mode == 'child_educational_game') {
-					educational_game()
-				}
-				else {
-					console.log('unrecognized mode: ' + mode)
-				}
+				chrome.storage.sync.get('bad_words', function(result) {
+					let bad_words = result['bad_words']
+					view(bad_words)
+					if (mode == 'child_view') {
+						// do nothing
+					}
+					else if (mode == 'child_context_clue_game') {
+						context_clue_game()
+					}
+					else if (mode == 'child_educational_game') {
+						educational_game()
+					}
+					else {
+						console.log('unrecognized mode: ' + mode)
+					}
+				})
 			})
 
 
@@ -196,14 +188,10 @@ function view(bad_words) {
 }
 
 //blocks the websites
-function view2(website){
-	var currentWebsite = window.location.href;
-
-	if(currentWebsite.startsWith(website) && website!= "") {
-		document.documentElement.innerHTML = '';
-		document.documentElement.innerHTML = 'Domain is blocked';
-		document.documentElement.scrollTop = 0;
-	}
+function view_blocked(website){
+	document.documentElement.innerHTML = '';
+	document.documentElement.innerHTML = 'Domain is blocked';
+	document.documentElement.scrollTop = 0;
 }
 
 
