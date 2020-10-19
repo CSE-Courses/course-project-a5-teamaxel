@@ -1,3 +1,4 @@
+
 /*
 *
 *  @param val - the value being inserted into the table
@@ -6,6 +7,8 @@
  */
 
 let val;
+
+window.onload =  reloadPage;
 
 function checkValidURL() {
 
@@ -24,44 +27,41 @@ function checkValidURL() {
 function addWebsite(){
     val = document.getElementById("websiteURL").value;
     if(checkValidURL()) {
-        $("#websiteTable tbody").append(
-            "<tr>" +
-            "<td>" + val + "</td>>" +
-            "</tr>"
-        );
+        sync_add_website(val);
     }
 
 };
 
 function addWord(){
+
     val = document.getElementById("bannedWord").value;
-    $("#wordTable tbody").append(
-        "<tr>" +
-        "<td>" + val  +"</td>>"+
-        "</tr>"
-    );
+    // (Alex) add banned word to storage
+    sync_add_word(val);
+
 };
 
 //adds website when button is clicked
 
-$('#addWebsite').on('click',function(){ addWebsite();})
+//changed to test
+
+$('#addWebsite').on('click',function(){ addWebsite()});
 
 //adds word when button clicked
 
-$('#addWord').on('click',function(){ addWord(); })
+$('#addWord').on('click',function(){ addWord() });
 
 
 
-//Removes a word when clicked on
+//Removes a website when clicked on
 $('#websiteTable').on('click' , function() {
 
-    var tab = document.getElementById('websiteTable').getElementsByTagName('tbody')[0]
+    var tab = document.getElementById('websiteTable').getElementsByTagName('tbody')[0];
     var rows = tab.getElementsByTagName('tr');
-    for (i = 0; i < rows.length; i++) {
+    for ( i = 0; i < rows.length; i++) {
         rows[i].onclick = function() {
             var ans = confirm("Would you like to Delete this Website?");
             if(ans) {
-                tab.deleteRow(this.rowIndex-1);
+                sync_remove_website(this.innerText);
             }else{
                 alert("not removed");
             }
@@ -75,18 +75,20 @@ $('#websiteTable').on('click' , function() {
 //Removes a word when clicked on
 $('#wordTable').on('click' , function() {
 
-    var tab = document.getElementById('wordTable').getElementsByTagName('tbody')[0]
+    var tab = document.getElementById('wordTable').getElementsByTagName('tbody')[0];
     var rows = tab.getElementsByTagName('tr');
     for (i = 0; i < rows.length; i++) {
         rows[i].onclick = function() {
             var ans = confirm("Would you like to Delete this Word?");
             if(ans) {
-                tab.deleteRow(this.rowIndex-1);
+                sync_remove_word(this.innerText);
+
             }else{
                 alert("not removed");
             }
         }
     }
+
 });
 
 
@@ -197,3 +199,7 @@ function reloadPage() {
 
 
 
+
+
+
+//function to load pages with correct tab
