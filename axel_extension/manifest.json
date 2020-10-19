@@ -2,7 +2,6 @@
     "name": "Axel Extension",
     "version": "1.0",
     "description": "An extension for censorship",
-
     "permissions": ["storage", "https://*/*", "http://*/*"],
     "background":{
       "scripts": ["background.js"]

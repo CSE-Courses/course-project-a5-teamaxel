@@ -146,6 +146,33 @@ document.addEventListener('DOMContentLoaded', function(){
     sign_in_form.reset();
   });
   
+  // (Alex) Extreme brute force button color setting for the mode buttons.
+  // Please feel free to make this nicer.
+  var view = document.getElementById("view");
+  var educational_game = document.getElementById("educational_game");
+  var context_clue_game = document.getElementById("context_clue_game");
+  view.style.backgroundColor = "pink";
+  educational_game.style.backgroundColor = "#A4A4A4";
+  context_clue_game.style.backgroundColor = "#A4A4A4";
+  view.addEventListener("click", function() {
+    sync_mode("child_view");
+    view.style.backgroundColor = "pink";
+    educational_game.style.backgroundColor = "#A4A4A4";
+    context_clue_game.style.backgroundColor = "#A4A4A4";
+  });
+  educational_game.addEventListener("click", function() {
+    sync_mode("child_educational_game");
+    view.style.backgroundColor = "#A4A4A4";
+    educational_game.style.backgroundColor = "pink";
+    context_clue_game.style.backgroundColor = "#A4A4A4";
+  });
+  context_clue_game.addEventListener("click", function() {
+    sync_mode("child_context_clue_game");
+    view.style.backgroundColor = "#A4A4A4";
+    educational_game.style.backgroundColor = "#A4A4A4";
+    context_clue_game.style.backgroundColor = "pink";
+  });
+  
   /********************************************************************** */
   //		The below section Allows for Switching to the Admin Mode Tab.
   //		It Controls the buttons appearing when clicked along
