@@ -65,29 +65,29 @@ document.addEventListener('DOMContentLoaded', function(){
 	
   //		The next six lines make it so "Admin Options", "sign_in", and
   //    "create_pass" do not appear upon the intial load of the extension
-    var childB = document.getElementById("Admin Mode");
-    var sign_in = document.getElementById("sign_in");
+  var childB = document.getElementById("Admin Mode");
+  var sign_in = document.getElementById("sign_in");
 	var Input_Points = document.getElementById("Input_Points");
-    var create_pass = document.getElementById("create_pass");
-    var sign_up_form = document.getElementById("new_pass");
-    var sign_in_form = document.getElementById("entered_pass");
-    var adminOptions = document.getElementById("Admin Options");
+  var create_pass = document.getElementById("create_pass");
+  var sign_up_form = document.getElementById("new_pass");
+  var sign_in_form = document.getElementById("entered_pass");
+  var adminOptions = document.getElementById("Admin Options");
 	var addPointsButton = document.getElementById("Add Points");
 	var pointTab = document.getElementById("Input_Points");
 	var points = document.getElementById("points");
 	var pointSubmit = document.getElementById("Point_Submit");
-    hightlightCurrentTab(document.getElementById("default"),document.getElementById("Admin"));
-    const log = document.getElementById('log');
+  hightlightCurrentTab(document.getElementById("default"),document.getElementById("Admin"));
+  const log = document.getElementById('log');
 	const incorrect = document.getElementById('incorrect');
-    childB.style.display = "none";
+  childB.style.display = "none";
 	Input_Points.style.display = "none";
-    sign_in.style.display = "none";
-    create_pass.style.display = "none";
+  sign_in.style.display = "none";
+  create_pass.style.display = "none";
 	pointTab.style.display = "none";
 	var admin = document.getElementById("Admin");
     //hightlightCurrentTab(childB, admin);
-    sign_up_form.reset();
-    sign_in_form.reset();  
+  sign_up_form.reset();
+  sign_in_form.reset();  
   /************************************************************************/
   //		The below section Allows for Switching to the Child Mode Tab.
   //		It Controls the buttons appearing when clicked along
@@ -104,10 +104,10 @@ document.addEventListener('DOMContentLoaded', function(){
     adminB.style.display = "none";
     var childB = document.getElementById("Child Mode");
     displayChildMode(adminB, childB, sign_in, create_pass);
-	pointTab.style.display = "none";
-	points.style.display = "block";
+    pointTab.style.display = "none";
+    points.style.display = "block";
     log.textContent = "";
-	incorrect.textContent = "";
+    incorrect.textContent = "";
     sign_up_form.reset();
     sign_in_form.reset();
   });
@@ -174,36 +174,21 @@ document.addEventListener('DOMContentLoaded', function(){
         firstTime = 'false';
         admin.setAttribute('value', 'false');
         displayAdminMode(adminB, childB, sign_in, create_pass);
-	    pointTab.style.display = "none";
-		points.style.display = "block";
+        pointTab.style.display = "none";
+        points.style.display = "block";
         var desired_pass = document.getElementById('creatingPass').value;
         sign_up_form.reset();
         chrome.storage.sync.set({'password': desired_pass.toString() }, function(){
             console.log('Password entered to storage');
           }); 
         event.preventDefault();
-        //  grabs typed desired password
-        /**broken entered password store */
-      //   var desired_pass = "moonpies";
-      // //  var desired_pass = document.getElementById('creatingPass').value;
-      //   //  stores password entered into chrome storage
-      //   chrome.storage.sync.set({password:desired_pass }, function(){
-      //   // chrome.storage.sync.set({password:'aew;kjf;adf' }, function(){
-      //     console.log('Password entered to storage');
-      //   });
       } );  //end event listener
       
     } //end if
     else{                                 //returning admin
-      childB.style.display = "none";
-      adminB.style.display = "none";
-      create_pass.style.display = "none";
-	  pointTab.style.display = "none";
-	  points.style.display = "none";
-      sign_in.style.display = "block";
+      pointTab.style.display = "none";
+      points.style.display = "none";
       log.textContent = "";
-      // displaySignInMode(adminB, childB, sign_in, create_pass);
-
       displaySignInMode(adminB, childB, sign_in, create_pass);
       //sign in using initially established password
       sign_in_form.addEventListener("submit", function(event){
