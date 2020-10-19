@@ -33,11 +33,6 @@ function displayAdminMode(adminDisplay, childDisplay, signInDisplay, signUpDispl
   signInDisplay.style.display = "none";
   signUpDisplay.style.display = "none";
   hightlightCurrentTab(document.getElementById("Admin"),document.getElementById("default"));
-
-
-  // (Alex) see function definition
-  sync_mode('admin');
-
   return;
 }
 
@@ -48,10 +43,6 @@ function displayChildMode(adminDisplay, childDisplay, signInDisplay, signUpDispl
   signInDisplay.style.display = "none";
   signUpDisplay.style.display = "none";
   hightlightCurrentTab(document.getElementById("default"),document.getElementById("Admin"));
-
-  // (Alex) see function definition
-  sync_mode('child_view');
-
   return;
 }
 
@@ -108,16 +99,17 @@ document.addEventListener('DOMContentLoaded', function(){
 	var points = document.getElementById("points");
 
   var pointSubmit = document.getElementById("Point_Submit");
+
     hightlightCurrentTab(document.getElementById("default"),document.getElementById("Admin"));
     const log = document.getElementById('log');
   const incorrect = document.getElementById('incorrect');
     childB.style.display = "none";
-	Input_Points.style.display = "none";
     sign_in.style.display = "none";
     create_pass.style.display = "none";
   pointTab.style.display = "none";
   var admin = document.getElementById("Admin");
     //hightlightCurrentTab(childB, admin);
+
     sign_up_form.reset();
     sign_in_form.reset();  
   savedState(childB, child,sign_in, create_pass);
@@ -140,6 +132,7 @@ document.addEventListener('DOMContentLoaded', function(){
     displayChildMode(adminB, childB, sign_in, create_pass);
     pointTab.style.display = "none";
     points.style.display = "block";
+
     log.textContent = "";
     incorrect.textContent = "";
     sign_up_form.reset();
@@ -211,6 +204,7 @@ document.addEventListener('DOMContentLoaded', function(){
         pointTab.style.display = "none";
         points.style.display = "block";
         var desired_pass = document.getElementById('creatingPass').value;
+
         sign_up_form.reset();
         chrome.storage.sync.set({'password': desired_pass.toString() }, function(){
             console.log('Password entered to storage');
@@ -222,6 +216,7 @@ document.addEventListener('DOMContentLoaded', function(){
     else{                                 //returning admin
       pointTab.style.display = "none";
       points.style.display = "none";
+
       log.textContent = "";
       displaySignInMode(adminB, childB, sign_in, create_pass);
       //sign in using initially established password
@@ -245,6 +240,7 @@ document.addEventListener('DOMContentLoaded', function(){
           }
          });
          event.preventDefault();
+
       } );
     }
   })// end admin
