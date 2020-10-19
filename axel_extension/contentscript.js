@@ -58,7 +58,11 @@ function init() {
 			});
 			chrome.storage.sync.get('bad_websites', function(result) {
 				let bad_websites = result['bad_websites']
-				view2(bad_websites)
+				let size = bad_websites.length;
+				for(i = 0; i<size; i++){
+					view2(bad_websites[i]);
+				}
+
 				if (mode == 'child_view') {
 					// do nothing
 				}
