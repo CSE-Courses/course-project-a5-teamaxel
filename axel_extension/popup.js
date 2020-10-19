@@ -51,14 +51,15 @@ function displaySignUpMode(adminDisplay, childDisplay, signInDisplay, signUpDisp
   return;
 }
 
+//    *******broken******
 // //    Call to switch display to Sign In Password Mode (returning admin)
-function displaySignInMode(adminDisplay, childDisplay, signInDisplay, signUpDisplay){
-  adminDisplay.style.display = "none";
-  childDisplay.style.display = "none";
-  signInDisplay.style.display = "block";
-  signUpDisplay.style.display = "none";
-  return;
-}
+// function displaySignIpMode(adminDisplay, childDisplay, signInDisplay, signUpDisplay){
+//   adminDisplay.style.display = "none";
+//   childDisplay.style.display = "none";
+//   signInDisplay.style.display = "block";
+//   signUpDisplay.style.display = "none";
+//   return;
+// }
 
 //Implements an event listener to the pop up itself
 document.addEventListener('DOMContentLoaded', function(){
@@ -147,10 +148,10 @@ document.addEventListener('DOMContentLoaded', function(){
     *    elements except "sign_in" in "popup.html". Once the password is entered into the
     *    text field and submitted, we enter Admin Mode.
     * 
-    *    When a password is created, it is stored in chrome storage and saved
-    *    under the object 'password'. When asked to enter password to enter Admin Mode,
-    *    previously created password gets grabbed from storage and is checked to see
-    *    if the entered password equals the password stored.
+    *    In the near future, the if statement will be updated with a 
+    *    method to store the created password. The else statement will be
+    *    updated with a method to check if the entered password matches 
+    *    the password stored in our database.
   */
 
   admin.addEventListener("click", function(element){
@@ -164,7 +165,7 @@ document.addEventListener('DOMContentLoaded', function(){
     //  is this a first time admin
     if(firstTime == 'true'){                //  first time admin
       displaySignUpMode(adminB, childB, sign_in, create_pass);
-      points.style.display = "none";
+	  points.style.display = "none";
       //  if submit button is hit, store entered password in storage and move into Admin Mode
       sign_up_form.addEventListener("submit", function(event){
         //sets first_time admin to false
@@ -174,43 +175,69 @@ document.addEventListener('DOMContentLoaded', function(){
         firstTime = 'false';
         admin.setAttribute('value', 'false');
         displayAdminMode(adminB, childB, sign_in, create_pass);
-        pointTab.style.display = "none";
-        points.style.display = "block";
-        var desired_pass = document.getElementById('creatingPass').value;
+	    pointTab.style.display = "none";
+		points.style.display = "block";
         sign_up_form.reset();
-        chrome.storage.sync.set({'password': desired_pass.toString() }, function(){
-            console.log('Password entered to storage');
-          }); 
         event.preventDefault();
+        //  grabs typed desired password
+        /**broken entered password store */
+      //   var desired_pass = "moonpies";
+      // //  var desired_pass = document.getElementById('creatingPass').value;
+      //   //  stores password entered into chrome storage
+      //   chrome.storage.sync.set({password:desired_pass }, function(){
+      //   // chrome.storage.sync.set({password:'aew;kjf;adf' }, function(){
+      //     console.log('Password entered to storage');
+      //   });
       } );  //end event listener
       
     } //end if
     else{                                 //returning admin
-      pointTab.style.display = "none";
-      points.style.display = "none";
+      childB.style.display = "none";
+      adminB.style.display = "none";
+      create_pass.style.display = "none";
+	  pointTab.style.display = "none";
+	  points.style.display = "none";
+      sign_in.style.display = "block";
       log.textContent = "";
-      displaySignInMode(adminB, childB, sign_in, create_pass);
+      // displaySignInMode(adminB, childB, sign_in, create_pass);
+
       //sign in using initially established password
       sign_in_form.addEventListener("submit", function(event){
         //  grabs password input in text field
         var checkPass = document.getElementById('unique').value;
-        var stored_pass = "";
-        chrome.storage.sync.get(['password'], function(result){
-          console.log('Password grabbed from storage');
-          stored_pass = result.password;
-          if(checkPass == stored_pass){
-            displayAdminMode(adminB,childB,sign_in,create_pass);
-            event.preventDefault();
-          }
-          else{
-            log.textContent = "incorrect password, please try again";
-            sign_in_form.reset();
-            pointTab.style.display = "none";
-            points.style.display = "block";
-            event.preventDefault();
-          }
-         });
-         event.preventDefault();
+        
+        /** broken password check*/
+        /*// var passwords_match = false;
+        // chrome.storage.sync.get(['password'], function(result){
+        //   console.log('Password grabbed from storage');
+        //   // stored_pass = result.password;
+        //   log.textContent = result.password;
+        //   // log.textContent = "tried grabbing, here we are";
+        //   if(checkPass == result.password){
+        //     passwords_match = true;
+        //     // log.textContent = result.password;
+        //   }
+        //  });
+        */
+        // if(!passwords_match){
+        if(checkPass != "meowmeow"){
+          log.textContent = "incorrect password, please try again";
+          sign_in_form.reset();
+          event.preventDefault();
+        }
+        //  entered password == "meowmeow", we move into Admin Mode
+        else{ 
+          //clears password input
+          sign_in_form.reset();
+          //resets log (text that states "incorrect password, please try again")
+          log.textContent = "";
+          // //enters admin mode
+          displayAdminMode(adminB, childB,sign_in, create_pass);
+		  pointTab.style.display = "none";
+		  points.style.display = "block";
+          event.preventDefault();
+	  
+        }
       } );
     }
   })// end admin
