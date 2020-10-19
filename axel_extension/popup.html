@@ -14,6 +14,13 @@
 		font-size: 20px;
 	}
 	
+	div.points {
+		position: fixed;
+  		bottom: 0;
+  		right: 0;
+  		width: 100px;
+	}
+	
   </style>
   <body>
 	<!-- Info Relatated to Tabs(Modes) -->
@@ -34,7 +41,27 @@
 	<div id="Admin Mode">
 		<button id ="Admin Options">Admin Options</button>
 	
+		
   </div>
+	
+
+	<div id = "points" class = "points">
+	<h1 style = "font-size:100%"> |Points| </h1>
+	<p id = "pointTotal">0</p>
+	</div>
+
+
+
+
+	<!-- Info Related to Add Points Tab -->
+	<div id ="Input_Points">
+		<h1> Input Points </h1>
+		<form id = "points">
+			<input type="number" id = "point input" value ="0">
+			<button id = "Point_Submit">Submit Points</button>
+		</form>
+		<p id="incorrect"></p>
+	</div>
   
   <!-- Info Related to Enter Password Tab -->
   <div id ="sign_in">

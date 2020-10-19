@@ -47,6 +47,22 @@ function init() {
 					// do nothing
 				}
 				else if (mode == 'child_context_clue_game') {
+					context_clue_game()
+				}
+				else if (mode == 'child_educational_game') {
+					educational_game()
+				}
+				else {
+					console.log('unrecognized mode: ' + mode)
+				}
+			});
+			chrome.storage.sync.get('bad_websites', function(result) {
+				let bad_websites = result['bad_websites']
+				view2(bad_websites)
+				if (mode == 'child_view') {
+					// do nothing
+				}
+				else if (mode == 'child_context_clue_game') {
 					context_glue_game()
 				}
 				else if (mode == 'child_educational_game') {
@@ -56,6 +72,9 @@ function init() {
 					console.log('unrecognized mode: ' + mode)
 				}
 			})
+
+
+
 		}
 	})
 }
@@ -95,6 +114,47 @@ function block_words(words) {
 
 }
 
+// (Javi) Function to block random words. I iterate throguh every word within a 
+// <p> tag, and highlight every occurence of a word at random (using Math.Random() 
+// as the random feature). 
+// Since I can only assign classnames via the highlight function, I utilized
+// the class attribute like the block_paragraphs() function utilized the id attribute
+
+function block_random_words(){
+	console.log('blocking random words')
+
+	let word_id = 0
+
+	//iterate thru every p element 
+	$("p").each(function()
+	{
+		//keep track of all words blocked for the current <p> tag to ensure that
+		//every blocked word is only highlighted once
+		var blockedWords = []
+
+		//textArray is an array holding each word of the current <p> tag's text
+		var textArray = $(this).text().split(' ')
+
+		//iterate thru every word within textArray
+		for(var i = 0; i < textArray.length; i++){
+			//Math.random() returns a value between 0 & 1. We can always adjust this to increase/decrease
+			//the frequency
+			if(Math.random() >= 0.9 && !blockedWords.includes(textArray[i])){
+				//highlight the word (textArray[i]) only within the current <p>'s text
+				$(this).highlight(textArray[i], {className: "random_box_" + word_id, wordsOnly: true})
+				$(this).highlight(textArray[i], {className: "random_text_" + word_id, wordsOnly: true})
+
+		 		$(".random_box_" + word_id).css({backgroundColor: "black"})
+				$(".random_text_" + word_id).css({opacity: 0})
+				word_id++
+				blockedWords.push(textArray[i])
+			}
+		}
+	});
+
+	console.log("done blocking random words")
+}
+
 // (Alex) Blocks all paragraphs.
 // Same format for blocking as for block_words, except
 // we add an "id" in order to refer to specific paragraphs.
@@ -126,13 +186,27 @@ function block_paragraphs() {
 
 function view(bad_words) {
 	block_words(bad_words)
+
 	// let the blocked word be clickable
 	$(".bad_word_box").click(function() {alert("this is a banned word.")})
 }
 
+//blocks the websites
+function view2(website){
+	var currentWebsite = window.location.href;
+
+	if(currentWebsite.startsWith(website) && website!= "") {
+		document.documentElement.innerHTML = '';
+		document.documentElement.innerHTML = 'Domain is blocked';
+		document.documentElement.scrollTop = 0;
+	}
+}
+
+
 // (Alex) TODO: implement this
 function context_clue_game() {
 
+	block_random_words()
 	// block words, but randomly
 
 }
