@@ -84,6 +84,7 @@ function savedState(adminDisplay, childDisplay, signInDisplay, signUpDisplay){
     }
     // console.log(result.mode.toString());
   });
+}
 
 
 
