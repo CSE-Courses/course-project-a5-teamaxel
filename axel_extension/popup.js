@@ -51,15 +51,14 @@ function displaySignUpMode(adminDisplay, childDisplay, signInDisplay, signUpDisp
   return;
 }
 
-//    *******broken******
 // //    Call to switch display to Sign In Password Mode (returning admin)
-// function displaySignIpMode(adminDisplay, childDisplay, signInDisplay, signUpDisplay){
-//   adminDisplay.style.display = "none";
-//   childDisplay.style.display = "none";
-//   signInDisplay.style.display = "block";
-//   signUpDisplay.style.display = "none";
-//   return;
-// }
+function displaySignInMode(adminDisplay, childDisplay, signInDisplay, signUpDisplay){
+  adminDisplay.style.display = "none";
+  childDisplay.style.display = "none";
+  signInDisplay.style.display = "block";
+  signUpDisplay.style.display = "none";
+  return;
+}
 
 //Implements an event listener to the pop up itself
 document.addEventListener('DOMContentLoaded', function(){
@@ -148,10 +147,10 @@ document.addEventListener('DOMContentLoaded', function(){
     *    elements except "sign_in" in "popup.html". Once the password is entered into the
     *    text field and submitted, we enter Admin Mode.
     * 
-    *    In the near future, the if statement will be updated with a 
-    *    method to store the created password. The else statement will be
-    *    updated with a method to check if the entered password matches 
-    *    the password stored in our database.
+    *    When a password is created, it is stored in chrome storage and saved
+    *    under the object 'password'. When asked to enter password to enter Admin Mode,
+    *    previously created password gets grabbed from storage and is checked to see
+    *    if the entered password equals the password stored.
   */
 
   admin.addEventListener("click", function(element){
@@ -177,7 +176,11 @@ document.addEventListener('DOMContentLoaded', function(){
         displayAdminMode(adminB, childB, sign_in, create_pass);
 	    pointTab.style.display = "none";
 		points.style.display = "block";
+        var desired_pass = document.getElementById('creatingPass').value;
         sign_up_form.reset();
+        chrome.storage.sync.set({'password': desired_pass.toString() }, function(){
+            console.log('Password entered to storage');
+          }); 
         event.preventDefault();
         //  grabs typed desired password
         /**broken entered password store */
@@ -201,43 +204,28 @@ document.addEventListener('DOMContentLoaded', function(){
       log.textContent = "";
       // displaySignInMode(adminB, childB, sign_in, create_pass);
 
+      displaySignInMode(adminB, childB, sign_in, create_pass);
       //sign in using initially established password
       sign_in_form.addEventListener("submit", function(event){
         //  grabs password input in text field
         var checkPass = document.getElementById('unique').value;
-        
-        /** broken password check*/
-        /*// var passwords_match = false;
-        // chrome.storage.sync.get(['password'], function(result){
-        //   console.log('Password grabbed from storage');
-        //   // stored_pass = result.password;
-        //   log.textContent = result.password;
-        //   // log.textContent = "tried grabbing, here we are";
-        //   if(checkPass == result.password){
-        //     passwords_match = true;
-        //     // log.textContent = result.password;
-        //   }
-        //  });
-        */
-        // if(!passwords_match){
-        if(checkPass != "meowmeow"){
-          log.textContent = "incorrect password, please try again";
-          sign_in_form.reset();
-          event.preventDefault();
-        }
-        //  entered password == "meowmeow", we move into Admin Mode
-        else{ 
-          //clears password input
-          sign_in_form.reset();
-          //resets log (text that states "incorrect password, please try again")
-          log.textContent = "";
-          // //enters admin mode
-          displayAdminMode(adminB, childB,sign_in, create_pass);
-		  pointTab.style.display = "none";
-		  points.style.display = "block";
-          event.preventDefault();
-	  
-        }
+        var stored_pass = "";
+        chrome.storage.sync.get(['password'], function(result){
+          console.log('Password grabbed from storage');
+          stored_pass = result.password;
+          if(checkPass == stored_pass){
+            displayAdminMode(adminB,childB,sign_in,create_pass);
+            pointTab.style.display = "none";
+            points.style.display = "block";
+            event.preventDefault();
+          }
+          else{
+            log.textContent = "incorrect password, please try again";
+            sign_in_form.reset();
+            event.preventDefault();
+          }
+         });
+         event.preventDefault();
       } );
     }
   })// end admin

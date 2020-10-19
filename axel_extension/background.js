@@ -9,8 +9,8 @@ chrome.runtime.onInstalled.addListener(function(){
     });
     chrome.storage.sync.set({state: 'child'}, function(){
         console.log('State intialized to Child Mode');
-    });
-    chrome.storage.sync.set({password:'initialpass'}, function(){
+    })
+    chrome.storage.sync.set({'password':'initialpass'}, function(){
         console.log('Password intialized to: initialpass');
     });
     
