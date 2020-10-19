@@ -116,7 +116,7 @@ function sync_add_word(word) {
 function sync_add_website(website) {
     chrome.storage.sync.get('bad_websites', function(result) {
         let webs = result['bad_websites'];
-        console.log('current words are ' + webs);
+        console.log('current websites are ' + webs);
         if(website.charAt(0)!= 'h' ){
             website = "https://" + website;
         }
@@ -125,8 +125,7 @@ function sync_add_website(website) {
 
 
         chrome.storage.sync.set({'bad_websites': webs}, function(){});
-        console.log('new words are ' + webs);
-        alert("message");
+        console.log('new websites are ' + webs);
         reloadPage();
     })
 }
@@ -155,7 +154,7 @@ function sync_remove_word(word) {
 function sync_remove_website(website) {
     chrome.storage.sync.get('bad_websites', function(result) {
         let websites = result['bad_websites']
-        console.log('current words are ' + websites)
+        console.log('current websites are ' + websites)
         let pos = websites.indexOf(website)
         if (pos != -1) {
             websites.splice(pos, 1)
