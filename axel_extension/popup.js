@@ -146,6 +146,23 @@ document.addEventListener('DOMContentLoaded', function(){
     sign_in_form.reset();
   });
   
+  var educational_game = document.getElementById("view");
+  educational_game.addEventListener("click", function() {
+    sync_mode("child_view");
+  });
+  var educational_game = document.getElementById("educational_game");
+  educational_game.addEventListener("click", function() {
+    sync_mode("child_educational_game");
+  });
+  var educational_game = document.getElementById("context_clue_game");
+  educational_game.addEventListener("click", function() {
+    sync_mode("child_context_clue_game");
+  });
+  var educational_game = document.getElementById("grammar_game");
+  educational_game.addEventListener("click", function() {
+    sync_mode("child_grammar_game");
+  });
+  
   /********************************************************************** */
   //		The below section Allows for Switching to the Admin Mode Tab.
   //		It Controls the buttons appearing when clicked along
