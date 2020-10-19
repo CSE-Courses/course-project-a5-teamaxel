@@ -175,7 +175,7 @@ function block_paragraphs() {
 		}
 	)
 	// higlight the outer span with black
-	$(".paragraph_box").css({backgroundColor: "black"})
+	$(".paragraph_box").css({backgroundColor: "blue"})
 	// remove the inner span's text
 	$(".paragraph_text").css({opacity: 0})
 }
