@@ -140,7 +140,7 @@ function block_random_words(){
 				$(this).highlight(textArray[i], {className: "random_box_" + word_id, wordsOnly: true})
 				$(this).highlight(textArray[i], {className: "random_text_" + word_id, wordsOnly: true})
 
-		 		$(".random_box_" + word_id).css({backgroundColor: "black"})
+		 		$(".random_box_" + word_id).css({backgroundColor: "blue"})
 				$(".random_text_" + word_id).css({opacity: 0})
 				word_id++
 				blockedWords.push(textArray[i])
