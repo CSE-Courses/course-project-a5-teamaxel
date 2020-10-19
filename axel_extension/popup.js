@@ -17,11 +17,6 @@ function displayAdminMode(adminDisplay, childDisplay, signInDisplay, signUpDispl
   signInDisplay.style.display = "none";
   signUpDisplay.style.display = "none";
   hightlightCurrentTab(document.getElementById("Admin"),document.getElementById("default"));
-
-
-  // (Alex) see function definition
-  sync_mode('admin');
-
   return;
 }
 
@@ -32,10 +27,6 @@ function displayChildMode(adminDisplay, childDisplay, signInDisplay, signUpDispl
   signInDisplay.style.display = "none";
   signUpDisplay.style.display = "none";
   hightlightCurrentTab(document.getElementById("default"),document.getElementById("Admin"));
-
-  // (Alex) see function definition
-  sync_mode('child_view');
-
   return;
 }
 
@@ -66,21 +57,15 @@ document.addEventListener('DOMContentLoaded', function(){
   //    "create_pass" do not appear upon the intial load of the extension
     var childB = document.getElementById("Admin Mode");
     var sign_in = document.getElementById("sign_in");
-	var Input_Points = document.getElementById("Input_Points");
     var create_pass = document.getElementById("create_pass");
     var sign_up_form = document.getElementById("new_pass");
     var sign_in_form = document.getElementById("entered_pass");
     var adminOptions = document.getElementById("Admin Options");
-	var addPointsButton = document.getElementById("Add Points");
-	var pointTab = document.getElementById("Input_Points");
-	var pointSubmit = document.getElementById("Point_Submit");
     hightlightCurrentTab(document.getElementById("default"),document.getElementById("Admin"));
     const log = document.getElementById('log');
     childB.style.display = "none";
-	Input_Points.style.display = "none";
     sign_in.style.display = "none";
     create_pass.style.display = "none";
-	pointTab.style.display = "none";
     // hightlightCurrentTab(childB, admin);
     sign_up_form.reset();
     sign_in_form.reset();  
@@ -100,7 +85,6 @@ document.addEventListener('DOMContentLoaded', function(){
     adminB.style.display = "none";
     var childB = document.getElementById("Child Mode");
     displayChildMode(adminB, childB, sign_in, create_pass);
-	pointTab.style.display = "none";
     log.textContent = "";
     sign_up_form.reset();
     sign_in_form.reset();
@@ -164,7 +148,6 @@ document.addEventListener('DOMContentLoaded', function(){
         firstTime = 'false';
         admin.setAttribute('value', 'false');
         displayAdminMode(adminB, childB, sign_in, create_pass);
-	    pointTab.style.display = "none";
         sign_up_form.reset();
         event.preventDefault();
         //  grabs typed desired password
@@ -183,7 +166,6 @@ document.addEventListener('DOMContentLoaded', function(){
       childB.style.display = "none";
       adminB.style.display = "none";
       create_pass.style.display = "none";
-	  pointTab.style.display = "none";
       sign_in.style.display = "block";
       log.textContent = "";
       // displaySignInMode(adminB, childB, sign_in, create_pass);
@@ -220,9 +202,7 @@ document.addEventListener('DOMContentLoaded', function(){
           log.textContent = "";
           // //enters admin mode
           displayAdminMode(adminB, childB,sign_in, create_pass);
-		  pointTab.style.display = "none";
           event.preventDefault();
-	  
         }
       } );
     }
@@ -238,28 +218,5 @@ document.addEventListener('DOMContentLoaded', function(){
     chrome.runtime.openOptionsPage();
   });
   
-	addPointsButton.addEventListener("click",function(){
-		childB.style.display = "none";
-		pointTab.style.display = "block";
-	});
-	
-	pointSubmit.addEventListener("click", function(){
-		pointTab.style.display = "none";
-		childB.style.display = "block";
-	});
 });
-
-
-// (Alex) Set mode to "mode".
-// Call with 'admin' after successful login.
-// Call with 'child_view' after enterring child view.
-// TODO: Call with 'child_context_clue_game' and 'child_educational_game'
-// when those are implemented.
-function sync_mode(mode) {  
-  chrome.storage.sync.set(
-    {'mode': mode},
-    function() {
-	    console.log('mode set to ' + mode)
-    }
-  )
-}
+  
