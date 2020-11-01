@@ -254,9 +254,12 @@ function educational_game() {
 		console.log("attempted answer: " + attempt)
 
 		if (attempt == answer) {
+			console.log("correct answer")
+
 			// get id's of corresponding box/text id
 			let box_id = $(this).attr("id")
-			let text_id = "paragraph_text_"+box_id.slice(-1)
+			let id = box_id.slice("paragraph_box_".length)
+			let text_id = "paragraph_text_"+id
 			console.log("box_id = " + box_id)
 			console.log("text_id = " + text_id)
 
@@ -266,11 +269,10 @@ function educational_game() {
 			reward_points();
 			//document.getElementById("pointTotal").innerHTML = parseInt(document.getElementById("pointTotal").innerHTML) + parseInt(100);
 			alert("Correct. Unblocking paragraph.")
-			console.log("correct answer")
 		}
 		else {
-			alert("Incorrect. Paragraph will remain blocked.")
 			console.log("incorrect answer")
+			alert("Incorrect. Paragraph will remain blocked.")
 		}
 	})
 
