@@ -34,7 +34,7 @@ function init() {
 
 	chrome.storage.sync.get('mode', function(result) {
 		mode = result['mode']
-		mode = 'child_context_clue_game'
+
 		console.log('mode is ' + mode)
 		if (mode == 'admin') {
 			// no need to block content, so do nothing
