@@ -218,7 +218,7 @@ function context_clue_game() {
 
 			$('.random_box_' + word_id).css({backgroundColor: ""})
 			$('.random_text_' + word_id).css({opacity: 1})
-
+			reward_points();
 			alert('Correct. Unblocking word.')
 		}
 		else{
