@@ -121,13 +121,13 @@ function block_random_words(){
 
 	let word_id = 0
 
+	//keep track of all words blocked for the current <p> tag to ensure that
+	//every blocked word is only highlighted once
+	var blockedWords = []
+
 	//iterate thru every p element 
 	$("p").each(function()
 	{
-		//keep track of all words blocked for the current <p> tag to ensure that
-		//every blocked word is only highlighted once
-		var blockedWords = []
-
 		//textArray is an array holding each word of the current <p> tag's text
 		var textArray = $(this).text().split(' ')
 
@@ -135,15 +135,16 @@ function block_random_words(){
 		for(var i = 0; i < textArray.length; i++){
 			//Math.random() returns a value between 0 & 1. We can always adjust this to increase/decrease
 			//the frequency
-			if(Math.random() >= 0.9 && !blockedWords.includes(textArray[i])){
+			if(Math.random() >= 0.9 && blockedWords.indexOf(textArray[i].toLowerCase()) == -1) {
 				//highlight the word (textArray[i]) only within the current <p>'s text
 				$(this).highlight(textArray[i], {className: "random_box_" + word_id, wordsOnly: true})
 				$(this).highlight(textArray[i], {className: "random_text_" + word_id, wordsOnly: true})
 
-		 		$(".random_box_" + word_id).css({backgroundColor: "blue"})
+		 		$(".random_box_" + word_id).css({backgroundColor: "black"})
 				$(".random_text_" + word_id).css({opacity: 0})
+
 				word_id++
-				blockedWords.push(textArray[i])
+				blockedWords.push(textArray[i].toLowerCase())
 			}
 		}
 	});
@@ -198,8 +199,32 @@ function view_blocked(website){
 // (Alex) TODO: implement this
 function context_clue_game() {
 
-	block_random_words()
 	// block words, but randomly
+	block_random_words()
+
+	//when every element with a classname starting with "random_box" is clicked
+	$('[class^="random_box"]').click(function() {
+		//retrieve the blocked text
+		var blocked_text = $(this).text()
+
+		//prompt user what they believe the blocked word is, based off of context clues
+		let user_input = prompt('Using your context clues, what do you think the blocked word (singular) is?')
+		
+		//if user_input is valid value and equals the blocked text, then it will be unblocked
+		if( user_input != null && (blocked_text.toLowerCase() == user_input.toLowerCase())){
+
+			//string parsing to retrieve the specific classname of the current blocked text
+			var word_id = $(this).attr('class').split('random_box_')[1]
+
+			$('.random_box_' + word_id).css({backgroundColor: ""})
+			$('.random_text_' + word_id).css({opacity: 1})
+
+			alert('Correct. Unblocking word.')
+		}
+		else{
+			alert("Incorrect. Word will remain blocked.")
+		}
+	})
 
 }
 
