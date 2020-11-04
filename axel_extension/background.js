@@ -33,7 +33,27 @@ chrome.runtime.onInstalled.addListener(function(){
 
 });
 
-
+chrome.runtime.onMessage.addListener(
+  function(request, sender, sendResponse) {
+    console.log(sender.tab ?
+                "from a content script:" + sender.tab.url :
+                "from the extension");
+    if (request.greeting == "Points"){
+	var points = 100;
+	var storedPoints = 0;
+	chrome.storage.sync.get(['pointTotal'], function(result){
+          console.log('points grabbed is ' + result.pointTotal);
+			storedPoints = result.pointTotal;
+			storedPoints = storedPoints + points;
+			chrome.storage.sync.set({'pointTotal':storedPoints},function(){
+			console.log('Points Total is Now ' + storedPoints);
+			});
+			chrome.storage.sync.get(['pointTotal'], function(result){
+          	console.log('points grabbed is ' + result.pointTotal);
+         	});
+         });
+		}
+  });
 
 // ---------------------------------------------------------------------
 // (Alex) BELOW IS NOT USED

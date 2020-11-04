@@ -218,7 +218,7 @@ function context_clue_game() {
 
 			$('.random_box_' + word_id).css({backgroundColor: ""})
 			$('.random_text_' + word_id).css({opacity: 1})
-
+			reward_points();
 			alert('Correct. Unblocking word.')
 		}
 		else{
@@ -263,7 +263,8 @@ function educational_game() {
 			// reset settings of clicked paragraph
 			$("#"+text_id).css({opacity: 1})
 			$("#"+box_id).css({backgroundColor: ""})
-
+			reward_points();
+			//document.getElementById("pointTotal").innerHTML = parseInt(document.getElementById("pointTotal").innerHTML) + parseInt(100);
 			alert("Correct. Unblocking paragraph.")
 			console.log("correct answer")
 		}
@@ -302,7 +303,15 @@ function get_question(type) {
 	return [question, answer]
 }
 
+//(Matthew) Add points when getting a correct answer in gamemodes
+// Called when inside Gamemodes
 
+function reward_points(){
+	chrome.runtime.sendMessage({greeting: "Points"}, function(response) {
+  			console.log(response.farewell);
+			});
+	
+}
 
 // ---------------------------------------------------------------------
 // (Alex) BELOW IS NOT USED

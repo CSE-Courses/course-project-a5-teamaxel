@@ -276,6 +276,8 @@ document.addEventListener('DOMContentLoaded', function(){
     }
   })// end admin
 
+
+
   /********************************************************************** */
   //		The below section Allows for Switching to Admin Options .
   //    Action Listener for when the admin button is clicked
