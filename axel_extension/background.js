@@ -21,6 +21,9 @@ chrome.runtime.onInstalled.addListener(function(){
     //(Aaron) Initialize bad_websites to empty array
     chrome.storage.sync.set({'bad_websites': []});
 
+	//(Matthew) Initialize point_websites to empty array
+	chrome.storage.sync.set({'point_websites': []});
+
     // (Alex) Initialize mode to child_view.
 
     chrome.storage.sync.set({'mode': 'child_view'}, function (){

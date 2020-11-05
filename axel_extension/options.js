@@ -40,6 +40,15 @@ function addWord(){
 
 };
 
+function addPointWebsite(){
+
+    val = document.getElementById("websiteURLPoint").value;
+    // (Alex) add banned word to storage
+	if(checkValidURL()) {
+        sync_add_website_points(val);
+    }
+
+};
 //adds website when button is clicked
 
 //changed to test
@@ -49,6 +58,9 @@ $('#addWebsite').on('click',function(){ addWebsite()});
 //adds word when button clicked
 
 $('#addWord').on('click',function(){ addWord() });
+
+// adds a website buyable with points when clicked
+$('#addWebsitePoint').on('click',function(){ addPointWebsite()});
 
 
 
@@ -91,6 +103,23 @@ $('#wordTable').on('click' , function() {
 
 });
 
+//Removes a website from the Unlockable list if clicked
+$('#websiteTablePoint').on('click' , function() {
+
+    var tab = document.getElementById('websiteTablePoint').getElementsByTagName('tbody')[0];
+    var rows = tab.getElementsByTagName('tr');
+    for ( i = 0; i < rows.length; i++) {
+        rows[i].onclick = function() {
+            var ans = confirm("Would you like to Delete this Website?");
+            if(ans) {
+                sync_remove_website_point(this.innerText);
+            }else{
+                alert("not removed");
+            }
+        }
+    }
+});
+
 
 
 
@@ -130,7 +159,24 @@ function sync_add_website(website) {
     })
 }
 
+//adds website bought with points
+function sync_add_website_points(website){
+	chrome.storage.sync.get('point_websites', function(result) {
+        let webs = result['point_websites'];
+        console.log('current websites are ' + webs);
+        if(website.charAt(0)!= 'h' ){
+            website = "https://" + website;
+        }
 
+        webs.push(website);
+
+
+        chrome.storage.sync.set({'point_websites': webs}, function(){});
+        console.log('new websites are ' + webs);
+        reloadPage();
+    })
+	
+}
 
 
 // (Alex) TODO: This method is untested, not sure if removing from an array like this works.
@@ -165,7 +211,20 @@ function sync_remove_website(website) {
     })
 }
 
-
+//remove website unlockable with points
+function sync_remove_website_point(website) {
+    chrome.storage.sync.get('point_websites', function(result) {
+        let websites = result['point_websites']
+        console.log('current websites are ' + websites)
+        let pos = websites.indexOf(website)
+        if (pos != -1) {
+            websites.splice(pos, 1)
+        }
+        chrome.storage.sync.set({'point_websites': websites}, function(){})
+        console.log('new websites are ' + websites)
+        reloadPage();
+    })
+}
 
 function reloadPage() {
 
@@ -191,6 +250,19 @@ function reloadPage() {
                 "<td>" + website + "</td>>" +
                 "</tr>"
             );
+        })
+    });
+
+	$('#websiteTablePoint tbody').empty();
+    chrome.storage.sync.get('point_websites', function (result) {
+        let pwebsite = result['point_websites'];
+        pwebsite.forEach(function (pwebsites) {
+            $("#websiteTablePoint tbody").append(
+                "<tr>" +
+                "<td>" + pwebsites + "</td>>" +
+                "</tr>"
+            )
+
         })
     });
 
