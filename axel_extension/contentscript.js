@@ -108,6 +108,9 @@ function block_words(words) {
 	// remove the inner span's text
 	$(".bad_word_text").css({opacity: 0})
 
+	// stop clicking functionality
+	$(".bad_word_box").click(function() { return false; } );
+
 }
 
 // (Javi) Function to block random words. I iterate throguh every word within a 
@@ -142,6 +145,9 @@ function block_random_words(){
 
 		 		$(".random_box_" + word_id).css({backgroundColor: "black"})
 				$(".random_text_" + word_id).css({opacity: 0})
+
+				// stop clicking functionality
+				$("[class^='random_box'").click(function() { return false; } );
 
 				word_id++
 				blockedWords.push(textArray[i].toLowerCase())
@@ -179,6 +185,8 @@ function block_paragraphs() {
 	$(".paragraph_box").css({backgroundColor: "blue"})
 	// remove the inner span's text
 	$(".paragraph_text").css({opacity: 0})
+	// stop clicking functionality
+	$(".paragraph_box").click(function() { return false; } );
 }
 
 function view(bad_words) {
@@ -196,7 +204,6 @@ function view_blocked(website){
 }
 
 
-// (Alex) TODO: implement this
 function context_clue_game() {
 
 	// block words, but randomly
@@ -218,6 +225,7 @@ function context_clue_game() {
 
 			$('.random_box_' + word_id).css({backgroundColor: ""})
 			$('.random_text_' + word_id).css({opacity: 1})
+
 			reward_points();
 			alert('Correct. Unblocking word.')
 		}
