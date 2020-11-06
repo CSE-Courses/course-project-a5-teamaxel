@@ -154,6 +154,9 @@ function block_words(words) {
 	// remove the inner span's text
 	$(".bad_word_text").css({opacity: 0})
 
+	// stop clicking functionality
+	$(".bad_word_box").click(function() { return false; } );
+
 }
 
 // (Javi) Function to block random words. I iterate throguh every word within a 
@@ -188,6 +191,9 @@ function block_random_words(){
 
 		 		$(".random_box_" + word_id).css({backgroundColor: "black"})
 				$(".random_text_" + word_id).css({opacity: 0})
+
+				// stop clicking functionality
+				$("[class^='random_box'").click(function() { return false; } );
 
 				word_id++
 				blockedWords.push(textArray[i].toLowerCase())
@@ -225,6 +231,8 @@ function block_paragraphs() {
 	$(".paragraph_box").css({backgroundColor: "blue"})
 	// remove the inner span's text
 	$(".paragraph_text").css({opacity: 0})
+	// stop clicking functionality
+	$(".paragraph_box").click(function() { return false; } );
 }
 
 function view(bad_words) {
@@ -242,7 +250,6 @@ function view_blocked(website){
 }
 
 
-// (Alex) TODO: implement this
 function context_clue_game() {
 
 	// block words, but randomly
@@ -264,9 +271,7 @@ function context_clue_game() {
 
 			$('.random_box_' + word_id).css({backgroundColor: ""})
 			$('.random_text_' + word_id).css({opacity: 1})
-			
 			reward_points();//Point portion
-			
 			alert('Correct. Unblocking word.')
 		}
 		else{
@@ -302,9 +307,12 @@ function educational_game() {
 		console.log("attempted answer: " + attempt)
 
 		if (attempt == answer) {
+			console.log("correct answer")
+
 			// get id's of corresponding box/text id
 			let box_id = $(this).attr("id")
-			let text_id = "paragraph_text_"+box_id.slice(-1)
+			let id = box_id.slice("paragraph_box_".length)
+			let text_id = "paragraph_text_"+id
 			console.log("box_id = " + box_id)
 			console.log("text_id = " + text_id)
 
@@ -316,11 +324,10 @@ function educational_game() {
 			
 			//document.getElementById("pointTotal").innerHTML = parseInt(document.getElementById("pointTotal").innerHTML) + parseInt(100);
 			alert("Correct. Unblocking paragraph.")
-			console.log("correct answer")
 		}
 		else {
-			alert("Incorrect. Paragraph will remain blocked.")
 			console.log("incorrect answer")
+			alert("Incorrect. Paragraph will remain blocked.")
 		}
 	})
 
