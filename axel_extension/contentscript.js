@@ -41,6 +41,15 @@ function init() {
 		}
 		else {
 			var blocked = 0;
+			/*(Matthew)
+			This section handles blocking banned websites. If the website is banned 
+			we skip the unlocking process. If not we next check to see if the the
+			website is unlockable. If it is we ask the user if they wish to use 
+			their points to unlock it. If they do the webpage is unlocked and 
+			words are blocked. If they don't want to unlock it or they can't the 
+			page will be blocked. If it is not a unlockable or blocked we just block
+			the words.
+			*/
 			chrome.storage.sync.get('bad_websites', function(result) {
 				let bad_websites = result['bad_websites']
 				let size = bad_websites.length;
@@ -255,7 +264,9 @@ function context_clue_game() {
 
 			$('.random_box_' + word_id).css({backgroundColor: ""})
 			$('.random_text_' + word_id).css({opacity: 1})
-			reward_points();
+			
+			reward_points();//Point portion
+			
 			alert('Correct. Unblocking word.')
 		}
 		else{
@@ -300,7 +311,9 @@ function educational_game() {
 			// reset settings of clicked paragraph
 			$("#"+text_id).css({opacity: 1})
 			$("#"+box_id).css({backgroundColor: ""})
-			reward_points();
+			
+			reward_points();// Point portion
+			
 			//document.getElementById("pointTotal").innerHTML = parseInt(document.getElementById("pointTotal").innerHTML) + parseInt(100);
 			alert("Correct. Unblocking paragraph.")
 			console.log("correct answer")
@@ -340,8 +353,8 @@ function get_question(type) {
 	return [question, answer]
 }
 
-//(Matthew) Add points when getting a correct answer in gamemodes
-// Called when inside Gamemodes
+//(Matthew) Add points when getting a correct answer in gamemodes.
+// 			Called when inside Gamemodes.
 
 function reward_points(){
 	chrome.runtime.sendMessage({greeting: "Points"}, function(response) {
@@ -350,6 +363,8 @@ function reward_points(){
 	
 }
 
+//(Matthew) Sends message to backround script to subtract points 
+//			when unlocking websites.
 function subtract_points(){
 	chrome.runtime.sendMessage({greeting: "Sub_Points"}, function(response) {
   			console.log(response.farewell);
@@ -357,6 +372,12 @@ function subtract_points(){
 	
 }
 
+/*(Matthew)
+	The below function is called when the timer expires. When the timer expires
+	it will ask the user if they want to continue going. If it does it will take 2000
+	more points. If not it will block the page. In the instance of the user not having
+	enough points it will inform them so and block the content.
+*/
 function testing_time(){
 	chrome.storage.sync.get('pointTotal', function(result) {
 	if(result.pointTotal >= 2000 ){	

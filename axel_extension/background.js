@@ -39,6 +39,12 @@ chrome.runtime.onInstalled.addListener(function(){
 		});
 });
 
+/*(Matthew)
+This below function is used to recieve messages from the content script.
+Points: 	When the greeting is Points it is used to add points to the users total points
+Sub_Points: When the greeting is Sub_Points it is used to subtract points from the users total points.
+Timer:		When the greeting is Timer it is used to send the expiration time to the user for unlocked websites
+*/
 chrome.runtime.onMessage.addListener(
   function(request, sender, sendResponse) {
     console.log(sender.tab ?
@@ -79,7 +85,7 @@ chrome.runtime.onMessage.addListener(
 			date.toLocaleTimeString();
 			var exdate = new Date();
 			exdate = new Date(date.getTime() + 5000);
-			chrome.storage.sync.set({'Time':exdate.toLocaleTimeString()},function(){
+			chrome.storage.sync.set({'Time':'Expires' + exdate.toLocaleTimeString()},function(){
 			console.log('Time is Now ' + exdate.toLocaleTimeString());
 			});
 	}
