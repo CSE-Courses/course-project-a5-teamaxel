@@ -34,6 +34,9 @@ chrome.runtime.onInstalled.addListener(function(){
 			console.log('Points Total is Now ' + 0);
 		});
 
+	chrome.storage.sync.set({'Time':'No Timer'},function(){
+			console.log('Time is Now ');
+		});
 });
 
 chrome.runtime.onMessage.addListener(
@@ -56,6 +59,30 @@ chrome.runtime.onMessage.addListener(
          	});
          });
 		}
+	if(request.greeting == "Sub_Points"){
+		var points = 2000;
+		var storedPoints = 0;
+	chrome.storage.sync.get(['pointTotal'], function(result){
+          console.log('points grabbed is ' + result.pointTotal);
+			storedPoints = result.pointTotal;
+			storedPoints = storedPoints - points;
+			chrome.storage.sync.set({'pointTotal':storedPoints},function(){
+			console.log('Points Total is Now ' + storedPoints);
+			});
+			chrome.storage.sync.get(['pointTotal'], function(result){
+          	console.log('points grabbed is ' + result.pointTotal);
+         	});
+         });
+	}
+	if(request.greeting == "Timer"){
+			var date = new Date();
+			date.toLocaleTimeString();
+			var exdate = new Date();
+			exdate = new Date(date.getTime() + 5000);
+			chrome.storage.sync.set({'Time':exdate.toLocaleTimeString()},function(){
+			console.log('Time is Now ' + exdate.toLocaleTimeString());
+			});
+	}
   });
 
 // ---------------------------------------------------------------------

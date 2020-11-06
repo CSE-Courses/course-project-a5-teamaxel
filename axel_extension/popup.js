@@ -196,6 +196,13 @@ document.addEventListener('DOMContentLoaded', function(){
  chrome.storage.sync.get(['pointTotal'], function(result){
 	document.getElementById("pointTotal").innerHTML = result.pointTotal;
 });
+
+chrome.storage.sync.get(['Time'], function(result){
+	document.getElementById("extime").innerHTML = result.Time;
+});
+
+setInterval(time,1000);
+
   /*    admin.addEventListener()
     *    "element.target. value" grabs the value we stored in admin  
     *    and store the value in the variable "firstTime".
@@ -315,7 +322,11 @@ document.addEventListener('DOMContentLoaded', function(){
   });
 });
 
-
+function time(){
+	var d = new Date();
+	document .getElementById("time").innerHTML = d.toLocaleTimeString();
+	
+}
 // // (Alex) Set mode to "mode".
 // // Call with 'admin' after successful login.
 // // Call with 'child_view' after enterring child view.
