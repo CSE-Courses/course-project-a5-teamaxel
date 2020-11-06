@@ -21,6 +21,9 @@ chrome.runtime.onInstalled.addListener(function(){
     //(Aaron) Initialize bad_websites to empty array
     chrome.storage.sync.set({'bad_websites': []});
 
+	//(Matthew) Initialize point_websites to empty array
+	chrome.storage.sync.set({'point_websites': []});
+
     // (Alex) Initialize mode to child_view.
 
     chrome.storage.sync.set({'mode': 'child_view'}, function (){
@@ -31,8 +34,17 @@ chrome.runtime.onInstalled.addListener(function(){
 			console.log('Points Total is Now ' + 0);
 		});
 
+	chrome.storage.sync.set({'Time':'No Timer'},function(){
+			console.log('Time is Now ');
+		});
 });
 
+/*(Matthew)
+This below function is used to recieve messages from the content script.
+Points: 	When the greeting is Points it is used to add points to the users total points
+Sub_Points: When the greeting is Sub_Points it is used to subtract points from the users total points.
+Timer:		When the greeting is Timer it is used to send the expiration time to the user for unlocked websites
+*/
 chrome.runtime.onMessage.addListener(
   function(request, sender, sendResponse) {
     console.log(sender.tab ?
@@ -53,6 +65,30 @@ chrome.runtime.onMessage.addListener(
          	});
          });
 		}
+	if(request.greeting == "Sub_Points"){
+		var points = 2000;
+		var storedPoints = 0;
+	chrome.storage.sync.get(['pointTotal'], function(result){
+          console.log('points grabbed is ' + result.pointTotal);
+			storedPoints = result.pointTotal;
+			storedPoints = storedPoints - points;
+			chrome.storage.sync.set({'pointTotal':storedPoints},function(){
+			console.log('Points Total is Now ' + storedPoints);
+			});
+			chrome.storage.sync.get(['pointTotal'], function(result){
+          	console.log('points grabbed is ' + result.pointTotal);
+         	});
+         });
+	}
+	if(request.greeting == "Timer"){
+			var date = new Date();
+			date.toLocaleTimeString();
+			var exdate = new Date();
+			exdate = new Date(date.getTime() + 5000);
+			chrome.storage.sync.set({'Time':'Expires' + exdate.toLocaleTimeString()},function(){
+			console.log('Time is Now ' + exdate.toLocaleTimeString());
+			});
+	}
   });
 
 // ---------------------------------------------------------------------

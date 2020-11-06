@@ -40,6 +40,16 @@ function init() {
 			// no need to block content, so do nothing
 		}
 		else {
+			var blocked = 0;
+			/*(Matthew)
+			This section handles blocking banned websites. If the website is banned 
+			we skip the unlocking process. If not we next check to see if the the
+			website is unlockable. If it is we ask the user if they wish to use 
+			their points to unlock it. If they do the webpage is unlocked and 
+			words are blocked. If they don't want to unlock it or they can't the 
+			page will be blocked. If it is not a unlockable or blocked we just block
+			the words.
+			*/
 			chrome.storage.sync.get('bad_websites', function(result) {
 				let bad_websites = result['bad_websites']
 				let size = bad_websites.length;
@@ -48,9 +58,47 @@ function init() {
 					var currentWebsite = window.location.href;
 					if(currentWebsite.startsWith(website) && website!= "") {
 						view_blocked();
+						blocked = 1;
 						return;
 					}
 				}
+				if(blocked == 0){
+			chrome.storage.sync.get('point_websites', function(result) {
+				let point_websites = result['point_websites']
+				let size = point_websites.length;
+				for(i = 0; i<size; i++){
+					website = point_websites[i]
+					var currentWebsite = window.location.href;
+					if(currentWebsite.startsWith(website) && website!= "") {
+						var storedPoints = 0;
+						chrome.storage.sync.get(['pointTotal'], function(result){
+          					console.log('points grabbed is ' + result.pointTotal);
+							storedPoints = result.pointTotal;
+							if(storedPoints >= 2000){
+							var ans = confirm("This website is locked. Would you like to spend 2000 points to unlock this site");
+							if(ans){
+								subtract_points();
+								chrome.runtime.sendMessage({greeting: "Timer"}, function(response) {
+  									console.log(response.farewell);
+								});
+								setTimeout(testing_time,5000);// the time is only so low due to the purpose of displaying
+							}
+							else{
+								view_blocked();
+							}
+							return;
+							}
+							else{
+								view_blocked();
+								alert("This site can be unlocked for 2000 points. Currently you do not have enough points to unlock the site");
+							}
+				         });
+					}
+				}
+				blocked = 0;
+			})
+
+		}
 				chrome.storage.sync.get('bad_words', function(result) {
 					let bad_words = result['bad_words']
 					view(bad_words)
@@ -68,8 +116,6 @@ function init() {
 					}
 				})
 			})
-
-
 
 		}
 	})
@@ -225,8 +271,7 @@ function context_clue_game() {
 
 			$('.random_box_' + word_id).css({backgroundColor: ""})
 			$('.random_text_' + word_id).css({opacity: 1})
-
-			reward_points();
+			reward_points();//Point portion
 			alert('Correct. Unblocking word.')
 		}
 		else{
@@ -274,7 +319,9 @@ function educational_game() {
 			// reset settings of clicked paragraph
 			$("#"+text_id).css({opacity: 1})
 			$("#"+box_id).css({backgroundColor: ""})
-			reward_points();
+			
+			reward_points();// Point portion
+			
 			//document.getElementById("pointTotal").innerHTML = parseInt(document.getElementById("pointTotal").innerHTML) + parseInt(100);
 			alert("Correct. Unblocking paragraph.")
 		}
@@ -313,8 +360,8 @@ function get_question(type) {
 	return [question, answer]
 }
 
-//(Matthew) Add points when getting a correct answer in gamemodes
-// Called when inside Gamemodes
+//(Matthew) Add points when getting a correct answer in gamemodes.
+// 			Called when inside Gamemodes.
 
 function reward_points(){
 	chrome.runtime.sendMessage({greeting: "Points"}, function(response) {
@@ -323,6 +370,47 @@ function reward_points(){
 	
 }
 
+//(Matthew) Sends message to backround script to subtract points 
+//			when unlocking websites.
+function subtract_points(){
+	chrome.runtime.sendMessage({greeting: "Sub_Points"}, function(response) {
+  			console.log(response.farewell);
+			});
+	
+}
+
+/*(Matthew)
+	The below function is called when the timer expires. When the timer expires
+	it will ask the user if they want to continue going. If it does it will take 2000
+	more points. If not it will block the page. In the instance of the user not having
+	enough points it will inform them so and block the content.
+*/
+function testing_time(){
+	chrome.storage.sync.get('pointTotal', function(result) {
+	if(result.pointTotal >= 2000 ){	
+		var ans = confirm("Your website browsing time has expired. If you wish to continue you must spend 2000 more points.");
+		if(ans){
+			subtract_points();
+			chrome.runtime.sendMessage({greeting: "Timer"}, function(response) {
+		  	console.log(response.farewell);
+			});
+			setTimeout(testing_time,5000);	
+		}
+		else{
+			view_blocked();
+			chrome.storage.sync.set({'Time':'No Timer'},function(){
+				console.log('Time is Now ' + 'No Timer');
+			});
+		}
+	}
+	else{
+		alert("You do not have enough points to continue. Blocking the page")
+		view_blocked();
+		chrome.storage.sync.set({'Time':'No Timer'},function(){
+			console.log('Time is Now ' + 'No Timer');
+		});
+	}
+});
 // ---------------------------------------------------------------------
 // (Alex) BELOW IS NOT USED
 // The function below tests some basic functionality of message passing.
@@ -337,6 +425,7 @@ function reward_points(){
 // something.
 
 function message_test() {
+	
 	chrome.runtime.sendMessage(
 		{service: 'get_background_color'},
 		function(response) {
@@ -344,7 +433,7 @@ function message_test() {
 		}
 	)
 }
-
+}
 
 
 
