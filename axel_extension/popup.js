@@ -122,7 +122,7 @@ document.addEventListener('DOMContentLoaded', function(){
     var childB = document.getElementById("Admin Mode");
     var child = document.getElementById("Child Mode");
     var sign_in = document.getElementById("sign_in");
-
+	var timersec = document.getElementById("Timer");// Retreive the timer section
 	var Input_Points = document.getElementById("Input_Points");
   var create_pass = document.getElementById("create_pass");
   var sign_up_form = document.getElementById("new_pass");
@@ -158,6 +158,7 @@ document.addEventListener('DOMContentLoaded', function(){
   /************************************************************************/
   var child = document.getElementById("default");
   child.addEventListener("click",function(){
+	timersec.style.display = "block";//display timer when switching to child mode
     var adminB = document.getElementById("Admin Mode");
     adminB.style.display = "none";
     var childB = document.getElementById("Child Mode");
@@ -216,10 +217,19 @@ document.addEventListener('DOMContentLoaded', function(){
     admin.setAttribute('value', result.first_time);
   });
   
-
+// Displays total points when opening popup
  chrome.storage.sync.get(['pointTotal'], function(result){
 	document.getElementById("pointTotal").innerHTML = result.pointTotal;
 });
+
+// Displays Timer when Opening popup
+chrome.storage.sync.get(['Time'], function(result){
+	document.getElementById("extime").innerHTML = result.Time;
+});
+
+//Handles displaying current time
+setInterval(time,1000);
+
   /*    admin.addEventListener()
     *    "element.target. value" grabs the value we stored in admin  
     *    and store the value in the variable "firstTime".
@@ -250,6 +260,7 @@ document.addEventListener('DOMContentLoaded', function(){
     if(firstTime == 'true'){                //  first time admin
       displaySignUpMode(adminB, childB, sign_in, create_pass);
 	  points.style.display = "none";
+	  timersec.style.display = "none";// Removes timer display
       //  if submit button is hit, store entered password in storage and move into Admin Mode
       sign_up_form.addEventListener("submit", function(event){
         //sets first_time admin to false
@@ -274,6 +285,7 @@ document.addEventListener('DOMContentLoaded', function(){
     else{                                 //returning admin
       pointTab.style.display = "none";
       points.style.display = "none";
+	  timersec.style.display = "none";// Removes timer display
       log.textContent = "";
       displaySignInMode(adminB, childB, sign_in, create_pass);
       //sign in using initially established password
@@ -301,6 +313,8 @@ document.addEventListener('DOMContentLoaded', function(){
       } );
     }
   })// end admin
+
+
 
   /********************************************************************** */
   //		The below section Allows for Switching to Admin Options .
@@ -339,3 +353,22 @@ document.addEventListener('DOMContentLoaded', function(){
   });
 });
 
+//(Matthew)Used to display current time
+function time(){
+	var d = new Date();
+	document .getElementById("time").innerHTML = d.toLocaleTimeString();
+	
+}
+// // (Alex) Set mode to "mode".
+// // Call with 'admin' after successful login.
+// // Call with 'child_view' after enterring child view.
+// // TODO: Call with 'child_context_clue_game' and 'child_educational_game'
+// // when those are implemented.
+// function sync_mode(mode) {  
+//   chrome.storage.sync.set(
+//     {'mode': mode},
+//     function() {
+// 	    console.log('mode set to ' + mode)
+//     }
+//   )
+// }
