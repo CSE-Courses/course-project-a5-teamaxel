@@ -21,6 +21,13 @@
   		width: 100px;
 	}
 	
+	div.Timer{
+		position: fixed;
+  		bottom: 0;
+  		left: 0;
+  		width: 100px;
+	}
+	
   </style>
   <body>
 	<!-- Info Relatated to Tabs(Modes) -->
@@ -45,14 +52,19 @@
 		
   </div>
 	
-
+	<!-- Info Related to Point Display -->
 	<div id = "points" class = "points">
 	<h1 style = "font-size:100%"> |Points| </h1>
 	<p id = "pointTotal">0</p>
 	</div>
 
 
-
+	<!-- Info Related to Timer -->
+	<div id = "Timer" class = "Timer">
+		<h1 style = "font-size:100%"> |Timer| </h1>
+		<p id = "extime"></p>
+		<p id = "time"></p>
+	</div>
 
 	<!-- Info Related to Add Points Tab -->
 	<div id ="Input_Points">

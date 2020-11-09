@@ -20,6 +20,31 @@ function sync_mode(mode) {
   )
 }
 
+//hashes inputted password
+function hash_pass(password){
+  var salt = "!q@P09zM42wKli*";
+  var hashed_pass = "";
+  var len = password.length;
+  for(i = 0; i < len; ++i){
+    hashed_pass += (password[i] + salt[i]);
+  }
+  console.log(hashed_pass);
+  return hashed_pass;
+}
+
+//decrypts hashed password
+function decrypt(hashed_password){
+  var len = hashed_password.length;
+  var salt = "";
+  var password = "";
+  for(i = 0; i < len; i+=2){
+    password += hashed_password[i];
+    salt += hashed_password[i+1];
+  }
+  console.log(password);
+  console.log(salt);
+  return password;
+}
 
 function hightlightCurrentTab(x ,y){
   x.style.backgroundColor = "pink";
@@ -97,7 +122,7 @@ document.addEventListener('DOMContentLoaded', function(){
     var childB = document.getElementById("Admin Mode");
     var child = document.getElementById("Child Mode");
     var sign_in = document.getElementById("sign_in");
-
+	var timersec = document.getElementById("Timer");// Retreive the timer section
 	var Input_Points = document.getElementById("Input_Points");
   var create_pass = document.getElementById("create_pass");
   var sign_up_form = document.getElementById("new_pass");
@@ -105,7 +130,7 @@ document.addEventListener('DOMContentLoaded', function(){
   var adminOptions = document.getElementById("Admin Options");
 	var addPointsButton = document.getElementById("Add Points");
 	var pointTab = document.getElementById("Input_Points");
-	var points = document.getElementById("points");
+  var points = document.getElementById("points");
 
   var pointSubmit = document.getElementById("Point_Submit");
     hightlightCurrentTab(document.getElementById("default"),document.getElementById("Admin"));
@@ -121,7 +146,6 @@ document.addEventListener('DOMContentLoaded', function(){
     sign_up_form.reset();
     sign_in_form.reset();  
   savedState(childB, child,sign_in, create_pass);
-
   /************************************************************************/
   //		The below section Allows for Switching to the Child Mode Tab.
   //		It Controls the buttons appearing when clicked along
@@ -134,6 +158,7 @@ document.addEventListener('DOMContentLoaded', function(){
   /************************************************************************/
   var child = document.getElementById("default");
   child.addEventListener("click",function(){
+	timersec.style.display = "block";//display timer when switching to child mode
     var adminB = document.getElementById("Admin Mode");
     adminB.style.display = "none";
     var childB = document.getElementById("Child Mode");
@@ -192,10 +217,19 @@ document.addEventListener('DOMContentLoaded', function(){
     admin.setAttribute('value', result.first_time);
   });
   
-
+// Displays total points when opening popup
  chrome.storage.sync.get(['pointTotal'], function(result){
 	document.getElementById("pointTotal").innerHTML = result.pointTotal;
 });
+
+// Displays Timer when Opening popup
+chrome.storage.sync.get(['Time'], function(result){
+	document.getElementById("extime").innerHTML = result.Time;
+});
+
+//Handles displaying current time
+setInterval(time,1000);
+
   /*    admin.addEventListener()
     *    "element.target. value" grabs the value we stored in admin  
     *    and store the value in the variable "firstTime".
@@ -226,6 +260,7 @@ document.addEventListener('DOMContentLoaded', function(){
     if(firstTime == 'true'){                //  first time admin
       displaySignUpMode(adminB, childB, sign_in, create_pass);
 	  points.style.display = "none";
+	  timersec.style.display = "none";// Removes timer display
       //  if submit button is hit, store entered password in storage and move into Admin Mode
       sign_up_form.addEventListener("submit", function(event){
         //sets first_time admin to false
@@ -239,8 +274,9 @@ document.addEventListener('DOMContentLoaded', function(){
         points.style.display = "block";
         var desired_pass = document.getElementById('creatingPass').value;
         sign_up_form.reset();
-        chrome.storage.sync.set({'password': desired_pass.toString() }, function(){
-            console.log('Password entered to storage');
+        var hash = hash_pass(desired_pass.toString());
+        chrome.storage.sync.set({'password': hash.toString() }, function(){
+            console.log( hash.toString() + 'entered to storage, ' + desired_pass.toString() + 'actual password');
           }); 
         event.preventDefault();
       } );  //end event listener
@@ -249,6 +285,7 @@ document.addEventListener('DOMContentLoaded', function(){
     else{                                 //returning admin
       pointTab.style.display = "none";
       points.style.display = "none";
+	  timersec.style.display = "none";// Removes timer display
       log.textContent = "";
       displaySignInMode(adminB, childB, sign_in, create_pass);
       //sign in using initially established password
@@ -257,8 +294,9 @@ document.addEventListener('DOMContentLoaded', function(){
         var checkPass = document.getElementById('unique').value;
         var stored_pass = "";
         chrome.storage.sync.get(['password'], function(result){
-          console.log('Password grabbed from storage');
-          stored_pass = result.password;
+          console.log(result.password + 'grabbed from storage');
+          stored_pass = decrypt(result.password);
+          
           if(checkPass == stored_pass){
             displayAdminMode(adminB,childB,sign_in,create_pass);
             pointTab.style.display = "none";
@@ -275,6 +313,8 @@ document.addEventListener('DOMContentLoaded', function(){
       } );
     }
   })// end admin
+
+
 
   /********************************************************************** */
   //		The below section Allows for Switching to Admin Options .
@@ -313,7 +353,12 @@ document.addEventListener('DOMContentLoaded', function(){
   });
 });
 
-
+//(Matthew)Used to display current time
+function time(){
+	var d = new Date();
+	document .getElementById("time").innerHTML = d.toLocaleTimeString();
+	
+}
 // // (Alex) Set mode to "mode".
 // // Call with 'admin' after successful login.
 // // Call with 'child_view' after enterring child view.
