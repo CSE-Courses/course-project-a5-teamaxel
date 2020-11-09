@@ -66,7 +66,7 @@ let rWordList= ["badfuck", "cum", "cumbubble", "cumfest", "cumjockey", "cumm", "
 let gWebsiteList = ["https://www.youtube.com"];
 let pgWebsiteList = ["https://www.reddit.com"];
 let pg13WebsiteList = ["https://www.chatroulette.com"];
-let rWebsiteList = ["https://www.porn.com"];
+let rWebsiteList = ["https://www.adultswim.com"];
 
 
 window.onload =  reloadPage;
