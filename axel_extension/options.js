@@ -7,8 +7,66 @@
  */
 
 let val;
+var restrictionList;
+let gList = ["abbo", "abo","abortion", "abuse", "addict", "addicts",
+    "alligatorbait", "anal", "analannie", "analsex", "angie", "anus", "aroused",
+    "arse", "arsehole", "banging", "bastard", "bazongas", "bazooms", "beaner",
+    "bestial", "bestiality", "bi", "biatch", "bicurious", "bigass",
+    "bigbastard", "bigbutt", "bisexual", "bi-sexual", "christ",
+    "coitus", "condom", "fart", "farted", "farting", "farty", "fat", "fatso",
+    "givehead", "glazeddonut"];
+
+let pgList = ["backdoorman", "balllicker", "ballsack", "bondage", "boner",
+    "bong", "boob", "boobies", "boobs", "booby", "boody", "boom", "boong",
+    "biteme", "blackout", "blowjob", "boang", "bogan", "bohunk", "bollick",
+    "bollock", "booty", "bootycall", "bountybar", "bra", "brea5t", "breast",
+    "breastjob", "breastlover", "breastman", "brothel", "bullcrap", "bulldike",
+    "bulldyke", "chav", "cherrypopper", "chickslick", "chink", "chinky",
+    "choad", "chode", "clamdigger", "clamdiver","clit", "clitoris", "clogwog", "cocaine"];
+
+let pg13List = ["ass", "assbagger", "assblaster", "assclown", "asscowboy",
+    "asses", "assfuck", "assfucker", "asshat", "asshole", "assholes", "asshore", "assjockey", "asskiss", "asskisser",
+    "assklown", "asslick", "asslicker", "asslover", "assman", "assmonkey", "assmunch", "assmuncher", "asspacker",
+    "asspirate", "asspuppies", "assranger", "asswhore", "asswipe", "beastality", "beastial", "beastiality",
+    "beatoff", "beat-off", "beatyourmeat", "bitch", "bitcher", "bitches", "bitchez", "bitchin",
+    "bitching", "bitchslap", "bitchy", "butchbabes", "butchdike", "butchdyke", "butt", "buttbang",
+    "butt-bang", "buttface", "buttfuck", "butt-fuck", "buttfucker", "butt-fucker", "buttfuckers", "butt-fuckers",
+    "butthead", "buttman", "buttmunch", "buttmuncher", "buttpirate", "buttplug", "buttstain", "bullshit",
+    "bumblefuck", "bumfuck", "bunga", "bunghole", "byatch", "cacker", "cameljockey", "cameltoe",
+    "carpetmuncher", "carruth", "cock", "cockblock", "cockblocker", "cockcowboy", "cockfight", "cockhead",
+    "cockknob", "cocklicker", "cocklover", "cocknob", "cockqueen", "cockrider", "cocksman", "cocksmith",
+    "cocksmoker", "cocksucer", "cocksuck", "cocksucked", "cocksucker", "cocksucking", "cocktail",
+    "cocktease", "cocky", "cohee", "coon", "coondog", "cornhole", "crackpipev","crackwhore",
+    "crack-whore", "crap", "crapola", "crapper", "crappy", "crotch", "crotchjockey", "crotchmonkey",
+    "crotchrot", "dike", "dildo", "dingleberry", "dink", "dipshit", "dipstick", "doggiestyle", "doggystyle",
+    "dong", "doodoo", "doo-doo", "dripdick", "drunk", "drunken", "dumb", "dumbass",
+    "dumbbitch", "dumbfuck", "dyefly", "dyke", "easyslut", "eatballs", "eatme", "eatpussy",
+    "ecstacy", "ejaculate", "ejaculated", "ejaculating", "ejaculation", "erect", "erection", "facefucker",
+    "faeces", "fag", "fagging", "faggot", "fagot", "fannyfucker", "fckcum", "feces",
+    "felatio", "felch", "felcher", "felching", "fellatio", "feltch", "feltcher", "feltching", "fetish"]
 
 window.onload =  reloadPage;
+
+//get restrctionList
+
+function setRestrictionList(inputVal){
+
+
+    switch (inputVal){
+        case "G":
+            restrictionList = gList + pgList + pg13List + rList;
+            break;
+        case "PG":
+            break;
+        case "PG-13":
+            break;
+        case "R":
+            break;
+        default:
+            break;
+    }
+
+}
 
 function checkValidURL() {
 
@@ -61,8 +119,6 @@ $('#addWord').on('click',function(){ addWord() });
 
 // adds a website buyable with points when clicked
 $('#addWebsitePoint').on('click',function(){ addPointWebsite()});
-
-
 
 //Removes a website when clicked on
 $('#websiteTable').on('click' , function() {
