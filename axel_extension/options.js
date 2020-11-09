@@ -7,8 +7,129 @@
  */
 
 let val;
+let restrictionWordList = [];
+let restrictionWebsiteList = [];
+
+let gWordList = ["crap","abbo", "abo","abortion", "abuse", "addict", "addicts",
+    "alligatorbait", "anal", "analannie", "analsex", "angie", "anus", "aroused",
+    "arse", "arsehole", "banging", "bastard", "bazongas", "bazooms", "beaner",
+    "bestial", "bestiality", "bi", "biatch", "bicurious", "bigass",
+    "bigbastard", "bigbutt", "bisexual", "bi-sexual", "christ",
+    "coitus", "condom", "fart", "farted", "farting", "farty", "fat", "fatso",
+    "givehead", "glazeddonut"];
+
+let pgWordList = ["backdoorman", "balllicker", "ballsack", "bondage", "boner",
+    "bong", "boob", "boobies", "boobs", "booby", "boody", "boom", "boong",
+    "biteme", "blackout", "blowjob", "boang", "bogan", "bohunk", "bollick",
+    "bollock", "booty", "bootycall", "bountybar", "bra", "brea5t", "breast",
+    "breastjob", "breastlover", "breastman", "brothel", "bullcrap", "bulldike",
+    "bulldyke", "chav", "cherrypopper", "chickslick", "chink", "chinky",
+    "choad", "chode", "clamdigger", "clamdiver","clit", "clitoris", "clogwog", "cocaine"];
+
+let pg13WordList = ["shit","ass", "assbagger", "assblaster", "assclown", "asscowboy",
+    "asses", "assfuck", "assfucker", "asshat", "asshole", "assholes", "asshore", "assjockey", "asskiss", "asskisser",
+    "assklown", "asslick", "asslicker", "asslover", "assman", "assmonkey", "assmunch", "assmuncher", "asspacker",
+    "asspirate", "asspuppies", "assranger", "asswhore", "asswipe", "beastality", "beastial", "beastiality",
+    "beatoff", "beat-off", "beatyourmeat", "bitch", "bitcher", "bitches", "bitchez", "bitchin",
+    "bitching", "bitchslap", "bitchy", "butchbabes", "butchdike", "butchdyke", "butt", "buttbang",
+    "butt-bang", "buttface", "buttfuck", "butt-fuck", "buttfucker", "butt-fucker", "buttfuckers", "butt-fuckers",
+    "butthead", "buttman", "buttmunch", "buttmuncher", "buttpirate", "buttplug", "buttstain", "bullshit",
+    "bumblefuck", "bumfuck", "bunga", "bunghole", "byatch", "cacker", "cameljockey", "cameltoe",
+    "carpetmuncher", "carruth", "cock", "cockblock", "cockblocker", "cockcowboy", "cockfight", "cockhead",
+    "cockknob", "cocklicker", "cocklover", "cocknob", "cockqueen", "cockrider", "cocksman", "cocksmith",
+    "cocksmoker", "cocksucer", "cocksuck", "cocksucked", "cocksucker", "cocksucking", "cocktail",
+    "cocktease", "cocky", "cohee", "coon", "coondog", "cornhole", "crackpipev","crackwhore",
+    "crack-whore", "crap", "crapola", "crapper", "crappy", "crotch", "crotchjockey", "crotchmonkey",
+    "crotchrot", "dike", "dildo", "dingleberry", "dink", "dipshit", "dipstick", "doggiestyle", "doggystyle",
+    "dong", "doodoo", "doo-doo", "dripdick", "drunk", "drunken", "dumb", "dumbass",
+    "dumbbitch", "dumbfuck", "dyefly", "dyke", "easyslut", "eatballs", "eatme", "eatpussy",
+    "ecstacy", "ejaculate", "ejaculated", "ejaculating", "ejaculation", "erect", "erection", "facefucker",
+    "faeces", "fag", "fagging", "faggot", "fagot", "fannyfucker", "fckcum", "feces",
+    "felatio", "felch", "felcher", "felching", "fellatio", "feltch", "feltcher", "feltching", "fetish"];
+
+let rWordList= ["badfuck", "cum", "cumbubble", "cumfest", "cumjockey", "cumm", "cummer",
+    "cumming", "cumquat", "cumqueen", "cumshot", "cunilingus", "cunillingus", "cunn",
+    "cunnilingus", "cunntt", "cunt", "cunteyed", "cuntfuck", "cuntfucker", "cuntlick", "cuntlicker",
+    "cuntlicking", "cuntsucker", "datnigga", "deapthroat", "devilworshipper", "dick",
+    "dickbrain", "dickforbrains", "dickhead", "dickless", "dicklick", "dicklicker", "dickman",
+    "dickwad", "dickweed", "fastfuck", "fatass", "fatfuck", "fatfucker", "fingerfuck", "fingerfucked",
+    "fingerfucker", "fingerfuckers", "fingerfucking", "fister", "fistfuck", "fistfucked",
+    "fistfucker", "fistfucking", "fisting", "flange", "flasher", "flatulence", "floo", "flydie", "flydye",
+    "fok", "fondle", "footaction", "footfuck", "footfucker", "footlicker", "footstar", "foreskin", "fornicate", "foursome",
+    "fourtwenty", "fraud", "freakfuck", "freakyfucker", "freefuck", "fu", "fubar", "fuc", "fucck", "fuck",
+    "fucka", "fuckable", "fuckbag", "fuckbuddy", "fucked", "fuckedup", "fucker", "fuckers", "fuckface",
+    "fuckfest", "fuckfreak", "fuckfriend", "fuckhead", "fuckher", "fuckin", "fuckina", "fucking", "fuckingbitch", "fuckinnuts",
+    "fuckinright", "fuckit", "fuckknob", "fuckme", "fuckmehard", "fuckmonkey", "fuckoff", "fuckpig", "fucks", "fucktard",
+    "fuckwhore", "fuckyou", "fudgepacker", "fugly", "fuk", "fuks", "funeral", "funfuck", "fuuck", "gangbang", "gangbanged",
+    "gangbangergatorbait", "gay", "gaymuthafuckinwhore", "gaysex"];
+
+let gWebsiteList = ["https://www.youtube.com"];
+let pgWebsiteList = ["https://www.reddit.com"];
+let pg13WebsiteList = ["https://www.chatroulette.com"];
+let rWebsiteList = ["https://www.adultswim.com"];
+
 
 window.onload =  reloadPage;
+
+//get restrctionList
+
+function setRestrictionList(inputVal){
+
+
+
+    switch (inputVal){
+        case "G":
+            restrictionWordList = [];
+            restrictionWordList = restrictionWordList.concat(gWordList);
+            restrictionWordList = restrictionWordList.concat(pgWordList)
+            restrictionWordList = restrictionWordList.concat(pg13WordList);
+            restrictionWordList = restrictionWordList.concat(rWordList);
+
+            restrictionWebsiteList = [];
+            restrictionWebsiteList = restrictionWebsiteList.concat(gWebsiteList);
+            restrictionWebsiteList = restrictionWebsiteList.concat(pgWebsiteList);
+            restrictionWebsiteList = restrictionWebsiteList.concat(pg13WebsiteList);
+            restrictionWebsiteList = restrictionWebsiteList.concat(rWebsiteList);
+
+
+            break;
+        case "PG":
+            restrictionWordList = [];
+            restrictionWordList = restrictionWordList.concat(pgWordList)
+            restrictionWordList = restrictionWordList.concat(pg13WordList);
+            restrictionWordList = restrictionWordList.concat(rWordList);
+
+            restrictionWebsiteList = [];
+            restrictionWebsiteList = restrictionWebsiteList.concat(pgWebsiteList);
+            restrictionWebsiteList = restrictionWebsiteList.concat(pg13WebsiteList);
+            restrictionWebsiteList = restrictionWebsiteList.concat(rWebsiteList);
+            break;
+        case "PG-13":
+            restrictionWordList = [];
+            restrictionWordList = restrictionWordList.concat(pg13WordList);
+            restrictionWordList = restrictionWordList.concat(rWordList);
+
+            restrictionWebsiteList = [];
+            restrictionWebsiteList = restrictionWebsiteList.concat(pg13WebsiteList);
+            restrictionWebsiteList = restrictionWebsiteList.concat(rWebsiteList);
+            break;
+        case "R":
+            restrictionWordList = rWordList;
+            restrictionWebsiteList = rWebsiteList;
+            break;
+        default:
+            restrictionWordList= [];
+            restrictionWebsiteList = [];
+            break;
+    };
+    chrome.storage.sync.set({'restrictionWordList': restrictionWordList}, function(){});
+    chrome.storage.sync.set({'restrictionWebsiteList': restrictionWebsiteList}, function(){});
+
+
+
+
+    reloadPage();
+}
 
 function checkValidURL() {
 
@@ -59,10 +180,17 @@ $('#addWebsite').on('click',function(){ addWebsite()});
 
 $('#addWord').on('click',function(){ addWord() });
 
+//when restrction level changes
+$('#restrictionLevel').change(function(){
+  $("#restrictionLevel option:selected").each(function(){
+     var inputVal = $(this).text();
+     setRestrictionList(inputVal);
+    });
+
+})
+
 // adds a website buyable with points when clicked
 $('#addWebsitePoint').on('click',function(){ addPointWebsite()});
-
-
 
 //Removes a website when clicked on
 $('#websiteTable').on('click' , function() {
@@ -230,7 +358,10 @@ function reloadPage() {
 
     $('#wordTable tbody').empty();
     chrome.storage.sync.get('bad_words', function (result) {
-        let words = result['bad_words'];
+        var words = result['bad_words'];
+        restrictionWordList.forEach(function(w){
+            words.push(w)
+        });
         words.forEach(function (word) {
             $("#wordTable tbody").append(
                 "<tr>" +
@@ -243,7 +374,11 @@ function reloadPage() {
 
     $('#websiteTable tbody').empty();
     chrome.storage.sync.get('bad_websites', function (result) {
-        let websites = result['bad_websites'];
+        var websites = result['bad_websites'];
+
+        restrictionWebsiteList.forEach(function(w){
+            websites.push(w)
+        });
         websites.forEach(function(website){
             $("#websiteTable tbody").append(
                 "<tr>" +

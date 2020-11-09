@@ -21,6 +21,13 @@ chrome.runtime.onInstalled.addListener(function(){
     //(Aaron) Initialize bad_websites to empty array
     chrome.storage.sync.set({'bad_websites': []});
 
+
+	//(Aaron) Initialize restictionList to empty array
+	chrome.storage.sync.set({'restrictionWordList': []});
+
+	//(Aaron) Initialize restictionList to empty array
+	chrome.storage.sync.set({'restrictionWebsiteList': []});
+
 	//(Matthew) Initialize point_websites to empty array
 	chrome.storage.sync.set({'point_websites': []});
 
