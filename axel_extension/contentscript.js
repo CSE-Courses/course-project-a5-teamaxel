@@ -50,11 +50,24 @@ function init() {
 			page will be blocked. If it is not a unlockable or blocked we just block
 			the words.
 			*/
+
+			var rWebsiteList = [];
+			chrome.storage.sync.get('restrictionWebsiteList', function(result) {
+				rWebsiteList = result['restrictionWebsiteList'];
+				console.log(rWebsiteList);
+			});
+
+
 			chrome.storage.sync.get('bad_websites', function(result) {
-				let bad_websites = result['bad_websites']
-				let size = bad_websites.length;
+				var bad_websites = result['bad_websites']
+				rWebsiteList.forEach(function(web){
+					bad_websites.push(web);
+				});
+
+				var size = bad_websites.length;
 				for(i = 0; i<size; i++){
 					website = bad_websites[i]
+
 					var currentWebsite = window.location.href;
 					if(currentWebsite.startsWith(website) && website!= "") {
 						view_blocked();
@@ -99,8 +112,18 @@ function init() {
 			})
 
 		}
+				var rWordList = [];
+				chrome.storage.sync.get('restrictionWordList', function(result) {
+					rWordList = result['restrictionWordList'];
+				});
+
+
 				chrome.storage.sync.get('bad_words', function(result) {
-					let bad_words = result['bad_words']
+					var bad_words = result['bad_words']
+					rWordList.forEach(function(word){
+						bad_words.push(word);
+					})
+
 					view(bad_words)
 					if (mode == 'child_view') {
 						// do nothing
@@ -193,7 +216,7 @@ function block_random_words(){
 				$(".random_text_" + word_id).css({opacity: 0})
 
 				// stop clicking functionality
-				$("[class^='random_box'").click(function() { return false; } );
+				$("[class^='random_box']").click(function() { return false; } );
 
 				word_id++
 				blockedWords.push(textArray[i].toLowerCase())
