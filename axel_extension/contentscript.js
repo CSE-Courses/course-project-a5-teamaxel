@@ -167,6 +167,9 @@ function init() {
 function block_words(words) {
 	console.log('blocking words: ' + '[' + words + ']')
 
+	//updates the activity log using the current bad words
+	update_activity_log(words);
+
 	// wrap occurences of "words" with outer span
 	$("*").highlight(words, {className: "bad_word_box"})
 	// wrap occurences of "words" with inner span
@@ -180,6 +183,32 @@ function block_words(words) {
 	// stop clicking functionality
 	$(".bad_word_box").click(function() { return false; } );
 
+}
+
+//(Javi) This function is only ever called within the block_words function which is only
+//called while in view mode. I grab the entire text of the current HTML page and iterate
+//through the entire bad_words list. If so, I log this by adding to the 'activity_log'
+//variable within chrome storage.
+function update_activity_log(bad_words){
+	chrome.storage.sync.get('activity_log', function(result) {
+		let log = result['activity_log'];
+		var currentdate = new Date(); 
+		var datetime = (currentdate.getMonth()+1) + "/"
+				+ currentdate.getDate() + "/"
+                + currentdate.getFullYear() + " @ "  
+                + currentdate.getHours() + ":"  
+                + currentdate.getMinutes() + ":" 
+                + currentdate.getSeconds();
+		var htmlWords = $('body').text();
+		for(i = 0; i < bad_words.length; i++){
+			if(htmlWords.includes(bad_words[i])){
+				//LOG ACTIVITY HERE
+				var prompt = 'The site [' + document.URL + '] containing the bad word ['  + bad_words[i] + '] was accessed on ' + datetime
+				log.push(prompt)
+			}
+		}
+        chrome.storage.sync.set({'activity_log': log}, function(){});
+	})
 }
 
 // (Javi) Function to block random words. I iterate throguh every word within a 
