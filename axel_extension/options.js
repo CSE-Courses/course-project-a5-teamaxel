@@ -168,6 +168,36 @@ function addPointWebsite(){
     }
 
 };
+
+
+function addProfile() {
+    var inputedName = document.getElementById("profileName").value;
+    var websites, words;
+    chrome.storage.sync.get('bad_websites', function (result) {
+        websites = result['bad_websites'];
+    });
+
+    chrome.storage.sync.get('bad_words', function (result) {
+        words = result['bad_words'];
+    });
+
+    var profile = {
+        name: inputedName,
+        wordList: words,
+        websiteList: websites,
+        restrictionLevel: currentLevel
+    };
+
+    chrome.storage.sync.get('profileList', function(result) {
+        let profiles = result['profileList'];
+        profiles.push(profile);
+        chrome.storage.sync.set({'profileList': profiles}, function(){});
+
+    });
+
+    location.reload();
+}
+
 //adds website when button is clicked
 
 //changed to test
@@ -190,6 +220,11 @@ $('#restrictionLevel').change(function(){
 
 // adds a website buyable with points when clicked
 $('#addWebsitePoint').on('click',function(){ addPointWebsite()});
+
+
+//add profile
+$('#addProfile').on('click',function(){ addProfile()});
+
 
 //Removes a website when clicked on
 $('#websiteTable').on('click' , function() {
@@ -353,8 +388,11 @@ function sync_remove_website_point(website) {
     })
 }
 
-function reloadPage() {
 
+
+
+
+function reloadPage() {
     $('#wordTable tbody').empty();
     chrome.storage.sync.get('bad_words', function (result) {
         var words = result['bad_words'];
@@ -367,14 +405,12 @@ function reloadPage() {
                 "<td>" + word + "</td>>" +
                 "</tr>"
             )
-
         })
     });
 
     $('#websiteTable tbody').empty();
     chrome.storage.sync.get('bad_websites', function (result) {
         var websites = result['bad_websites'];
-
         restrictionWebsiteList.forEach(function(w){
             websites.push(w)
         });
@@ -400,6 +436,19 @@ function reloadPage() {
         })
     });
 
+    $('#profileTable tbody').empty();
+
+    chrome.storage.sync.get('profileList', function (result) {
+        var profilez = result['profileList'];
+        console.log(profilez);
+        profilez.forEach(function (profile) {
+            $("#profileTable tbody").append(
+                "<tr>" +
+                "<td>" + profile.name + "</td>>" +
+                "</tr>"
+            );
+        })
+    })
 }
 
 
@@ -407,28 +456,9 @@ function reloadPage() {
 //add button to add profile
 //saves current wordList, websiteList, restrictionSetting, name
 //store in array
-function addProfile() {
-    var websites, words;
-    chrome.storage.sync.get('bad_websites', function (result) {
-        websites = result['bad_websites'];
-    });
 
-    chrome.storage.sync.get('bad_words', function (result) {
-        words = result['bad_words'];
-    });
 
-    var profile = {
-        name: "John",
-        wordList: words,
-        websiteList: websites,
-        restrictionLevel: currentLevel
-    };
 
-    chrome.storage.sync.get('profileList', function(result) {
-        let profiles = result['profileList'];
-        profiles.push(profile);
-        chrome.storage.sync.set({'profileList': profiles}, function(){});
-    });
 
-}
+
 
