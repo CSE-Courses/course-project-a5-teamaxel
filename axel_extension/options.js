@@ -430,6 +430,5 @@ function addProfile() {
         chrome.storage.sync.set({'profileList': profiles}, function(){});
     });
 
-
 }
 
