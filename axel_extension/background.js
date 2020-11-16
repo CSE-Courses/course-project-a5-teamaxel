@@ -28,6 +28,9 @@ chrome.runtime.onInstalled.addListener(function(){
 	//(Aaron) Initialize restictionList to empty array
 	chrome.storage.sync.set({'restrictionWebsiteList': []});
 
+	//(Aaron) Stores the profiles
+	chrome.storage.sync.set({'profileList': []});
+
 	//(Matthew) Initialize point_websites to empty array
 	chrome.storage.sync.set({'point_websites': []});
 

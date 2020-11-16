@@ -7,6 +7,7 @@
  */
 
 let val;
+var currentLevel = " ";
 let restrictionWordList = [];
 let restrictionWebsiteList = [];
 
@@ -71,11 +72,8 @@ let rWebsiteList = ["https://www.adultswim.com"];
 
 window.onload =  reloadPage;
 
-//get restrctionList
 
 function setRestrictionList(inputVal){
-
-
 
     switch (inputVal){
         case "G":
@@ -184,6 +182,7 @@ $('#addWord').on('click',function(){ addWord() });
 $('#restrictionLevel').change(function(){
   $("#restrictionLevel option:selected").each(function(){
      var inputVal = $(this).text();
+     currentLevel = $(this).text();
      setRestrictionList(inputVal);
     });
 
@@ -404,8 +403,33 @@ function reloadPage() {
 }
 
 
+//add profile functionality
+//add button to add profile
+//saves current wordList, websiteList, restrictionSetting, name
+//store in array
+function addProfile() {
+    var websites, words;
+    chrome.storage.sync.get('bad_websites', function (result) {
+        websites = result['bad_websites'];
+    });
+
+    chrome.storage.sync.get('bad_words', function (result) {
+        words = result['bad_words'];
+    });
+
+    var profile = {
+        name: "John",
+        wordList: words,
+        websiteList: websites,
+        restrictionLevel: currentLevel
+    };
+
+    chrome.storage.sync.get('profileList', function(result) {
+        let profiles = result['profileList'];
+        profiles.push(profile);
+        chrome.storage.sync.set({'profileList': profiles}, function(){});
+    });
 
 
+}
 
-
-//function to load pages with correct tab
