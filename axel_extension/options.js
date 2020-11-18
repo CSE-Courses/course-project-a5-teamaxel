@@ -533,6 +533,20 @@ function reloadPage() {
 
         })
     });
+    
+    $('#activityLogTable tbody').empty();
+    chrome.storage.sync.get('activity_log', function (result) {
+        let log = result['activity_log'];
+        log.forEach(function (entry) {
+            $("#activityLogTable tbody").append(
+                "<tr>" +
+                "<td>" + entry + "</td>>" +
+                "</tr>"
+            )
+
+        })
+    });
+
 
     $('#profileTable tbody').empty();
     chrome.storage.sync.get('profileList', function (result) {

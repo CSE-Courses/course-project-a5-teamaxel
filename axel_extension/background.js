@@ -53,6 +53,8 @@ chrome.runtime.onInstalled.addListener(function(){
 	chrome.storage.sync.set({'Time':'No Timer'},function(){
 			console.log('Time is Now ');
 		});
+	
+	chrome.storage.sync.set({'activity_log': []});
 });
 
 /*(Matthew)
