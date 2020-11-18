@@ -9,7 +9,7 @@
 let val;
 let restrictionWordList = [];
 let restrictionWebsiteList = [];
-
+var currentLevel;
 let gWordList = ["crap","abbo", "abo","abortion", "abuse", "addict", "addicts",
     "alligatorbait", "anal", "analannie", "analsex", "angie", "anus", "aroused",
     "arse", "arsehole", "banging", "bastard", "bazongas", "bazooms", "beaner",
@@ -68,20 +68,17 @@ let pgWebsiteList = ["https://www.reddit.com"];
 let pg13WebsiteList = ["https://www.chatroulette.com"];
 let rWebsiteList = ["https://www.adultswim.com"];
 
+window.onload =  start;
 
-window.onload =  reloadPage;
-
-//get restrctionList
 
 function setRestrictionList(inputVal){
-
-
-
+    currentLevel = inputVal;
     switch (inputVal){
+
         case "G":
             restrictionWordList = [];
             restrictionWordList = restrictionWordList.concat(gWordList);
-            restrictionWordList = restrictionWordList.concat(pgWordList)
+            restrictionWordList = restrictionWordList.concat(pgWordList);
             restrictionWordList = restrictionWordList.concat(pg13WordList);
             restrictionWordList = restrictionWordList.concat(rWordList);
 
@@ -95,7 +92,7 @@ function setRestrictionList(inputVal){
             break;
         case "PG":
             restrictionWordList = [];
-            restrictionWordList = restrictionWordList.concat(pgWordList)
+            restrictionWordList = restrictionWordList.concat(pgWordList);
             restrictionWordList = restrictionWordList.concat(pg13WordList);
             restrictionWordList = restrictionWordList.concat(rWordList);
 
@@ -121,14 +118,9 @@ function setRestrictionList(inputVal){
             restrictionWordList= [];
             restrictionWebsiteList = [];
             break;
-    };
+    }
     chrome.storage.sync.set({'restrictionWordList': restrictionWordList}, function(){});
     chrome.storage.sync.set({'restrictionWebsiteList': restrictionWebsiteList}, function(){});
-
-
-
-
-    reloadPage();
 }
 
 function checkValidURL() {
@@ -170,6 +162,65 @@ function addPointWebsite(){
     }
 
 };
+
+/*
+Function To add a new profile
+ */
+function addProfile() {
+    var inputedName = document.getElementById("profileName").value;
+    var newUser = true;
+
+    chrome.storage.sync.get('profileList', function(result) {
+        let profiles = result['profileList'];
+        profiles.forEach(function(profile) {
+            if(profile.name == inputedName) {
+                const index = profiles.indexOf(profile);
+                if (index > -1) {
+                    profiles.splice(index, 1);
+                }
+                newUser = false;
+            }
+            chrome.storage.sync.set({'profileList' : profiles}, function(){});
+        })
+
+
+
+        if(newUser){
+            alert("New User Created")
+        } else {
+            alert("List Saved")
+        }
+
+        var websites, words,pwebs;
+        chrome.storage.sync.get('bad_websites', function (result) {
+            websites = result['bad_websites'];
+
+            chrome.storage.sync.get('bad_words', function (result1) {
+                words = result1['bad_words'];
+
+
+                chrome.storage.sync.get('point_websites' , function(result2) {
+                    pwebs = result2['point_websites']
+                    //creates a new profile
+                    var profile = {
+                        name: inputedName,
+                        wordList: words,
+                        websiteList: websites,
+                        restrictionLevels: currentLevel,
+                        unlockableWebsite: pwebs
+                    };
+
+                    profiles.push(profile);
+                    chrome.storage.sync.set({'profileList': profiles}, function () {});
+                    reloadPage();
+                });
+            });
+        });
+
+    });
+}
+
+
 //adds website when button is clicked
 
 //changed to test
@@ -184,13 +235,18 @@ $('#addWord').on('click',function(){ addWord() });
 $('#restrictionLevel').change(function(){
   $("#restrictionLevel option:selected").each(function(){
      var inputVal = $(this).text();
+     chrome.storage.sync.set({'restrictionLevelSave': inputVal}, function(){});
      setRestrictionList(inputVal);
+     reloadPage();
     });
 
 })
 
 // adds a website buyable with points when clicked
 $('#addWebsitePoint').on('click',function(){ addPointWebsite()});
+
+//add profile
+$('#addProfile').on('click',function(){ addProfile()});
 
 //Removes a website when clicked on
 $('#websiteTable').on('click' , function() {
@@ -208,9 +264,6 @@ $('#websiteTable').on('click' , function() {
         }
     }
 });
-
-
-
 
 //Removes a word when clicked on
 $('#wordTable').on('click' , function() {
@@ -233,7 +286,6 @@ $('#wordTable').on('click' , function() {
 
 //Removes a website from the Unlockable list if clicked
 $('#websiteTablePoint').on('click' , function() {
-
     var tab = document.getElementById('websiteTablePoint').getElementsByTagName('tbody')[0];
     var rows = tab.getElementsByTagName('tr');
     for ( i = 0; i < rows.length; i++) {
@@ -249,9 +301,63 @@ $('#websiteTablePoint').on('click' , function() {
 });
 
 
+$('#profileTable').on('click' , function() {
+    var tab = document.getElementById('profileTable').getElementsByTagName('tbody')[0];
+    var rows = tab.getElementsByTagName('tr');
+    for ( i = 0; i < rows.length; i++) {
+        rows[i].onclick = function() {
+            var ans = confirm("Would you like to load this profile");
+            if(ans) {
+                changeProfile(this);
+            }else{
+                alert("not removed");
+            }
+        }
+    }
+});
 
 
 
+/*
+    Function used to create a new profile
+*/
+
+function changeProfile(newProfile){
+    var profName = (newProfile.innerText);
+
+    chrome.storage.sync.get('profileList', function (result) {
+        var profilez = result['profileList'];
+        profilez.forEach(function (profile) {
+            if(profile.name == profName){
+                var cP = document.getElementById('currentProfileLabel');
+                cP.innerHTML = "Current Profile: " + profile.name;
+
+                chrome.storage.sync.set({'currentProfile': profile.name}, function(){})
+
+                //set words
+                chrome.storage.sync.set({'bad_words': profile.wordList}, function(){})
+
+                //set websites
+                chrome.storage.sync.set({'bad_websites': profile.websiteList}, function(){})
+
+                //set points websites
+                chrome.storage.sync.set({'point_websites': profile.unlockableWebsite}, function(){})
+
+                //setRestrictionLevel
+                currentLevel = profile.restrictionLevels;
+                chrome.storage.sync.set({'currentLevelSave': currentLevel}, function(){})
+                var tab = document.getElementById('restrictionLevel')
+                tab.value = currentLevel;
+
+                setRestrictionList(currentLevel);
+
+
+
+                reloadPage();
+            }
+        })
+    })
+}
 
 // (Alex) Adds a word to the bad_words list in storage.
 // Should be called every time admin adds another banned word.
@@ -354,6 +460,35 @@ function sync_remove_website_point(website) {
     })
 }
 
+function start(){
+
+    chrome.storage.sync.get('currentProfile', function (result) {
+        var res = result['currentProfile'];
+
+        var cP = document.getElementById('currentProfileLabel');
+        cP.innerHTML = "Current Profile: " + res;
+
+
+
+        if (res != 'Default') {
+            changeProfile(res);
+        }else {
+            chrome.storage.sync.get('restrictionLevelSave', function (results){
+
+                var rez = results['restrictionLevelSave'];
+                setRestrictionList(rez);
+                var tab = document.getElementById('restrictionLevel')
+                tab.value = rez
+
+            });
+        }
+
+        reloadPage();
+    });
+
+}
+
+
 function reloadPage() {
 
     $('#wordTable tbody').empty();
@@ -368,14 +503,12 @@ function reloadPage() {
                 "<td>" + word + "</td>>" +
                 "</tr>"
             )
-
         })
     });
 
     $('#websiteTable tbody').empty();
     chrome.storage.sync.get('bad_websites', function (result) {
         var websites = result['bad_websites'];
-
         restrictionWebsiteList.forEach(function(w){
             websites.push(w)
         });
@@ -415,11 +548,34 @@ function reloadPage() {
     });
 
 
+    $('#profileTable tbody').empty();
+    chrome.storage.sync.get('profileList', function (result) {
+        var profiles = result['profileList'];
+        profiles.forEach(function (profile) {
+            $("#profileTable tbody").append(
+                "<tr>" +
+                "<td>" + profile.name + "</td>>" +
+                "</tr>"
+            );
+        })
+    })
+
+
+
+
+
+
+
 }
 
 
+//add profile functionality
+//add button to add profile
+//saves current wordList, websiteList, restrictionSetting, name
+//store in array
 
 
 
 
-//function to load pages with correct tab
+
+

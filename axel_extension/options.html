@@ -26,6 +26,12 @@
 			padding: 10px;
 		}
 
+
+		.container-profile{
+			padding: 10px;
+		}
+
+
 		.container-BannedWebsites{
 			padding: 10px;
 		}
@@ -49,6 +55,32 @@
 </head>
 <body>
 <h1>More Options</h1>
+
+<label id = "currentProfileLabel">Current Profile: Default </label>
+
+<div class = "container-profile">
+	<table class="profileTable" id="profileTable" border="1">
+		<thead>
+		<th>Profiles &nbsp&nbsp&nbsp</th>
+		</thead>
+
+		<tbody>
+		</tbody>
+
+	</table>
+
+	<div class="newProfile input">
+		Enter Name for Profile : &nbsp<input type="text" name="profileName" placeholder="Enter Name" id="profileName">
+		<button id = "addProfile">Add/Edit</button>
+		<br> Click on a profile to load
+	</div>
+
+
+
+</div>
+
+
+
 
 <div class = "container-restrictionLevel">
 	<label for="restrictionLevel">Restriction Level:</label>
