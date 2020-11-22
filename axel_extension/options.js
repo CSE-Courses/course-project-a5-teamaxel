@@ -220,6 +220,12 @@ function addProfile() {
     });
 }
 
+$('#logout').on('click', function() {
+	chrome.tabs.getCurrent(function(tab) {
+		chrome.storage.sync.set({'mode':'child_view'}, function(){});
+		chrome.tabs.remove(tab.id, function() { });
+	});
+});
 
 //adds website when button is clicked
 
