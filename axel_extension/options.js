@@ -295,17 +295,40 @@ function sync_add_website_points(website){
         if(website.charAt(0)!= 'h' ){
             website = "https://" + website;
         }
-
         webs.push(website);
-
-
         chrome.storage.sync.set({'point_websites': webs}, function(){});
         console.log('new websites are ' + webs);
         reloadPage();
     })
+		let input = validate_timer();
+		
+	chrome.storage.sync.get('WebsiteTime', function(result) {
+        let times = result['WebsiteTime'];
+
+        times.push(input);
+		chrome.storage.sync.set({'WebsiteTime': times}, function(){});
+    })
 	
 }
 
+function validate_timer(){
+	let i = 0;
+	let timer;
+	while(i == 0){
+		timer = prompt("Enter how many minutes you would like this website to be unlocked for?");
+		if(/^-?\d+$/.test(timer) == false){
+			alert("Please enter a valid number");
+		}
+		else if( parseInt(timer) <= 0){
+			alert("Please enter a number greater than zero")
+		}
+		else{
+			i =1;
+		}
+	}
+			
+	return timer;
+}
 
 // (Alex) TODO: This method is untested, not sure if removing from an array like this works.
 // Removes a word from the bad_words list in storage.
@@ -341,16 +364,25 @@ function sync_remove_website(website) {
 
 //remove website unlockable with points
 function sync_remove_website_point(website) {
+	let loc =0;
     chrome.storage.sync.get('point_websites', function(result) {
         let websites = result['point_websites']
         console.log('current websites are ' + websites)
         let pos = websites.indexOf(website)
+		loc = pos;
         if (pos != -1) {
             websites.splice(pos, 1)
         }
         chrome.storage.sync.set({'point_websites': websites}, function(){})
         console.log('new websites are ' + websites)
         reloadPage();
+    })
+	chrome.storage.sync.get('WebsiteTime', function(result) {
+        let times = result['WebsiteTime'];
+        if (loc != -1) {
+            times.splice(loc, 1)
+        }
+        chrome.storage.sync.set({'WebsiteTime': times}, function(){})
     })
 }
 
