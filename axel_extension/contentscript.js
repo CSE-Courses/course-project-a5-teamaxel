@@ -274,7 +274,7 @@ function block_random_words(){
 				$(this).highlight(textArray[i], {className: "random_box_" + word_id, wordsOnly: true})
 				$(this).highlight(textArray[i], {className: "random_text_" + word_id, wordsOnly: true})
 
-		 		$(".random_box_" + word_id).css({backgroundColor: "black"})
+		 		$(".random_box_" + word_id).css({backgroundColor: "red"})
 				$(".random_text_" + word_id).css({opacity: 0})
 
 				// stop clicking functionality
@@ -360,7 +360,13 @@ function context_clue_game() {
 			alert('Correct. Unblocking word.')
 		}
 		else{
-			alert("Incorrect. Word will remain blocked.")
+			//alert("Incorrect. Word will remain blocked.")
+			//var txt;
+			if (confirm("Incorrect. Word will remain blocked.\nWould you like to use your points for a hint?")) {
+			  //txt = "You pressed OK!";
+			} else {
+			  //txt = "You pressed Cancel!";
+			}
 		}
 	})
 
