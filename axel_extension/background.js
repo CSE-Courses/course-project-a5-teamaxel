@@ -28,6 +28,15 @@ chrome.runtime.onInstalled.addListener(function(){
 	//(Aaron) Initialize restictionList to empty array
 	chrome.storage.sync.set({'restrictionWebsiteList': []});
 
+	//saves restriction level
+	chrome.storage.sync.set({'restrictionLevelSave': ' '},function(){});
+
+	//set default person up
+	chrome.storage.sync.set({'currentProfile': 'Default'},function(){});
+
+	//(Aaron) Stores the profiles
+	chrome.storage.sync.set({'profileList': []});
+
 	//(Matthew) Initialize point_websites to empty array
 	chrome.storage.sync.set({'point_websites': []});
 
@@ -44,10 +53,15 @@ chrome.runtime.onInstalled.addListener(function(){
 	chrome.storage.sync.set({'Time':'No Timer'},function(){
 			console.log('Time is Now ');
 		});
+
 		
 	chrome.storage.sync.set({'WebsiteTime': []},function(){
 			console.log('Time is Now ');
 		});
+
+	
+	chrome.storage.sync.set({'activity_log': []});
+
 });
 
 /*(Matthew)
