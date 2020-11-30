@@ -71,6 +71,7 @@ function init() {
 					var currentWebsite = window.location.href;
 					if(currentWebsite.startsWith(website) && website!= "") {
 						view_blocked();
+						update_website_activity_log(currentWebsite);
 						blocked = 1;
 						return;
 					}
@@ -207,6 +208,25 @@ function update_activity_log(bad_words){
 				log.push(prompt)
 			}
 		}
+        chrome.storage.sync.set({'activity_log': log}, function(){});
+	})
+}
+
+function update_website_activity_log(currentWebsite){
+	chrome.storage.sync.get('activity_log', function(result) {
+		let log = result['activity_log'];
+		var currentdate = new Date(); 
+		var datetime = (currentdate.getMonth()+1) + "/"
+				+ currentdate.getDate() + "/"
+                + currentdate.getFullYear() + " @ "  
+                + currentdate.getHours() + ":"  
+                + currentdate.getMinutes() + ":" 
+				+ currentdate.getSeconds();
+				
+		//LOG ACTIVITY HERE
+		var prompt = 'The banned site [' + currentWebsite + '] was attempted to be accessed on ' + datetime
+		log.push(prompt)
+
         chrome.storage.sync.set({'activity_log': log}, function(){});
 	})
 }
