@@ -85,6 +85,7 @@ function init() {
 					var currentWebsite = window.location.href;
 					if(currentWebsite.startsWith(website) && website!= "") {
 						var storedPoints = 0;
+						var loc = i;
 						chrome.storage.sync.get(['pointTotal'], function(result){
           					console.log('points grabbed is ' + result.pointTotal);
 							storedPoints = result.pointTotal;
@@ -92,10 +93,17 @@ function init() {
 							var ans = confirm("This website is locked. Would you like to spend 2000 points to unlock this site");
 							if(ans){
 								subtract_points();
-								chrome.runtime.sendMessage({greeting: "Timer"}, function(response) {
-  									console.log(response.farewell);
+								chrome.storage.sync.get('WebsiteTime',function(result){
+									let time_website = result['WebsiteTime'];
+									setTimeout(testing_time,(parseInt(time_website[loc]) * 60 * 1000));// the time is only so low due to the purpose of displaying
+									var date = new Date();
+										date.toLocaleTimeString();
+										var exdate = new Date();
+										exdate = new Date(date.getTime() + (parseInt(time_website[loc]) * 60 * 1000));
+										chrome.storage.sync.set({'Time':'Expires' + exdate.toLocaleTimeString()},function(){
+										console.log('Time is Now ' + exdate.toLocaleTimeString());
+			});
 								});
-								setTimeout(testing_time,5000);// the time is only so low due to the purpose of displaying
 							}
 							else{
 								view_blocked();
@@ -463,10 +471,28 @@ function testing_time(){
 		var ans = confirm("Your website browsing time has expired. If you wish to continue you must spend 2000 more points.");
 		if(ans){
 			subtract_points();
-			chrome.runtime.sendMessage({greeting: "Timer"}, function(response) {
-		  	console.log(response.farewell);
+			chrome.storage.sync.get('point_websites', function(result) {
+				let point_websites = result['point_websites']
+				let size = point_websites.length;
+				for(i = 0; i<size; i++){
+					website = point_websites[i]
+					var currentWebsite = window.location.href;
+					if(currentWebsite.startsWith(website) && website!= "") {
+						var loc = i;
+						chrome.storage.sync.get('WebsiteTime',function(result){
+									let time_website = result['WebsiteTime'];
+									setTimeout(testing_time,(parseInt(time_website[loc]) * 60 * 1000));// the time is only so low due to the purpose of displaying
+									var date = new Date();
+										date.toLocaleTimeString();
+										var exdate = new Date();
+										exdate = new Date(date.getTime() + (parseInt(time_website[loc]) * 60 * 1000));
+										chrome.storage.sync.set({'Time':'Expires' + exdate.toLocaleTimeString()},function(){
+										console.log('Time is Now ' + exdate.toLocaleTimeString());
 			});
-			setTimeout(testing_time,5000);	
+								});
+					}
+				}
+			});
 		}
 		else{
 			view_blocked();

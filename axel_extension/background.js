@@ -53,8 +53,15 @@ chrome.runtime.onInstalled.addListener(function(){
 	chrome.storage.sync.set({'Time':'No Timer'},function(){
 			console.log('Time is Now ');
 		});
+
+		
+	chrome.storage.sync.set({'WebsiteTime': []},function(){
+			console.log('Time is Now ');
+		});
+
 	
 	chrome.storage.sync.set({'activity_log': []});
+
 });
 
 /*(Matthew)
@@ -97,15 +104,6 @@ chrome.runtime.onMessage.addListener(
           	console.log('points grabbed is ' + result.pointTotal);
          	});
          });
-	}
-	if(request.greeting == "Timer"){
-			var date = new Date();
-			date.toLocaleTimeString();
-			var exdate = new Date();
-			exdate = new Date(date.getTime() + 5000);
-			chrome.storage.sync.set({'Time':'Expires' + exdate.toLocaleTimeString()},function(){
-			console.log('Time is Now ' + exdate.toLocaleTimeString());
-			});
 	}
   });
 
