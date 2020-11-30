@@ -64,6 +64,10 @@ chrome.runtime.onInstalled.addListener(function(){
 
 });
 
+	chrome.storage.sync.set({'WebsitePoints': []},function(){
+			console.log('Points is now ');
+		});
+
 /*(Matthew)
 This below function is used to recieve messages from the content script.
 Points: 	When the greeting is Points it is used to add points to the users total points

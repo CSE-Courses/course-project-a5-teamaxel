@@ -407,6 +407,7 @@ function sync_add_website_points(website){
         reloadPage();
     })
 		let input = validate_timer();
+		let points = validate_points();
 		
 	chrome.storage.sync.get('WebsiteTime', function(result) {
         let times = result['WebsiteTime'];
@@ -414,7 +415,33 @@ function sync_add_website_points(website){
         times.push(input);
 		chrome.storage.sync.set({'WebsiteTime': times}, function(){});
     })
-	
+
+	chrome.storage.sync.get('WebsitePoints', function(result) {
+        let pt = result['WebsitePoints'];
+
+        pt.push(points);
+		chrome.storage.sync.set({'WebsitePoints': pt}, function(){});
+    })
+}
+
+
+function validate_points(){
+	let i = 0;
+	let points;
+	while(i == 0){
+		points = prompt("Enter how many points you would like this website to be unlocked for?");
+		if(/^-?\d+$/.test(points) == false){
+			alert("Please enter a valid number");
+		}
+		else if( parseInt(points) <= 0){
+			alert("Please enter a number greater than zero")
+		}
+		else{
+			i =1;
+		}
+	}
+			
+	return points;
 }
 
 function validate_timer(){
@@ -489,6 +516,14 @@ function sync_remove_website_point(website) {
             times.splice(loc, 1)
         }
         chrome.storage.sync.set({'WebsiteTime': times}, function(){})
+    })
+
+	chrome.storage.sync.get('WebsitePoints', function(result) {
+        let points = result['WebsitePoints'];
+        if (loc != -1) {
+            points.splice(loc, 1)
+        }
+        chrome.storage.sync.set({'WebsitePoints': points}, function(){})
     })
 }
 
