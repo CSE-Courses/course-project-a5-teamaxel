@@ -86,13 +86,18 @@ function init() {
 					if(currentWebsite.startsWith(website) && website!= "") {
 						var storedPoints = 0;
 						var loc = i;
+						let pointW = 0;
+						chrome.storage.sync.get('WebsitePoints', function(result) {
+					        let points = result['WebsitePoints'];
+					        pointW = points[loc];
+					    })
 						chrome.storage.sync.get(['pointTotal'], function(result){
           					console.log('points grabbed is ' + result.pointTotal);
 							storedPoints = result.pointTotal;
-							if(storedPoints >= 2000){
-							var ans = confirm("This website is locked. Would you like to spend 2000 points to unlock this site");
+							if(storedPoints >= parseInt(pointW)){
+							var ans = confirm("This website is locked for " + pointW + ". Would you like to unlock it");
 							if(ans){
-								subtract_points();
+								subtract_points(pointW);
 								chrome.storage.sync.get('WebsiteTime',function(result){
 									let time_website = result['WebsiteTime'];
 									setTimeout(testing_time,(parseInt(time_website[loc]) * 60 * 1000));// the time is only so low due to the purpose of displaying
@@ -452,10 +457,13 @@ function reward_points(){
 
 //(Matthew) Sends message to backround script to subtract points 
 //			when unlocking websites.
-function subtract_points(){
-	chrome.runtime.sendMessage({greeting: "Sub_Points"}, function(response) {
-  			console.log(response.farewell);
-			});
+function subtract_points(points){
+	chrome.storage.sync.get(['pointTotal'], function(result){
+          					console.log('points grabbed is ' + result.pointTotal);
+							storedPoints = result.pointTotal;
+							storedPoints = parseInt(storedPoints) - parseInt(points);
+							chrome.storage.sync.set({'pointTotal': storedPoints}, function(){});
+				         });
 	
 }
 
@@ -466,11 +474,24 @@ function subtract_points(){
 	enough points it will inform them so and block the content.
 */
 function testing_time(){
+	var points;
 	chrome.storage.sync.get('pointTotal', function(result) {
-	if(result.pointTotal >= 2000 ){	
-		var ans = confirm("Your website browsing time has expired. If you wish to continue you must spend 2000 more points.");
+		chrome.storage.sync.get('point_websites', function(re) {
+				let point_websites = re['point_websites']
+				let size = point_websites.length;
+				for(i = 0; i<size; i++){
+					website = point_websites[i]
+					var currentWebsite = window.location.href;
+					if(currentWebsite.startsWith(website) && website!= "") {
+						 var loc = i;
+							chrome.storage.sync.get('WebsitePoints', function(p) {
+        				let pt = p['WebsitePoints'];
+						points = pt[loc];
+
+	if(result.pointTotal >= parseInt(points) ){	
+		var ans = confirm("Your website browsing time has expired. If you wish to continue you must spend " +  points + " more points.");
 		if(ans){
-			subtract_points();
+			subtract_points(points);
 			chrome.storage.sync.get('point_websites', function(result) {
 				let point_websites = result['point_websites']
 				let size = point_websites.length;
@@ -478,7 +499,7 @@ function testing_time(){
 					website = point_websites[i]
 					var currentWebsite = window.location.href;
 					if(currentWebsite.startsWith(website) && website!= "") {
-						var loc = i;
+						 var loc = i;
 						chrome.storage.sync.get('WebsiteTime',function(result){
 									let time_website = result['WebsiteTime'];
 									setTimeout(testing_time,(parseInt(time_website[loc]) * 60 * 1000));// the time is only so low due to the purpose of displaying
@@ -508,6 +529,10 @@ function testing_time(){
 			console.log('Time is Now ' + 'No Timer');
 		});
 	}
+	})
+	}
+	}
+	});
 });
 // ---------------------------------------------------------------------
 // (Alex) BELOW IS NOT USED
