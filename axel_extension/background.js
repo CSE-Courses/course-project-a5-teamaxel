@@ -46,15 +46,17 @@ chrome.runtime.onInstalled.addListener(function(){
         console.log('Mode initialized to "child_view"');
     });
 
+	//(Matthew) Intialize the total number of points
 	chrome.storage.sync.set({'pointTotal': 0},function(){
 			console.log('Points Total is Now ' + 0);
 		});
-
+	
+	//(Matthew) Holds the timer
 	chrome.storage.sync.set({'Time':'No Timer'},function(){
 			console.log('Time is Now ');
 		});
 
-		
+	//(Matthew) Holds how long the websites are unlocked for
 	chrome.storage.sync.set({'WebsiteTime': []},function(){
 			console.log('Time is Now ');
 		});
@@ -63,7 +65,8 @@ chrome.runtime.onInstalled.addListener(function(){
 	chrome.storage.sync.set({'activity_log': []});
 
 });
-
+	
+	//(Matthew) How many points it costs to unlock a website
 	chrome.storage.sync.set({'WebsitePoints': []},function(){
 			console.log('Points is now ');
 		});
