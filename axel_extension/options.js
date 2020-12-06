@@ -284,7 +284,7 @@ $('#wordTable').on('click' , function() {
 
 });
 
-//Removes a website from the Unlockable list if clicked
+//(Matthew) Removes a website from the Unlockable list if clicked
 $('#websiteTablePoint').on('click' , function() {
     var tab = document.getElementById('websiteTablePoint').getElementsByTagName('tbody')[0];
     var rows = tab.getElementsByTagName('tr');
@@ -393,7 +393,7 @@ function sync_add_website(website) {
     })
 }
 
-//adds website bought with points
+//(Matthew) Adds website bought with points
 function sync_add_website_points(website){
 	chrome.storage.sync.get('point_websites', function(result) {
         let webs = result['point_websites'];
@@ -424,7 +424,7 @@ function sync_add_website_points(website){
     })
 }
 
-
+//(Matthew) Validates the points being input
 function validate_points(){
 	let i = 0;
 	let points;
@@ -444,6 +444,7 @@ function validate_points(){
 	return points;
 }
 
+//(Matthew) Validates the minutes being input
 function validate_timer(){
 	let i = 0;
 	let timer;
@@ -495,7 +496,7 @@ function sync_remove_website(website) {
     })
 }
 
-//remove website unlockable with points
+//(Matthew) Remove website unlockable with points
 function sync_remove_website_point(website) {
 	let loc =0;
     chrome.storage.sync.get('point_websites', function(result) {

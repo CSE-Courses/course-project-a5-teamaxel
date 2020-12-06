@@ -100,7 +100,7 @@ function init() {
 								subtract_points(pointW);
 								chrome.storage.sync.get('WebsiteTime',function(result){
 									let time_website = result['WebsiteTime'];
-									setTimeout(testing_time,(parseInt(time_website[loc]) * 60 * 1000));// the time is only so low due to the purpose of displaying
+									setTimeout(testing_time,(parseInt(time_website[loc]) * 60 * 1000));
 									var date = new Date();
 										date.toLocaleTimeString();
 										var exdate = new Date();
@@ -117,7 +117,7 @@ function init() {
 							}
 							else{
 								view_blocked();
-								alert("This site can be unlocked for 2000 points. Currently you do not have enough points to unlock the site");
+								alert("This site can be unlocked for " + pointW + " points. Currently you do not have enough points to unlock the site");
 							}
 				         });
 					}
@@ -455,8 +455,8 @@ function reward_points(){
 	
 }
 
-//(Matthew) Sends message to backround script to subtract points 
-//			when unlocking websites.
+//(Matthew) Subtracts the points value in the arguement and stores the
+//			new value of points after the subtraction has been done
 function subtract_points(points){
 	chrome.storage.sync.get(['pointTotal'], function(result){
           					console.log('points grabbed is ' + result.pointTotal);
@@ -469,9 +469,10 @@ function subtract_points(points){
 
 /*(Matthew)
 	The below function is called when the timer expires. When the timer expires
-	it will ask the user if they want to continue going. If it does it will take 2000
-	more points. If not it will block the page. In the instance of the user not having
-	enough points it will inform them so and block the content.
+	it will ask the user if they want to continue going. If it does it will take
+	the amount of points required to keep going from the user.If not it will block
+	the page. In the instance of the user not having enough points it will inform
+	them so and block the content.
 */
 function testing_time(){
 	var points;
