@@ -28,6 +28,15 @@ chrome.runtime.onInstalled.addListener(function(){
 	//(Aaron) Initialize restictionList to empty array
 	chrome.storage.sync.set({'restrictionWebsiteList': []});
 
+	//saves restriction level
+	chrome.storage.sync.set({'restrictionLevelSave': ' '},function(){});
+
+	//set default person up
+	chrome.storage.sync.set({'currentProfile': 'Default'},function(){});
+
+	//(Aaron) Stores the profiles
+	chrome.storage.sync.set({'profileList': []});
+
 	//(Matthew) Initialize point_websites to empty array
 	chrome.storage.sync.set({'point_websites': []});
 
@@ -37,14 +46,30 @@ chrome.runtime.onInstalled.addListener(function(){
         console.log('Mode initialized to "child_view"');
     });
 
+	//(Matthew) Intialize the total number of points
 	chrome.storage.sync.set({'pointTotal': 0},function(){
 			console.log('Points Total is Now ' + 0);
 		});
-
+	
+	//(Matthew) Holds the timer
 	chrome.storage.sync.set({'Time':'No Timer'},function(){
 			console.log('Time is Now ');
 		});
+
+	//(Matthew) Holds how long the websites are unlocked for
+	chrome.storage.sync.set({'WebsiteTime': []},function(){
+			console.log('Time is Now ');
+		});
+
+	
+	chrome.storage.sync.set({'activity_log': []});
+
 });
+	
+	//(Matthew) How many points it costs to unlock a website
+	chrome.storage.sync.set({'WebsitePoints': []},function(){
+			console.log('Points is now ');
+		});
 
 /*(Matthew)
 This below function is used to recieve messages from the content script.
@@ -86,15 +111,6 @@ chrome.runtime.onMessage.addListener(
           	console.log('points grabbed is ' + result.pointTotal);
          	});
          });
-	}
-	if(request.greeting == "Timer"){
-			var date = new Date();
-			date.toLocaleTimeString();
-			var exdate = new Date();
-			exdate = new Date(date.getTime() + 5000);
-			chrome.storage.sync.set({'Time':'Expires' + exdate.toLocaleTimeString()},function(){
-			console.log('Time is Now ' + exdate.toLocaleTimeString());
-			});
 	}
   });
 

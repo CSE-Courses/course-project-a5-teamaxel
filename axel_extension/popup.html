@@ -27,7 +27,7 @@
   		left: 0;
   		width: 100px;
 	}
-	
+
   </style>
   <body>
 	<!-- Info Relatated to Tabs(Modes) -->
@@ -41,6 +41,7 @@
 		<button id="view">View</button>
 		<button id="educational_game">Educational Game</button>
 		<button  id="context_clue_game">Context Clue Game</button>
+		<a href = "./manuals/child_manual.pdf" target="_blank">User Manual</a>
 	
 	</div>
 	
@@ -48,8 +49,8 @@
 	<div id="Admin Mode">
 		<button id ="Admin Options">Admin Options</button>
 		<button id = "Add Points">Add Points</button>
+		<a href = "./manuals/parent_manual.pdf" target="_blank">User Manual</a>
 	
-		
   </div>
 	
 	<!-- Info Related to Point Display -->
@@ -80,6 +81,7 @@
   <div id ="sign_in">
     <h1> Enter your password </h1>
     <form id = "entered_pass">
+		<label for="pass"> Password: </label>
 		<input type="password" id="unique" name="returning_pass" required size = "15"
 		minlength = "8" maxlength = "15"><br><br>
 	   <input type="submit" value="Submit">
@@ -89,12 +91,13 @@
 
   <!-- Info related to Create Password Tab -->
   <div id="create_pass">
-    <h1> Create your password </h1>
+	  <h1> Create your password </h1>
+	  <p>Passwords must be 8-15 characters in length</p>
     <form id = "new_pass">
+		<label for="pass"> Password: </label>
 		<input type="password" id="creatingPass" name="fresh_pass" required size = "15"
 		minlength = "8" maxlength = "15"><br><br>
 		<input type="submit" value="Submit">
-		<p>Passwords must be 8-15 characters in length</p>
 	</form>
   </div>
 

@@ -71,6 +71,7 @@ function init() {
 					var currentWebsite = window.location.href;
 					if(currentWebsite.startsWith(website) && website!= "") {
 						view_blocked();
+						update_website_activity_log(currentWebsite);
 						blocked = 1;
 						return;
 					}
@@ -84,17 +85,30 @@ function init() {
 					var currentWebsite = window.location.href;
 					if(currentWebsite.startsWith(website) && website!= "") {
 						var storedPoints = 0;
+						var loc = i;
+						let pointW = 0;
+						chrome.storage.sync.get('WebsitePoints', function(result) {
+					        let points = result['WebsitePoints'];
+					        pointW = points[loc];
+					    })
 						chrome.storage.sync.get(['pointTotal'], function(result){
           					console.log('points grabbed is ' + result.pointTotal);
 							storedPoints = result.pointTotal;
-							if(storedPoints >= 2000){
-							var ans = confirm("This website is locked. Would you like to spend 2000 points to unlock this site");
+							if(storedPoints >= parseInt(pointW)){
+							var ans = confirm("This website is locked for " + pointW + ". Would you like to unlock it");
 							if(ans){
-								subtract_points();
-								chrome.runtime.sendMessage({greeting: "Timer"}, function(response) {
-  									console.log(response.farewell);
+								subtract_points(pointW);
+								chrome.storage.sync.get('WebsiteTime',function(result){
+									let time_website = result['WebsiteTime'];
+									setTimeout(testing_time,(parseInt(time_website[loc]) * 60 * 1000));
+									var date = new Date();
+										date.toLocaleTimeString();
+										var exdate = new Date();
+										exdate = new Date(date.getTime() + (parseInt(time_website[loc]) * 60 * 1000));
+										chrome.storage.sync.set({'Time':'Expires' + exdate.toLocaleTimeString()},function(){
+										console.log('Time is Now ' + exdate.toLocaleTimeString());
+			});
 								});
-								setTimeout(testing_time,5000);// the time is only so low due to the purpose of displaying
 							}
 							else{
 								view_blocked();
@@ -103,7 +117,7 @@ function init() {
 							}
 							else{
 								view_blocked();
-								alert("This site can be unlocked for 2000 points. Currently you do not have enough points to unlock the site");
+								alert("This site can be unlocked for " + pointW + " points. Currently you do not have enough points to unlock the site");
 							}
 				         });
 					}
@@ -167,6 +181,9 @@ function init() {
 function block_words(words) {
 	console.log('blocking words: ' + '[' + words + ']')
 
+	//updates the activity log using the current bad words
+	update_activity_log(words);
+
 	// wrap occurences of "words" with outer span
 	$("*").highlight(words, {className: "bad_word_box"})
 	// wrap occurences of "words" with inner span
@@ -180,6 +197,51 @@ function block_words(words) {
 	// stop clicking functionality
 	$(".bad_word_box").click(function() { return false; } );
 
+}
+
+//(Javi) This function is only ever called within the block_words function which is only
+//called while in view mode. I grab the entire text of the current HTML page and iterate
+//through the entire bad_words list. If so, I log this by adding to the 'activity_log'
+//variable within chrome storage.
+function update_activity_log(bad_words){
+	chrome.storage.sync.get('activity_log', function(result) {
+		let log = result['activity_log'];
+		var currentdate = new Date(); 
+		var datetime = (currentdate.getMonth()+1) + "/"
+				+ currentdate.getDate() + "/"
+                + currentdate.getFullYear() + " @ "  
+                + currentdate.getHours() + ":"  
+                + currentdate.getMinutes() + ":" 
+                + currentdate.getSeconds();
+		var htmlWords = $('body').text();
+		for(i = 0; i < bad_words.length; i++){
+			if(htmlWords.includes(bad_words[i])){
+				//LOG ACTIVITY HERE
+				var prompt = 'The site [' + document.URL + '] containing the bad word ['  + bad_words[i] + '] was accessed on ' + datetime
+				log.push(prompt)
+			}
+		}
+        chrome.storage.sync.set({'activity_log': log}, function(){});
+	})
+}
+
+function update_website_activity_log(currentWebsite){
+	chrome.storage.sync.get('activity_log', function(result) {
+		let log = result['activity_log'];
+		var currentdate = new Date(); 
+		var datetime = (currentdate.getMonth()+1) + "/"
+				+ currentdate.getDate() + "/"
+                + currentdate.getFullYear() + " @ "  
+                + currentdate.getHours() + ":"  
+                + currentdate.getMinutes() + ":" 
+				+ currentdate.getSeconds();
+				
+		//LOG ACTIVITY HERE
+		var prompt = 'The banned site [' + currentWebsite + '] was attempted to be accessed on ' + datetime
+		log.push(prompt)
+
+        chrome.storage.sync.set({'activity_log': log}, function(){});
+	})
 }
 
 // (Javi) Function to block random words. I iterate throguh every word within a 
@@ -212,7 +274,7 @@ function block_random_words(){
 				$(this).highlight(textArray[i], {className: "random_box_" + word_id, wordsOnly: true})
 				$(this).highlight(textArray[i], {className: "random_text_" + word_id, wordsOnly: true})
 
-		 		$(".random_box_" + word_id).css({backgroundColor: "black"})
+		 		$(".random_box_" + word_id).css({backgroundColor: "red"})
 				$(".random_text_" + word_id).css({opacity: 0})
 
 				// stop clicking functionality
@@ -298,7 +360,22 @@ function context_clue_game() {
 			alert('Correct. Unblocking word.')
 		}
 		else{
-			alert("Incorrect. Word will remain blocked.")
+			var storedPoints = 0;
+			chrome.storage.sync.get(['pointTotal'], function(result){
+			console.log('points grabbed is ' + result.pointTotal);
+			storedPoints = result.pointTotal;
+			if(storedPoints >= 2000){
+				var ans = confirm("Incorrect. Word will remain blocked.\nClick ok if would you like to use 2000 points for a hint?");
+				if(ans){
+					subtract_points();
+					alert('The blocked word contains ' + blocked_text.length + ' letters');
+				}
+				 }
+				 else{
+					 alert('Incorrect. Word will remain blocked.')
+				 }
+			 });
+			
 		}
 	})
 
@@ -393,31 +470,66 @@ function reward_points(){
 	
 }
 
-//(Matthew) Sends message to backround script to subtract points 
-//			when unlocking websites.
-function subtract_points(){
-	chrome.runtime.sendMessage({greeting: "Sub_Points"}, function(response) {
-  			console.log(response.farewell);
-			});
+//(Matthew) Subtracts the points value in the arguement and stores the
+//			new value of points after the subtraction has been done
+function subtract_points(points){
+	chrome.storage.sync.get(['pointTotal'], function(result){
+          					console.log('points grabbed is ' + result.pointTotal);
+							storedPoints = result.pointTotal;
+							storedPoints = parseInt(storedPoints) - parseInt(points);
+							chrome.storage.sync.set({'pointTotal': storedPoints}, function(){});
+				         });
 	
 }
 
 /*(Matthew)
 	The below function is called when the timer expires. When the timer expires
-	it will ask the user if they want to continue going. If it does it will take 2000
-	more points. If not it will block the page. In the instance of the user not having
-	enough points it will inform them so and block the content.
+	it will ask the user if they want to continue going. If it does it will take
+	the amount of points required to keep going from the user.If not it will block
+	the page. In the instance of the user not having enough points it will inform
+	them so and block the content.
 */
 function testing_time(){
+	var points;
 	chrome.storage.sync.get('pointTotal', function(result) {
-	if(result.pointTotal >= 2000 ){	
-		var ans = confirm("Your website browsing time has expired. If you wish to continue you must spend 2000 more points.");
+		chrome.storage.sync.get('point_websites', function(re) {
+				let point_websites = re['point_websites']
+				let size = point_websites.length;
+				for(i = 0; i<size; i++){
+					website = point_websites[i]
+					var currentWebsite = window.location.href;
+					if(currentWebsite.startsWith(website) && website!= "") {
+						 var loc = i;
+							chrome.storage.sync.get('WebsitePoints', function(p) {
+        				let pt = p['WebsitePoints'];
+						points = pt[loc];
+
+	if(result.pointTotal >= parseInt(points) ){	
+		var ans = confirm("Your website browsing time has expired. If you wish to continue you must spend " +  points + " more points.");
 		if(ans){
-			subtract_points();
-			chrome.runtime.sendMessage({greeting: "Timer"}, function(response) {
-		  	console.log(response.farewell);
+			subtract_points(points);
+			chrome.storage.sync.get('point_websites', function(result) {
+				let point_websites = result['point_websites']
+				let size = point_websites.length;
+				for(i = 0; i<size; i++){
+					website = point_websites[i]
+					var currentWebsite = window.location.href;
+					if(currentWebsite.startsWith(website) && website!= "") {
+						 var loc = i;
+						chrome.storage.sync.get('WebsiteTime',function(result){
+									let time_website = result['WebsiteTime'];
+									setTimeout(testing_time,(parseInt(time_website[loc]) * 60 * 1000));// the time is only so low due to the purpose of displaying
+									var date = new Date();
+										date.toLocaleTimeString();
+										var exdate = new Date();
+										exdate = new Date(date.getTime() + (parseInt(time_website[loc]) * 60 * 1000));
+										chrome.storage.sync.set({'Time':'Expires' + exdate.toLocaleTimeString()},function(){
+										console.log('Time is Now ' + exdate.toLocaleTimeString());
 			});
-			setTimeout(testing_time,5000);	
+								});
+					}
+				}
+			});
 		}
 		else{
 			view_blocked();
@@ -433,6 +545,10 @@ function testing_time(){
 			console.log('Time is Now ' + 'No Timer');
 		});
 	}
+	})
+	}
+	}
+	});
 });
 // ---------------------------------------------------------------------
 // (Alex) BELOW IS NOT USED

@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>More Options</title>
+	<title>Admin Options</title>
 	<script src="jquery-3.1.0.min.js"></script>
 	<style type = "text/css">
 		table.websiteTable {border-collapse:collapse;width: 100%}
 		table.wordTable {border-collapse:collapse;width: 100%}
 		table.websiteTablePoint {border-collapse:collapse;width: 100%}
+		table.activityLogTable {border-collapse:collapse;width: 100%}
+		table.profileTable{border-collapse:collapse;width: 100%}
 
 		tr{
 			border : none;
@@ -17,6 +19,7 @@
 			font: normal 20px Verdana, Arial, sans-serif;
 			max-width: 90%;
 			margin: auto;
+			background-color: beige;
 		}
 
 
@@ -24,6 +27,12 @@
 		.container-restrictionLevel{
 			padding: 10px;
 		}
+
+
+		.container-profile{
+			padding: 10px;
+		}
+
 
 		.container-BannedWebsites{
 			padding: 10px;
@@ -36,6 +45,15 @@
 		.container-PointWebsites{
 			padding: 10px
 		}
+		
+		.container-ActivityLog{
+			padding: 10px
+		}
+
+		.currentProfileLabel{
+			font-weight: bold;
+			color: #ff1b0c;
+		}
 	</style>
 
 
@@ -44,6 +62,32 @@
 </head>
 <body>
 <h1>More Options</h1>
+
+<label id = "currentProfileLabel" class = "currentProfileLabel">Current Profile: Default </label>
+
+<div class = "container-profile">
+	<table class="profileTable" id="profileTable" border="1">
+		<thead>
+		<th>Profiles &nbsp&nbsp&nbsp</th>
+		</thead>
+
+		<tbody>
+		</tbody>
+
+	</table>
+
+	<div class="newProfile input">
+		Enter Name for Profile : &nbsp<input type="text" name="profileName" placeholder="Enter Name" id="profileName">
+		<button id = "addProfile">Add/Edit</button>
+		<br> Click on a profile to load
+	</div>
+
+
+
+</div>
+
+
+
 
 <div class = "container-restrictionLevel">
 	<label for="restrictionLevel">Restriction Level:</label>
@@ -114,6 +158,24 @@
 			<br> Click on a website to delete
 		</div>
 </div>
+
+<!-- Section for unlockable websites -->
+<div class="container-ActivityLog">
+	<div class = "container-LogTable">
+		<table class="activityLogTable" id="activityLogTable" border="1">
+			<thead>
+				<th>Activity Log &nbsp&nbsp&nbsp</th>
+				</thead>
+
+			<tbody>
+				</tbody>
+
+		</table>
+	</div>
+
+
+</div>
+
 
 
 <script src="options.js"></script>
