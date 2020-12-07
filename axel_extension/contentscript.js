@@ -360,13 +360,22 @@ function context_clue_game() {
 			alert('Correct. Unblocking word.')
 		}
 		else{
-			//alert("Incorrect. Word will remain blocked.")
-			//var txt;
-			if (confirm("Incorrect. Word will remain blocked.\nWould you like to use your points for a hint?")) {
-			  //txt = "You pressed OK!";
-			} else {
-			  //txt = "You pressed Cancel!";
-			}
+			var storedPoints = 0;
+			chrome.storage.sync.get(['pointTotal'], function(result){
+			console.log('points grabbed is ' + result.pointTotal);
+			storedPoints = result.pointTotal;
+			if(storedPoints >= 2000){
+				var ans = confirm("Incorrect. Word will remain blocked.\nClick ok if would you like to use 2000 points for a hint?");
+				if(ans){
+					subtract_points();
+					alert('The blocked word contains ' + blocked_text.length + ' letters');
+				}
+				 }
+				 else{
+					 alert('Incorrect. Word will remain blocked.')
+				 }
+			 });
+			
 		}
 	})
 
