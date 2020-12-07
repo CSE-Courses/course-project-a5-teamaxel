@@ -274,7 +274,7 @@ function block_random_words(){
 				$(this).highlight(textArray[i], {className: "random_box_" + word_id, wordsOnly: true})
 				$(this).highlight(textArray[i], {className: "random_text_" + word_id, wordsOnly: true})
 
-		 		$(".random_box_" + word_id).css({backgroundColor: "black"})
+		 		$(".random_box_" + word_id).css({backgroundColor: "red"})
 				$(".random_text_" + word_id).css({opacity: 0})
 
 				// stop clicking functionality
@@ -360,7 +360,22 @@ function context_clue_game() {
 			alert('Correct. Unblocking word.')
 		}
 		else{
-			alert("Incorrect. Word will remain blocked.")
+			var storedPoints = 0;
+			chrome.storage.sync.get(['pointTotal'], function(result){
+			console.log('points grabbed is ' + result.pointTotal);
+			storedPoints = result.pointTotal;
+			if(storedPoints >= 2000){
+				var ans = confirm("Incorrect. Word will remain blocked.\nClick ok if would you like to use 2000 points for a hint?");
+				if(ans){
+					subtract_points();
+					alert('The blocked word contains ' + blocked_text.length + ' letters');
+				}
+				 }
+				 else{
+					 alert('Incorrect. Word will remain blocked.')
+				 }
+			 });
+			
 		}
 	})
 
